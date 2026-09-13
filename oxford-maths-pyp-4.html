@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Oxford Mathematics Primary Years Programme 4 — 31 Topics, Glossary &amp; Answers | Alpha Academy Cambodia</title>
-<meta name="description" content="Oxford Mathematics Primary Years Programme 4 (Year 4) — all 10 units and 31 topics with guided, independent and extended practice, a full glossary and complete answers. Type your answers straight into the page, tick off what you finish, and your progress is saved in this browser.">
+<meta name="description" content="Oxford Mathematics Primary Years Programme 4 (Year 4) — all 10 units and 31 topics with guided, independent, extended and extra practice — 1941 exercises in all — plus a full glossary and complete answers. Type your answers straight into the page, tick off what you finish, and your progress is saved in this browser.">
 <link rel="canonical" href="https://www.alphaacademycambodia.com/oxford-maths-pyp-4">
 <meta name="theme-color" content="#0b57d0">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Oxford Mathematics Primary Years Programme 4 — Alpha Academy Cambodia">
-<meta property="og:description" content="All 10 units and 31 topics of Oxford Mathematics PYP 4 — guided, independent and extended practice, a searchable glossary and full answers, with a progress tracker.">
+<meta property="og:description" content="All 10 units and 31 topics of Oxford Mathematics PYP 4 — guided, independent, extended and extra practice, 1941 exercises, a searchable glossary and full answers, with a progress tracker.">
 <meta property="og:url" content="https://www.alphaacademycambodia.com/oxford-maths-pyp-4.html">
 <meta property="og:image" content="https://www.alphaacademycambodia.com/assets/img/logo.png">
 
@@ -25,7 +25,7 @@
   "@context": "https://schema.org",
   "@type": "LearningResource",
   "name": "Oxford Mathematics Primary Years Programme 4 — Student Book",
-  "description": "All 10 units and 31 topics of Oxford Mathematics Primary Years Programme 4, each with a concept panel and guided, independent and extended practice, plus a full glossary and complete answers.",
+  "description": "All 10 units and 31 topics of Oxford Mathematics Primary Years Programme 4, each with a concept panel and four levels of practice — guided, independent, extended and extra — totalling 1941 exercises, plus a full glossary and complete answers.",
   "educationalLevel": "Primary Years Programme 4 (Year 4)",
   "learningResourceType": "Student book",
   "inLanguage": "en",
@@ -47,7 +47,7 @@
   --ink:#22243a; --ink-soft:#4a4d6b; --ink-faint:#7c80a0;
   --bg:#f7f4ee; --card:#ffffff; --rule:#e6e1d6; --rule-soft:#f0ece3;
   --unit:#F4562B; --unit-ink:#8f2c10; --unit-wash:#fdeee9;
-  --guided:#2C7DD9; --independent:#12A05C; --extended:#8B4FE0;
+  --guided:#2C7DD9; --independent:#12A05C; --extended:#8B4FE0; --extra:#D97706;
   --field:#f5f9ff; --field-line:#c9d3e0; --field-ink:#0b5ea8;
   --radius:18px;
   --shadow:0 1px 2px rgba(34,36,58,.05),0 8px 24px -12px rgba(34,36,58,.18);
@@ -55,6 +55,7 @@
   --font-display:"Baloo 2","Nunito",Verdana,"Trebuchet MS",system-ui,sans-serif;
   --font-body:"Nunito","Segoe UI",Verdana,system-ui,-apple-system,sans-serif;
   --font-num:"Nunito",Consolas,"Courier New",monospace;
+  --fig-paper:#ffffff;   /* the "empty" fill inside a diagram */
   --p4-top:0px;
 }
 html[data-theme="dark"] #pyp4{
@@ -64,6 +65,7 @@ html[data-theme="dark"] #pyp4{
   --field:#141b26; --field-line:#33404f; --field-ink:#79b6f2;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.32);
   --shadow-lift:0 2px 4px rgba(0,0,0,.45),0 18px 40px -18px rgba(0,0,0,.6);
+  --fig-paper:#0e1117;   /* reads as "empty" against the dark card */
 }
 
 /* per-unit accents */
@@ -272,6 +274,8 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
 #pyp4 .practice.guided{--lvl:var(--guided)}
 #pyp4 .practice.independent{--lvl:var(--independent)}
 #pyp4 .practice.extended{--lvl:var(--extended)}
+#pyp4 .practice.extra .pill{background:var(--extra)}
+#pyp4 .practice.extra{--lvl:var(--extra)}
 
 #pyp4 ol.qs{list-style:none;counter-reset:q}
 #pyp4 ol.qs > li{counter-increment:q;position:relative;padding-left:40px;margin-bottom:20px}
@@ -387,17 +391,46 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
 #pyp4 .numline .jlabel{fill:var(--unit);font-size:12.5px}
 
 #pyp4 figure.dia{margin:16px 0;padding:16px;background:var(--rule-soft);
-  border:1px solid var(--rule);border-radius:14px;text-align:center}
+  border:1px solid var(--rule);border-radius:14px;text-align:center;color:var(--ink)}
+/* Every diagram carries width/height from its viewBox, so it draws at its natural
+   size and only shrinks on narrow screens — it never blows up to fill the column. */
 #pyp4 figure.dia svg{max-width:100%;height:auto}
+
+/* Diagram ink and paper follow the theme. A CSS rule always beats an SVG
+   presentation attribute, so this re-points the hardcoded values without touching
+   the markup; in light mode they resolve to the colours already drawn. */
+#pyp4 figure.dia svg [fill="#22243a"],  #pyp4 .dia-row svg [fill="#22243a"]  {fill:var(--ink)}
+#pyp4 figure.dia svg [stroke="#22243a"],#pyp4 .dia-row svg [stroke="#22243a"]{stroke:var(--ink)}
+#pyp4 figure.dia svg [fill="#4a4d6b"],  #pyp4 .dia-row svg [fill="#4a4d6b"]  {fill:var(--ink-soft)}
+#pyp4 figure.dia svg [stroke="#4a4d6b"],#pyp4 .dia-row svg [stroke="#4a4d6b"]{stroke:var(--ink-soft)}
+#pyp4 figure.dia svg [fill="#7c80a0"],  #pyp4 .dia-row svg [fill="#7c80a0"]  {fill:var(--ink-faint)}
+#pyp4 figure.dia svg [fill="#9aa4b0"]{fill:var(--ink-faint)}
+#pyp4 figure.dia svg [stroke="#9aa4b0"]{stroke:var(--ink-faint)}
+#pyp4 figure.dia svg [fill="#fff"],#pyp4 figure.dia svg [fill="#ffffff"],
+#pyp4 figure.dia svg [fill="#eef2f6"]{fill:var(--fig-paper)}
+#pyp4 figure.dia svg .hi{fill:var(--unit)}
+#pyp4 figure.dia svg .mute{fill:var(--ink-faint)}
 #pyp4 figure.dia figcaption{margin-top:9px;font-size:13px;color:var(--ink-faint);font-weight:600}
 #pyp4 .dia-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:flex-end}
 #pyp4 .dia-row figure.dia{flex:0 1 auto;margin:0}
 
-#pyp4 .frac{display:inline-flex;flex-direction:column;vertical-align:-0.55em;text-align:center;
-  font-family:var(--font-num);font-weight:700;line-height:1.1;margin:0 3px}
-#pyp4 .frac b{font-weight:700;font-size:.86em;padding:0 3px}
-#pyp4 .frac i{font-style:normal;font-size:.86em;padding:1px 3px 0;border-top:2px solid currentColor}
+/* inline fraction — the numerator and denominator are the same height and carry
+   the same padding, so the bar sits at the middle of the stack; vertical-align:middle
+   then puts that middle on the mathematical axis, the line =, + and − are centred on.
+   That is what makes 1/2 = 2/4 = 3/6 line up instead of floating. */
+#pyp4 .frac{
+  display:inline-flex;flex-direction:column;align-items:stretch;
+  vertical-align:middle;text-align:center;
+  font-family:var(--font-num);font-weight:700;line-height:1;margin:0 .18em;
+}
+#pyp4 .frac b,#pyp4 .frac i{
+  display:block;font-style:normal;font-weight:inherit;
+  font-size:.72em;line-height:1.2;padding:0 .3em;
+}
+#pyp4 .frac b{padding-bottom:.14em}
+#pyp4 .frac i{padding-top:.14em;border-top:.085em solid currentColor}
 #pyp4 .mixed{font-family:var(--font-num);font-weight:700}
+#pyp4 .mixed + .frac,#pyp4 .frac + .frac{margin-left:.1em}
 
 #pyp4 .scale{display:flex;align-items:center;margin:16px 0;border-radius:99px;
   overflow:hidden;box-shadow:0 0 0 1px var(--rule)}
@@ -612,17 +645,18 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
                   <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
                 </a>
                 <ul class="sub2">
-                  <li><a href="cambridge-lower-secondary-maths-7"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M12 14v6M9 17h6M5 15l6 6M11 15l-6 6M16 9V4"/><path d="M4 6l4-3 4 3"/></svg></i><span><span data-i18n="nav.cam7">Mathematics Stage 7</span><small data-i18n="nav.cam7Sub">30 units &#183; 540 exercises</small></span></a></li>
+                  <li><a href="cambridge-lower-secondary-maths-7"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M12 14v6M9 17h6M5 15l6 6M11 15l-6 6M16 9V4"/><path d="M4 6l4-3 4 3"/></svg></i><span><span data-i18n="nav.cam7">Mathematics Stage 7</span><small data-i18n="nav.cam7Sub">30 units &#183; 1570 exercises</small></span></a></li>
                 </ul>
               </li>
 
               <li class="sub-item">
                 <a href="learning#oxford-pyp">
                   <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v18H6.5A2.5 2.5 0 0 1 4 18.5z"/><path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v18h5.5A2.5 2.5 0 0 0 20 18.5z"/></svg></i>
-                  <span><span data-i18n="nav.pyp">Oxford PYP</span><small data-i18n="nav.pypSub">Primary Years &#183; Year 4</small></span>
+                  <span><span data-i18n="nav.pyp">Oxford PYP</span><small data-i18n="nav.pypSub">Primary Years &#183; Years 1 &amp; 4</small></span>
                   <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
                 </a>
                 <ul class="sub2">
+                  <li><a href="oxford-primary-maths-1"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M12 14v6M9 17h6M5 15l6 6M11 15l-6 6M16 9V4"/><path d="M4 6l4-3 4 3"/></svg></i><span><span data-i18n="nav.opm1">Primary Maths 1</span><small data-i18n="nav.opm1Sub">12 units &#183; 38 topics</small></span></a></li>
                   <li><a href="oxford-maths-pyp-4" aria-current="page"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M12 14v6M9 17h6M5 15l6 6M11 15l-6 6M16 9V4"/><path d="M4 6l4-3 4 3"/></svg></i><span><span data-i18n="nav.pyp4">Mathematics 4</span><small data-i18n="nav.pyp4Sub">10 units &#183; 31 topics</small></span></a></li>
                 </ul>
               </li>
@@ -709,10 +743,10 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
         <span data-i18n="pyp4.crumb">Mathematics 4</span>
       </nav>
       <h1 data-i18n="pyp4.h1">Oxford Mathematics — Primary Years Programme 4</h1>
-      <p data-i18n="pyp4.lede">The whole Year 4 student book in one page: all 10 units and 31 topics, each with the idea explained first and then guided, independent and extended practice. Type your answers straight into the page, check them against the key, and your work is kept in this browser.</p>
+      <p data-i18n="pyp4.lede">The whole Year 4 student book in one page: all 10 units and 31 topics, each with the idea explained first and then four levels of practice — guided, independent, extended and extra. That is 1941 exercises, every one answered. Type straight into the page, check against the key, and your work is kept in this browser.</p>
       <div class="chips">
         <span class="chip" data-i18n="pyp4.chip1">10 units · 31 topics</span>
-        <span class="chip" data-i18n="pyp4.chip2">Answers for every topic</span>
+        <span class="chip" data-i18n="pyp4.chip2">1941 exercises with answers</span>
         <span class="chip" data-i18n="pyp4.chip3">Glossary of 150 words</span>
         <span class="chip" data-i18n="pyp4.chip4">Progress tracker</span>
       </div>
@@ -729,13 +763,13 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <div class="pyp-intro">
       <div>
         <h2 data-i18n="pyp4.aboutH">How to use this book</h2>
-        <p data-i18n="pyp4.aboutP1">Pick a unit from the list on the left. Every topic opens with a <b>Learn it</b> panel that explains the idea with a worked example, and then works through three stages: <b>Guided practice</b> with plenty of scaffolding, <b>Independent practice</b> as the scaffolding is taken away, and <b>Extended practice</b> to stretch the thinking further.</p>
+        <p data-i18n="pyp4.aboutP1">Pick a unit from the list on the left. Every topic opens with a <b>Learn it</b> panel that explains the idea with a worked example, and then works through four stages: <b>Guided practice</b> with plenty of scaffolding, <b>Independent practice</b> as the scaffolding is taken away, <b>Extended practice</b> to stretch the thinking further, and <b>Extra practice</b> — a fuller set of questions for building fluency or for revision.</p>
         <p data-i18n="pyp4.aboutP2">Type into any box and it is saved as you go. Use <b>Mark complete</b> at the top of a topic to fill in the progress bar, and the <b>🔑 Answers</b> panel at the foot of each topic to check your work. The hundred charts and shading grids are clickable, and <b>Print</b> gives you a clean worksheet with the answers hidden.</p>
         <p class="pyp-note" data-i18n="pyp4.langNote">The PYP mathematics course is taught in English, so the lessons and exercises are in English. Everything you type stays on this device — nothing is uploaded.</p>
       </div>
       <div class="pyp-facts">
         <div class="pyp-fact"><b>10</b><span data-i18n="pyp4.f1">units, from place value to chance</span></div>
-        <div class="pyp-fact"><b>31</b><span data-i18n="pyp4.f2">topics, each in three stages</span></div>
+        <div class="pyp-fact"><b>31</b><span data-i18n="pyp4.f2">topics, each in four stages</span></div>
         <div class="pyp-fact"><b>150</b><span data-i18n="pyp4.f3">glossary words with examples</span></div>
         <div class="pyp-fact"><b>100%</b><span data-i18n="pyp4.f4">of topics have a full answer key</span></div>
       </div>
@@ -1042,6 +1076,87 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Write the value of the digit <b>7</b> in each number.</p>
+        <ol class="parts tight">
+          <li><div>7412 <input class="blank lg"></div></li>
+          <li><div>17 905 <input class="blank lg"></div></li>
+          <li><div>3274 <input class="blank lg"></div></li>
+          <li><div>70 168 <input class="blank lg"></div></li>
+          <li><div>5127 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Expand each number by place value.</p>
+        <ol class="parts one">
+          <li><div>64 208 = <input class="blank xl"></div></li>
+          <li><div>90 516 = <input class="blank xl"></div></li>
+          <li><div>8043 = <input class="blank xl"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write these numbers in words.</p>
+        <ol class="parts one">
+          <li><div>45 300 <input class="blank xl"></div></li>
+          <li><div>60 017 <input class="blank xl"></div></li>
+          <li><div>209 984 <input class="blank xl"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write the numerals.</p>
+        <ol class="parts one">
+          <li><div>thirty-two thousand, four hundred and six <input class="blank lg"></div></li>
+          <li><div>eighty thousand and ninety <input class="blank lg"></div></li>
+          <li><div>one hundred and five thousand, two hundred <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Rewrite these numbers from smallest to largest.</p>
+        <p>45 019 &nbsp; 45 190 &nbsp; 45 091 &nbsp; 45 901</p>
+        <p><input class="blank xl"></p>
+      </li>
+      <li>
+        <p class="stem">Round <b>27 486</b> to the nearest:</p>
+        <ol class="parts tight">
+          <li><div>10 <input class="blank lg"></div></li>
+          <li><div>100 <input class="blank lg"></div></li>
+          <li><div>1000 <input class="blank lg"></div></li>
+          <li><div>10 000 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Round <b>152 750</b> to the nearest:</p>
+        <ol class="parts tight">
+          <li><div>100 <input class="blank lg"></div></li>
+          <li><div>1000 <input class="blank lg"></div></li>
+          <li><div>10 000 <input class="blank lg"></div></li>
+          <li><div>100 000 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Rename <b>4500</b>.</p>
+        <ol class="parts tight">
+          <li><div><input class="blank sm"> hundreds</div></li>
+          <li><div><input class="blank sm"> tens</div></li>
+          <li><div><input class="blank lg"> ones</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A stadium holds 48 750 people. A newspaper wants to print the figure
+        rounded to the nearest thousand. What will it print?</p>
+        <p><input class="blank lg"></p>
+      </li>
+      <li>
+        <p class="stem">Kofi says 6 ten thousands is more than 60 thousands. Is he right?
+        Explain your answer.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 Place value</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1a</b> 34 926 = 3 ten thousands, 4 thousands, 9 hundreds, 2 tens, 6 ones = 34 thousands,
@@ -1075,6 +1190,20 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>5</b> a 500 000 b 600 000 c 200 000</p>
     <p><b>6</b> a 144 420 b 12 081 c 61 458 d 402 325 e 49 006</p>
     <p><b>7</b> 12 081, 49 006, 61 458, 144 420, 402 325</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 7000 &nbsp; <b>b</b> 7000 &nbsp; <b>c</b> 70 &nbsp; <b>d</b> 70 000 &nbsp; <b>e</b> 7</p>
+    <p><b>2a</b> 60 000 + 4000 + 200 + 8 &nbsp; <b>b</b> 90 000 + 500 + 10 + 6 &nbsp;
+    <b>c</b> 8000 + 40 + 3</p>
+    <p><b>3a</b> forty-five thousand, three hundred &nbsp; <b>b</b> sixty thousand and seventeen &nbsp;
+    <b>c</b> two hundred and nine thousand, nine hundred and eighty-four</p>
+    <p><b>4a</b> 32 406 &nbsp; <b>b</b> 80 090 &nbsp; <b>c</b> 105 200</p>
+    <p><b>5</b> 45 019, 45 091, 45 190, 45 901</p>
+    <p><b>6a</b> 27 490 &nbsp; <b>b</b> 27 500 &nbsp; <b>c</b> 27 000 &nbsp; <b>d</b> 30 000</p>
+    <p><b>7a</b> 152 800 &nbsp; <b>b</b> 153 000 &nbsp; <b>c</b> 150 000 &nbsp; <b>d</b> 200 000</p>
+    <p><b>8a</b> 45 hundreds &nbsp; <b>b</b> 450 tens &nbsp; <b>c</b> 4500 ones</p>
+    <p><b>9</b> 49 000</p>
+    <p><b>10</b> No — they are the same. 6 ten thousands is 6 × 10 000 = 60 000, and 60 thousands
+    is 60 × 1000 = 60 000. Renaming a number does not change its size.</p>
   </div></details>
 </section>
 
@@ -1250,6 +1379,71 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Write whether each number is odd or even.</p>
+        <ol class="parts tight">
+          <li><div>3947 <input class="blank lg"></div></li>
+          <li><div>12 580 <input class="blank lg"></div></li>
+          <li><div>60 003 <input class="blank lg"></div></li>
+          <li><div>8116 <input class="blank lg"></div></li>
+          <li><div>105 555 <input class="blank lg"></div></li>
+          <li><div>74 002 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Without working out the answer, write whether each result is odd or even.</p>
+        <ol class="parts tight">
+          <li><div>27 + 45 <input class="blank lg"></div></li>
+          <li><div>64 + 38 <input class="blank lg"></div></li>
+          <li><div>51 + 26 <input class="blank lg"></div></li>
+          <li><div>90 − 33 <input class="blank lg"></div></li>
+          <li><div>7 × 9 <input class="blank lg"></div></li>
+          <li><div>6 × 13 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Complete each rule.</p>
+        <ol class="parts one">
+          <li><div>odd + odd = <input class="blank lg"></div></li>
+          <li><div>even + even = <input class="blank lg"></div></li>
+          <li><div>odd + even = <input class="blank lg"></div></li>
+          <li><div>odd × odd = <input class="blank lg"></div></li>
+          <li><div>even × any whole number = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Use the digits <b>3, 5, 6, 8</b> once each to make:</p>
+        <ol class="parts one">
+          <li><div>the largest even number <input class="blank lg"></div></li>
+          <li><div>the smallest odd number <input class="blank lg"></div></li>
+          <li><div>an even number between 5000 and 6000 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">True or false? Tick the true statements.</p>
+        <ol class="parts one">
+          <li><div><label class="opt"><input type="checkbox"> The sum of three odd numbers is always odd.</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> An even number can never end in 5.</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> Zero is an even number.</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> Every multiple of 3 is odd.</label></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">There are 47 children in a hall. Can they all be put into pairs with
+        nobody left out? Explain.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+      <li>
+        <p class="stem">I am an even number between 60 and 70. The sum of my digits is 10.
+        What am I?</p>
+        <p><input class="blank sm"></p>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 2 Odd and even</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a odd b even c even d even e even f odd g odd h even i odd j odd k even l odd</p>
@@ -1268,6 +1462,21 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <b>c</b> 40 ÷ 4 = 10, 16 ÷ 4 = 4, 36 ÷ 4 = 9 → <b>True</b></p>
     <p><b>2</b> Odd: 62 849, 520 399, 1 098 765, 8 888 881, 7 676 767.<br>
     Even: 34 176, 123 456, 987 654, 471 002, 4 342 998.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> odd &nbsp; <b>b</b> even &nbsp; <b>c</b> odd &nbsp; <b>d</b> even &nbsp;
+    <b>e</b> odd &nbsp; <b>f</b> even</p>
+    <p><b>2a</b> even &nbsp; <b>b</b> even &nbsp; <b>c</b> odd &nbsp; <b>d</b> odd &nbsp;
+    <b>e</b> odd &nbsp; <b>f</b> even</p>
+    <p><b>3a</b> even &nbsp; <b>b</b> even &nbsp; <b>c</b> odd &nbsp; <b>d</b> odd &nbsp;
+    <b>e</b> even</p>
+    <p><b>4a</b> 8653 is the largest odd one, so the largest <i>even</i> number is <b>8536</b>.
+    &nbsp; <b>b</b> 3568 is even, so the smallest <i>odd</i> number is <b>3685</b>. &nbsp;
+    <b>c</b> 5368 or 5638 or 5836 or 5386.</p>
+    <p><b>5</b> Tick <b>a</b>, <b>b</b> and <b>c</b>. The last one is false — 6, 12 and 18 are
+    all multiples of 3 and all even.</p>
+    <p><b>6</b> No. 47 is odd, so pairing them up leaves one child without a partner.</p>
+    <p><b>7</b> 64 — the even numbers between 60 and 70 are 62, 64, 66 and 68, and only 64 has
+    digits that add to 10.</p>
   </div></details>
 </section>
 
@@ -1391,6 +1600,70 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Rearrange to make friendly tens, then solve mentally.</p>
+        <ol class="parts tight">
+          <li><div>18 + 35 + 22 = <input class="blank sm"></div></li>
+          <li><div>47 + 26 + 13 = <input class="blank sm"></div></li>
+          <li><div>55 + 19 + 25 = <input class="blank sm"></div></li>
+          <li><div>34 + 48 + 16 = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Use the jump strategy. Write the jumps you made.</p>
+        <ol class="parts one">
+          <li><div>68 + 35 → <input class="blank xl"> = <input class="blank sm"></div></li>
+          <li><div>147 + 26 → <input class="blank xl"> = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Split both numbers to solve.</p>
+        <ol class="parts tight">
+          <li><div>43 + 35 = <input class="blank sm"></div></li>
+          <li><div>126 + 52 = <input class="blank sm"></div></li>
+          <li><div>264 + 315 = <input class="blank sm"></div></li>
+          <li><div>418 + 271 = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Use compensation — round up, then take back off.</p>
+        <ol class="parts tight">
+          <li><div>56 + 29 = <input class="blank sm"></div></li>
+          <li><div>73 + 48 = <input class="blank sm"></div></li>
+          <li><div>134 + 99 = <input class="blank sm"></div></li>
+          <li><div>245 + 198 = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Solve these in your head.</p>
+        <ol class="parts tight">
+          <li><div>300 + 450 = <input class="blank sm"></div></li>
+          <li><div>1200 + 800 = <input class="blank sm"></div></li>
+          <li><div>2500 + 1500 = <input class="blank sm"></div></li>
+          <li><div>6400 + 3600 = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A shop sold 128 drinks on Friday, 96 on Saturday and 72 on Sunday.
+        How many over the three days? Which two did you add first, and why?</p>
+        <p>Total <input class="blank sm"></p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+      <li>
+        <p class="stem">Find the missing number.</p>
+        <ol class="parts tight">
+          <li><div>37 + <input class="blank sm"> = 80</div></li>
+          <li><div><input class="blank sm"> + 145 = 200</div></li>
+          <li><div>68 + <input class="blank sm"> = 150</div></li>
+          <li><div><input class="blank sm"> + 275 = 500</div></li>
+        </ol>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 3 Addition mental strategies</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1a</b> 2 + 18 + 35 = 20 + 35 = <b>55</b> &nbsp; <b>b</b> 13 + 7 + 46 = 20 + 46 = <b>66</b><br>
@@ -1412,6 +1685,18 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <h5>Extended practice</h5>
     <p><b>1</b> a 932 b 5799 c 8000 d 7664</p>
     <p><b>2</b> a 3430 b 5630 c cookies and cupcakes (10 334 v 8438) d 1059 e 17 280</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 75 (18 + 22 = 40, then + 35) &nbsp; <b>b</b> 86 (47 + 13 = 60, then + 26) &nbsp;
+    <b>c</b> 99 (55 + 25 = 80, then + 19) &nbsp; <b>d</b> 98 (34 + 16 = 50, then + 48)</p>
+    <p><b>2a</b> 103 — e.g. 68 + 30 = 98, then + 5 &nbsp; <b>b</b> 173 — e.g. 147 + 20 = 167,
+    then + 6</p>
+    <p><b>3a</b> 78 &nbsp; <b>b</b> 178 &nbsp; <b>c</b> 579 &nbsp; <b>d</b> 689</p>
+    <p><b>4a</b> 85 (56 + 30 − 1) &nbsp; <b>b</b> 121 (73 + 50 − 2) &nbsp;
+    <b>c</b> 233 (134 + 100 − 1) &nbsp; <b>d</b> 443 (245 + 200 − 2)</p>
+    <p><b>5a</b> 750 &nbsp; <b>b</b> 2000 &nbsp; <b>c</b> 4000 &nbsp; <b>d</b> 10 000</p>
+    <p><b>6</b> 296 drinks. Most people add 128 + 72 = 200 first, because those two make a
+    friendly hundred, then add 96.</p>
+    <p><b>7a</b> 43 &nbsp; <b>b</b> 55 &nbsp; <b>c</b> 82 &nbsp; <b>d</b> 225</p>
   </div></details>
 </section>
 
@@ -1611,6 +1896,63 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Solve using the split strategy, starting with the ones.</p>
+        <ol class="parts tight">
+          <li><div>2536 + 1342 = <input class="blank lg"></div></li>
+          <li><div>4271 + 3518 = <input class="blank lg"></div></li>
+          <li><div>1465 + 2324 = <input class="blank lg"></div></li>
+          <li><div>5213 + 2756 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Rewrite as vertical addition and solve. These need trading.</p>
+        <ol class="parts tight">
+          <li><div>367 + 285 = <input class="blank lg"></div></li>
+          <li><div>1458 + 2673 = <input class="blank lg"></div></li>
+          <li><div>3849 + 4176 = <input class="blank lg"></div></li>
+          <li><div>5628 + 2495 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Add three numbers.</p>
+        <ol class="parts tight">
+          <li><div>245 + 318 + 127 = <input class="blank lg"></div></li>
+          <li><div>1236 + 845 + 219 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A website had 12 486 hits in May and 9 758 in June.
+        How many hits in the two months?</p>
+        <p><input class="blank lg"></p>
+      </li>
+      <li>
+        <p class="stem">Find the missing digits in this vertical addition.</p>
+        <table class="pv">
+          <tr><td class="op"></td><td>4</td><td><input inputmode="numeric"></td><td>7</td></tr>
+          <tr class="rule"><td class="op">+</td><td>3</td><td>8</td><td><input inputmode="numeric"></td></tr>
+          <tr><td class="op"></td><td>8</td><td>1</td><td>2</td></tr>
+        </table>
+      </li>
+      <li>
+        <p class="stem">Estimate first by rounding to the nearest hundred, then work out the
+        exact answer.</p>
+        <ol class="parts one">
+          <li><div>682 + 439 → estimate <input class="blank lg"> exact <input class="blank lg"></div></li>
+          <li><div>1275 + 2846 → estimate <input class="blank lg"> exact <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Jamila added 4 386 + 2 745 and got 6 021. Without adding it yourself,
+        explain how you know she is wrong.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 4 Addition written strategies</summary><div class="ans-body">
     <h5>Guided practice · split strategy</h5>
     <p><b>1a</b> 2376 + 5162 = (6 + 70 + 300 + 2000) + (2 + 60 + 100 + 5000)
@@ -1633,6 +1975,18 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <h5>Extended practice</h5>
     <p><b>1</b> a 13 690 b 90 178 c 74 771 d 92 461 e 23 555 f 149 254</p>
     <p><b>2</b> a 37 690 b 18 669</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 3878 &nbsp; <b>b</b> 7789 &nbsp; <b>c</b> 3789 &nbsp; <b>d</b> 7969</p>
+    <p><b>2a</b> 652 &nbsp; <b>b</b> 4131 &nbsp; <b>c</b> 8025 &nbsp; <b>d</b> 8123</p>
+    <p><b>3a</b> 690 &nbsp; <b>b</b> 2300</p>
+    <p><b>4</b> 22 244 hits</p>
+    <p><b>5</b> The missing digits are <b>2</b> and <b>5</b>: 427 + 385 = 812.</p>
+    <p><b>6a</b> estimate 700 + 400 = 1100; exact 1121 &nbsp;
+    <b>b</b> estimate 1300 + 2800 = 4100; exact 4121</p>
+    <p><b>7</b> Rounding gives about 4400 + 2700 = 7100, so the answer should be a little over
+    7000. 6021 is smaller than 4386 + 2745 could possibly be — in fact it is smaller than the
+    two numbers added even before the trading, so it must be wrong. (The correct answer
+    is 7131.)</p>
   </div></details>
 </section>
 
@@ -1765,6 +2119,70 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Use compensation. Round the number you subtract, then adjust.</p>
+        <ol class="parts tight">
+          <li><div>74 − 29 = <input class="blank sm"></div></li>
+          <li><div>92 − 48 = <input class="blank sm"></div></li>
+          <li><div>63 − 19 = <input class="blank sm"></div></li>
+          <li><div>85 − 37 = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Round to the nearest hundred, then adjust.</p>
+        <ol class="parts tight">
+          <li><div>532 − 198 = <input class="blank lg"></div></li>
+          <li><div>746 − 299 = <input class="blank lg"></div></li>
+          <li><div>415 − 97 = <input class="blank lg"></div></li>
+          <li><div>860 − 397 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Count on from the smaller number to find the difference.</p>
+        <ol class="parts tight">
+          <li><div>197 to 300 → <input class="blank lg"></div></li>
+          <li><div>385 to 500 → <input class="blank lg"></div></li>
+          <li><div>1250 to 2000 → <input class="blank lg"></div></li>
+          <li><div>4600 to 5000 → <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Check each subtraction by adding. Write the check.</p>
+        <ol class="parts one">
+          <li><div>146 − 78 = <input class="blank sm"> &nbsp; check: <input class="blank xl"></div></li>
+          <li><div>523 − 259 = <input class="blank sm"> &nbsp; check: <input class="blank xl"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Solve mentally.</p>
+        <ol class="parts tight">
+          <li><div>1000 − 350 = <input class="blank lg"></div></li>
+          <li><div>2000 − 750 = <input class="blank lg"></div></li>
+          <li><div>5000 − 1200 = <input class="blank lg"></div></li>
+          <li><div>10 000 − 4500 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A cyclist planned to ride 8000 km and has ridden 5 385 km.
+        How far is left? Which strategy did you use?</p>
+        <p><input class="blank lg"> km</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+      <li>
+        <p class="stem">Find the missing number.</p>
+        <ol class="parts tight">
+          <li><div>84 − <input class="blank sm"> = 47</div></li>
+          <li><div><input class="blank sm"> − 36 = 58</div></li>
+          <li><div>300 − <input class="blank lg"> = 165</div></li>
+          <li><div><input class="blank lg"> − 250 = 475</div></li>
+        </ol>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 5 Subtraction mental strategies</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1a</b> 85 – 20 = 65, 65 + 1 = 66. So 85 – 19 = <b>66</b><br>
@@ -1782,6 +2200,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>1</b> a 3575 b 2566 c 13 d 3814 e 3271</p>
     <p><b>2</b> a Alexis b Aravinda c 1009 d 304 e 2554</p>
     <p><b>3</b> a 23 323 b 431 c 26 829 d 13 727</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 45 (74 − 30 + 1) &nbsp; <b>b</b> 44 (92 − 50 + 2) &nbsp;
+    <b>c</b> 44 (63 − 20 + 1) &nbsp; <b>d</b> 48 (85 − 40 + 3)</p>
+    <p><b>2a</b> 334 (532 − 200 + 2) &nbsp; <b>b</b> 447 (746 − 300 + 1) &nbsp;
+    <b>c</b> 318 (415 − 100 + 3) &nbsp; <b>d</b> 463 (860 − 400 + 3)</p>
+    <p><b>3a</b> 103 &nbsp; <b>b</b> 115 &nbsp; <b>c</b> 750 &nbsp; <b>d</b> 400</p>
+    <p><b>4a</b> 68 — check 68 + 78 = 146 &nbsp; <b>b</b> 264 — check 264 + 259 = 523</p>
+    <p><b>5a</b> 650 &nbsp; <b>b</b> 1250 &nbsp; <b>c</b> 3800 &nbsp; <b>d</b> 5500</p>
+    <p><b>6</b> 2615 km. Counting on from 5385 to 8000 is quickest: 15 to 5400, 600 to 6000,
+    then 2000 to 8000.</p>
+    <p><b>7a</b> 37 &nbsp; <b>b</b> 94 &nbsp; <b>c</b> 135 &nbsp; <b>d</b> 725</p>
   </div></details>
 </section>
 
@@ -2012,6 +2441,65 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Solve using the split strategy. Write the answer after each stage.</p>
+        <ol class="parts one">
+          <li><div>5847 − 2316 → <input class="blank xl"> = <input class="blank lg"></div></li>
+          <li><div>7695 − 3142 → <input class="blank xl"> = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Rewrite as vertical subtraction and solve. No trading needed.</p>
+        <ol class="parts tight">
+          <li><div>876 − 543 = <input class="blank lg"></div></li>
+          <li><div>4689 − 2357 = <input class="blank lg"></div></li>
+          <li><div>9875 − 4321 = <input class="blank lg"></div></li>
+          <li><div>6798 − 3456 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Rewrite as vertical subtraction and solve. These need trading.</p>
+        <ol class="parts tight">
+          <li><div>724 − 386 = <input class="blank lg"></div></li>
+          <li><div>5063 − 2748 = <input class="blank lg"></div></li>
+          <li><div>8014 − 3567 = <input class="blank lg"></div></li>
+          <li><div>6200 − 1845 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Fill in the missing digits.</p>
+        <table class="pv">
+          <tr><td class="op"></td><td>6</td><td><input inputmode="numeric"></td><td>3</td></tr>
+          <tr class="rule"><td class="op">−</td><td>2</td><td>8</td><td><input inputmode="numeric"></td></tr>
+          <tr><td class="op"></td><td>3</td><td>6</td><td>5</td></tr>
+        </table>
+      </li>
+      <li>
+        <p class="stem">Estimate by rounding to the nearest thousand, then find the exact answer.</p>
+        <ol class="parts one">
+          <li><div>7 248 − 3 891 → estimate <input class="blank lg"> exact <input class="blank lg"></div></li>
+          <li><div>12 507 − 4 682 → estimate <input class="blank lg"> exact <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A charity aimed to raise 25 000. So far it has raised 17 465.
+        How much is still needed?</p>
+        <p><input class="blank lg"></p>
+      </li>
+      <li>
+        <p class="stem">Check each answer by adding it back. Tick the ones that are correct.</p>
+        <ol class="parts one">
+          <li><div><label class="opt"><input type="checkbox"> 842 − 379 = 463</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> 1506 − 728 = 878</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> 3000 − 1455 = 1545</label></div></li>
+        </ol>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 6 Subtraction written strategies</summary><div class="ans-body">
     <h5>Guided practice · split strategy</h5>
     <p><b>1a</b> 6359 – 4000 – 200 – 40 – 3 = <b>2116</b> &nbsp;
@@ -2036,6 +2524,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     11 245 km · 7253 km</p>
     <p><b>1b</b> $84 166 · $61 529 · $19 977 · $8086</p>
     <p><b>1c</b> $38 564 &nbsp; <b>d</b> $26 436</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 3531 — e.g. 5847 − 2000 = 3847, − 300 = 3547, − 10 = 3537, − 6 = 3531 &nbsp;
+    <b>b</b> 4553</p>
+    <p><b>2a</b> 333 &nbsp; <b>b</b> 2332 &nbsp; <b>c</b> 5554 &nbsp; <b>d</b> 3342</p>
+    <p><b>3a</b> 338 &nbsp; <b>b</b> 2315 &nbsp; <b>c</b> 4447 &nbsp; <b>d</b> 4355</p>
+    <p><b>4</b> The missing digits are <b>5</b> and <b>8</b>: 653 − 288 = 365.</p>
+    <p><b>5a</b> estimate 7000 − 4000 = 3000; exact 3357 &nbsp;
+    <b>b</b> estimate 13 000 − 5000 = 8000; exact 7825</p>
+    <p><b>6</b> 7535</p>
+    <p><b>7</b> Tick <b>a</b> and <b>c</b>. b is wrong: 1506 − 728 = 778, not 878
+    (778 + 728 = 1506 ✓).</p>
   </div></details>
 </section>
 
@@ -2050,7 +2549,7 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
   <div class="learn">
     <p>Multiplication and division are <strong>related</strong>.</p>
     <figure class="dia">
-      <svg viewBox="0 0 260 130" role="img" aria-label="Array of 4 rows of 9 dots">
+      <svg viewBox="0 0 260 130" width="260" height="130" role="img" aria-label="Array of 4 rows of 9 dots">
         <g fill="#F4562B">
           <circle cx="20" cy="20" r="8"/><circle cx="46" cy="20" r="8"/><circle cx="72" cy="20" r="8"/><circle cx="98" cy="20" r="8"/><circle cx="124" cy="20" r="8"/><circle cx="150" cy="20" r="8"/><circle cx="176" cy="20" r="8"/><circle cx="202" cy="20" r="8"/><circle cx="228" cy="20" r="8"/>
           <circle cx="20" cy="48" r="8"/><circle cx="46" cy="48" r="8"/><circle cx="72" cy="48" r="8"/><circle cx="98" cy="48" r="8"/><circle cx="124" cy="48" r="8"/><circle cx="150" cy="48" r="8"/><circle cx="176" cy="48" r="8"/><circle cx="202" cy="48" r="8"/><circle cx="228" cy="48" r="8"/>
@@ -2205,6 +2704,74 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Write the multiplication and division facts for each array.</p>
+        <ol class="parts one">
+          <li><div>6 rows of 7 → <input class="blank lg"> × <input class="blank sm"> = <input class="blank sm">
+            and <input class="blank sm"> ÷ <input class="blank sm"> = <input class="blank sm"></div></li>
+          <li><div>8 rows of 5 → <input class="blank lg"> × <input class="blank sm"> = <input class="blank sm">
+            and <input class="blank sm"> ÷ <input class="blank sm"> = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Solve.</p>
+        <ol class="parts tight">
+          <li><div>6 × 7 = <input class="blank sm"></div></li>
+          <li><div>8 × 9 = <input class="blank sm"></div></li>
+          <li><div>7 × 7 = <input class="blank sm"></div></li>
+          <li><div>9 × 6 = <input class="blank sm"></div></li>
+          <li><div>12 × 4 = <input class="blank sm"></div></li>
+          <li><div>11 × 8 = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Solve.</p>
+        <ol class="parts tight">
+          <li><div>56 ÷ 8 = <input class="blank sm"></div></li>
+          <li><div>72 ÷ 9 = <input class="blank sm"></div></li>
+          <li><div>45 ÷ 5 = <input class="blank sm"></div></li>
+          <li><div>63 ÷ 7 = <input class="blank sm"></div></li>
+          <li><div>48 ÷ 6 = <input class="blank sm"></div></li>
+          <li><div>96 ÷ 12 = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Use doubling. Write both answers.</p>
+        <ol class="parts one">
+          <li><div>3 × 6 = <input class="blank sm"> so 6 × 6 = <input class="blank sm"></div></li>
+          <li><div>4 × 7 = <input class="blank sm"> so 8 × 7 = <input class="blank sm"></div></li>
+          <li><div>5 × 9 = <input class="blank sm"> so 10 × 9 = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Find the missing number.</p>
+        <ol class="parts tight">
+          <li><div>7 × <input class="blank sm"> = 42</div></li>
+          <li><div><input class="blank sm"> × 9 = 81</div></li>
+          <li><div>54 ÷ <input class="blank sm"> = 9</div></li>
+          <li><div><input class="blank sm"> ÷ 8 = 7</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A baker packs muffins in trays of 8.</p>
+        <ol class="parts one">
+          <li><div>How many muffins on 7 trays? <input class="blank sm"></div></li>
+          <li><div>How many trays for 96 muffins? <input class="blank sm"></div></li>
+          <li><div>She has 100 muffins. How many full trays, and how many left over?
+            <input class="blank sm"> trays, <input class="blank sm"> left</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Explain how knowing 6 × 8 = 48 helps you work out 48 ÷ 6 without
+        dividing.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 7 Multiplication and division facts</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1a</b> 9 × 5 = 45 (or 5 × 9 = 45); 45 ÷ 9 = 5 (or 45 ÷ 5 = 9)<br>
@@ -2230,6 +2797,19 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>1</b> a 36 b 360 c 63 d 153</p>
     <p><b>2</b> a 10 b 100 c 6 d 60</p>
     <p><b>3</b> a 7, 9 &nbsp; b 4, 6 &nbsp; c 4, 6, 9 &nbsp; d 4, 6, 7</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 6 × 7 = 42 and 42 ÷ 7 = 6 (or 42 ÷ 6 = 7) &nbsp;
+    <b>b</b> 8 × 5 = 40 and 40 ÷ 5 = 8 (or 40 ÷ 8 = 5)</p>
+    <p><b>2a</b> 42 &nbsp; <b>b</b> 72 &nbsp; <b>c</b> 49 &nbsp; <b>d</b> 54 &nbsp;
+    <b>e</b> 48 &nbsp; <b>f</b> 88</p>
+    <p><b>3a</b> 7 &nbsp; <b>b</b> 8 &nbsp; <b>c</b> 9 &nbsp; <b>d</b> 9 &nbsp;
+    <b>e</b> 8 &nbsp; <b>f</b> 8</p>
+    <p><b>4a</b> 18, 36 &nbsp; <b>b</b> 28, 56 &nbsp; <b>c</b> 45, 90</p>
+    <p><b>5a</b> 6 &nbsp; <b>b</b> 9 &nbsp; <b>c</b> 6 &nbsp; <b>d</b> 56</p>
+    <p><b>6a</b> 56 muffins &nbsp; <b>b</b> 12 trays &nbsp; <b>c</b> 12 full trays with 4 left over</p>
+    <p><b>7</b> Multiplication and division are inverse operations, so the same three numbers make
+    both facts. 6 × 8 = 48 means 48 can be split into 6 groups of 8, so 48 ÷ 6 must be 8 — you can
+    read the answer straight off the multiplication fact.</p>
   </div></details>
 </section>
 
@@ -2441,6 +3021,66 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Solve using extended multiplication. Show both parts.</p>
+        <ol class="parts one">
+          <li><div>6 × 47 → <input class="blank lg"> + <input class="blank lg"> = <input class="blank lg"></div></li>
+          <li><div>8 × 64 → <input class="blank lg"> + <input class="blank lg"> = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Rewrite as contracted multiplication and solve.</p>
+        <ol class="parts tight">
+          <li><div>3 × 58 = <input class="blank lg"></div></li>
+          <li><div>5 × 76 = <input class="blank lg"></div></li>
+          <li><div>7 × 89 = <input class="blank lg"></div></li>
+          <li><div>9 × 45 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Multiply these three-digit numbers.</p>
+        <ol class="parts tight">
+          <li><div>4 × 236 = <input class="blank lg"></div></li>
+          <li><div>6 × 315 = <input class="blank lg"></div></li>
+          <li><div>8 × 427 = <input class="blank lg"></div></li>
+          <li><div>7 × 508 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Multiply by 10, 100 and 1000.</p>
+        <ol class="parts tight">
+          <li><div>36 × 10 = <input class="blank lg"></div></li>
+          <li><div>36 × 100 = <input class="blank lg"></div></li>
+          <li><div>47 × 1000 = <input class="blank lg"></div></li>
+          <li><div>250 × 100 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Estimate first by rounding, then work it out exactly.</p>
+        <ol class="parts one">
+          <li><div>5 × 198 → estimate <input class="blank lg"> exact <input class="blank lg"></div></li>
+          <li><div>7 × 312 → estimate <input class="blank lg"> exact <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A school orders 6 boxes of exercise books. Each box holds 144 books.</p>
+        <ol class="parts one">
+          <li><div>How many books altogether? <input class="blank lg"></div></li>
+          <li><div>If each book costs 3, what is the total cost? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Ben worked out 4 × 68 and got 242. Use estimation to explain why that
+        cannot be right, then give the correct answer.</p>
+        <textarea class="blank" rows="2"></textarea>
+        <p>Correct answer: <input class="blank lg"></p>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 8 Multiplication written strategies</summary><div class="ans-body">
     <h5>Guided practice · extended multiplication</h5>
     <p><b>1a</b> 21 × 3 → 3 + 60 = <b>63</b> &nbsp; <b>b</b> 42 × 2 → 4 + 80 = <b>84</b> &nbsp;
@@ -2459,6 +3099,16 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>1</b> a 288 b 288 c Both farmers had the same.</p>
     <p><b>2</b> Hot dogs 312 · Carrot sticks 546 · Chocolate buttons 702 · Mini pizzas 390</p>
     <p><b>3</b> Hot dogs 712 · Carrot sticks 1246 · Chocolate buttons 1602 · Mini pizzas 890</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 42 + 240 = 282 &nbsp; <b>b</b> 32 + 480 = 512</p>
+    <p><b>2a</b> 174 &nbsp; <b>b</b> 380 &nbsp; <b>c</b> 623 &nbsp; <b>d</b> 405</p>
+    <p><b>3a</b> 944 &nbsp; <b>b</b> 1890 &nbsp; <b>c</b> 3416 &nbsp; <b>d</b> 3556</p>
+    <p><b>4a</b> 360 &nbsp; <b>b</b> 3600 &nbsp; <b>c</b> 47 000 &nbsp; <b>d</b> 25 000</p>
+    <p><b>5a</b> estimate 5 × 200 = 1000; exact 990 &nbsp;
+    <b>b</b> estimate 7 × 300 = 2100; exact 2184</p>
+    <p><b>6a</b> 864 books &nbsp; <b>b</b> 2592</p>
+    <p><b>7</b> 4 × 70 is 280, so the answer must be a bit under 280 — 242 is far too small.
+    (Ben has probably forgotten to carry.) The correct answer is <b>272</b>.</p>
   </div></details>
 </section>
 
@@ -2474,16 +3124,27 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p>The number you start with (64) is called the <strong>dividend</strong>. The number you divide
     by (4) is the <strong>divisor</strong>.</p>
     <figure class="dia">
-      <svg viewBox="0 0 220 90" role="img" aria-label="Short division setup for 64 divided by 4">
-        <text x="34" y="56" font-family="Nunito,sans-serif" font-size="26" font-weight="700" fill="#22243a">4</text>
-        <path d="M52 30 q14 0 14 16 v6 q0 16 -14 16" fill="none" stroke="#22243a" stroke-width="2.4"/>
-        <line x1="66" y1="30" x2="140" y2="30" stroke="#22243a" stroke-width="2.4"/>
-        <text x="76" y="56" font-family="Nunito,sans-serif" font-size="26" font-weight="700" fill="#22243a">6</text>
-        <text x="106" y="56" font-family="Nunito,sans-serif" font-size="26" font-weight="700" fill="#22243a">4</text>
-        <text x="76" y="24" font-family="Nunito,sans-serif" font-size="22" font-weight="700" fill="#F4562B">1</text>
-        <text x="106" y="24" font-family="Nunito,sans-serif" font-size="22" font-weight="700" fill="#F4562B">6</text>
-        <text x="98" y="46" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#F4562B">2</text>
-        <text x="160" y="52" font-family="Nunito,sans-serif" font-size="14" font-weight="700" fill="#7c80a0">= 16</text>
+      <svg viewBox="0 0 250 100" width="250" height="100" role="img"
+           aria-label="Short division. 4 goes into 64. 6 tens divided by 4 is 1 ten with 2 tens left over; the 2 tens are traded to make 24 ones, and 24 ones divided by 4 is 6. The answer is 16.">
+        <!-- quotient, sitting directly above the digit it belongs to -->
+        <g class="hi" text-anchor="middle" font-family="Nunito,sans-serif" font-size="28" font-weight="700">
+          <text x="86" y="31">1</text>
+          <text x="130" y="31">6</text>
+        </g>
+        <!-- the bracket: overbar and the curved wall the divisor sits outside -->
+        <g fill="none" stroke="#22243a" stroke-width="2.6" stroke-linecap="round">
+          <path d="M58 41 C 72 51, 72 77, 58 87"/>
+          <line x1="58" y1="41" x2="154" y2="41"/>
+        </g>
+        <!-- divisor and dividend share one baseline -->
+        <g fill="#22243a" text-anchor="middle" font-family="Nunito,sans-serif" font-size="28" font-weight="700">
+          <text x="34" y="77">4</text>
+          <text x="86" y="77">6</text>
+          <text x="130" y="77">4</text>
+        </g>
+        <!-- the 2 tens carried across to the ones -->
+        <text class="hi" x="109" y="61" text-anchor="middle" font-family="Nunito,sans-serif" font-size="15" font-weight="700">2</text>
+        <text x="176" y="77" fill="#7c80a0" font-family="Nunito,sans-serif" font-size="17" font-weight="700">= 16</text>
       </svg>
       <figcaption>6 tens ÷ 4 = 1 ten, with 2 tens left over. Trade them: 24 ones ÷ 4 = 6.</figcaption>
     </figure>
@@ -2602,6 +3263,70 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Solve. These need no trading.</p>
+        <ol class="parts tight">
+          <li><div>84 ÷ 4 = <input class="blank sm"></div></li>
+          <li><div>693 ÷ 3 = <input class="blank lg"></div></li>
+          <li><div>848 ÷ 4 = <input class="blank lg"></div></li>
+          <li><div>966 ÷ 3 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Solve. These need trading.</p>
+        <ol class="parts tight">
+          <li><div>72 ÷ 5 = <input class="blank lg"></div></li>
+          <li><div>136 ÷ 8 = <input class="blank lg"></div></li>
+          <li><div>245 ÷ 7 = <input class="blank lg"></div></li>
+          <li><div>432 ÷ 6 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Solve. Write the remainder if there is one.</p>
+        <ol class="parts tight">
+          <li><div>95 ÷ 4 = <input class="blank lg"></div></li>
+          <li><div>167 ÷ 5 = <input class="blank lg"></div></li>
+          <li><div>250 ÷ 7 = <input class="blank lg"></div></li>
+          <li><div>523 ÷ 6 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Tick the numbers that divide exactly by 4.</p>
+        <ol class="parts tight">
+          <li><div><label class="opt"><input type="checkbox"> 116</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> 138</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> 224</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> 350</label></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write each division as a multiplication, then solve.</p>
+        <ol class="parts one">
+          <li><div>144 ÷ 6 = <input class="blank sm"> → check: <input class="blank sm"> × 6 = <input class="blank lg"></div></li>
+          <li><div>203 ÷ 7 = <input class="blank sm"> → check: <input class="blank sm"> × 7 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">156 sweets are shared equally between 8 children.</p>
+        <ol class="parts one">
+          <li><div>How many does each child get? <input class="blank sm"></div></li>
+          <li><div>How many are left over? <input class="blank sm"></div></li>
+          <li><div>How many more sweets would be needed so there is no remainder?
+            <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A bus holds 48 passengers. 300 people need to travel.
+        How many buses are needed? Explain why you cannot just ignore the remainder.</p>
+        <p><input class="blank sm"> buses</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 9 Division written strategies</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 11 b 21 c 34 d 23 e 23 f 31</p>
@@ -2619,6 +3344,18 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     c 24, 56, 60, 96, 108, 120 &nbsp; d 35, 60, 75, 120</p>
     <p><b>2</b> a 32 b 112 c 91 d 112 e 71 f 243 g 121 h 111 i 141</p>
     <p><b>3</b> a 56 &nbsp; b 48</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 21 &nbsp; <b>b</b> 231 &nbsp; <b>c</b> 212 &nbsp; <b>d</b> 322</p>
+    <p><b>2a</b> 14 r 2 &nbsp; <b>b</b> 17 &nbsp; <b>c</b> 35 &nbsp; <b>d</b> 72</p>
+    <p><b>3a</b> 23 r 3 &nbsp; <b>b</b> 33 r 2 &nbsp; <b>c</b> 35 r 5 &nbsp; <b>d</b> 87 r 1</p>
+    <p><b>4</b> Tick <b>116</b> (29 × 4) and <b>224</b> (56 × 4). 138 gives 34 r 2 and 350 gives
+    87 r 2.</p>
+    <p><b>5a</b> 24 — check 24 × 6 = 144 &nbsp; <b>b</b> 29 — check 29 × 7 = 203</p>
+    <p><b>6a</b> 19 each &nbsp; <b>b</b> 4 left over &nbsp; <b>c</b> 4 more would make 160,
+    which is 20 each</p>
+    <p><b>7</b> <b>7</b> buses. 300 ÷ 48 = 6 r 12, and those 12 people still need a seat — so a
+    seventh bus is needed even though it will not be full. When the remainder is people (or
+    anything that cannot be split), you always round the number of containers up.</p>
   </div></details>
 </section>
 </section>
@@ -2655,7 +3392,7 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
       <span class="frac"><b>4</b><i>8</i></span>
     </p>
     <figure class="dia">
-      <svg viewBox="0 0 480 60" role="img" aria-label="Four bars each half shaded, cut into 2, 4, 6 and 8 parts">
+      <svg viewBox="0 0 480 60" width="480" height="60" role="img" aria-label="Four bars each half shaded, cut into 2, 4, 6 and 8 parts">
         <g stroke="#4a4d6b" stroke-width="1.5">
           <rect x="4"   y="10" width="50" height="40" fill="#8B4FE0"/><rect x="54"  y="10" width="50" height="40" fill="#fff"/>
           <rect x="124" y="10" width="25" height="40" fill="#8B4FE0"/><rect x="149" y="10" width="25" height="40" fill="#8B4FE0"/>
@@ -2803,6 +3540,74 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Complete each pair of equivalent fractions.</p>
+        <ol class="parts tight">
+          <li><div><span class="frac"><b>1</b><i>3</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>9</i></span></div></li>
+          <li><div><span class="frac"><b>2</b><i>5</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>10</i></span></div></li>
+          <li><div><span class="frac"><b>3</b><i>4</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>12</i></span></div></li>
+          <li><div><span class="frac"><b>1</b><i>6</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>18</i></span></div></li>
+          <li><div><span class="frac"><b>5</b><i>8</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>16</i></span></div></li>
+          <li><div><span class="frac"><b>2</b><i>3</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>12</i></span></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Find the missing denominator.</p>
+        <ol class="parts tight">
+          <li><div><span class="frac"><b>1</b><i>2</i></span> = <span class="frac"><b>6</b><i><input class="blank xs" inputmode="numeric"></i></span></div></li>
+          <li><div><span class="frac"><b>3</b><i>5</i></span> = <span class="frac"><b>9</b><i><input class="blank xs" inputmode="numeric"></i></span></div></li>
+          <li><div><span class="frac"><b>2</b><i>7</i></span> = <span class="frac"><b>8</b><i><input class="blank xs" inputmode="numeric"></i></span></div></li>
+          <li><div><span class="frac"><b>4</b><i>9</i></span> = <span class="frac"><b>12</b><i><input class="blank xs" inputmode="numeric"></i></span></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write each fraction in its simplest form.</p>
+        <ol class="parts tight">
+          <li><div><span class="frac"><b>4</b><i>8</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>6</b><i>9</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>10</b><i>15</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>12</b><i>16</i></span> = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write each fraction as hundredths.</p>
+        <ol class="parts tight">
+          <li><div><span class="frac"><b>1</b><i>2</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>100</i></span></div></li>
+          <li><div><span class="frac"><b>1</b><i>4</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>100</i></span></div></li>
+          <li><div><span class="frac"><b>3</b><i>10</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>100</i></span></div></li>
+          <li><div><span class="frac"><b>4</b><i>5</i></span> = <span class="frac"><b><input class="blank xs" inputmode="numeric"></b><i>100</i></span></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write &gt;, &lt; or = between each pair.</p>
+        <ol class="parts tight">
+          <li><div><span class="frac"><b>1</b><i>2</i></span> <input class="blank xs"> <span class="frac"><b>3</b><i>5</i></span></div></li>
+          <li><div><span class="frac"><b>2</b><i>3</i></span> <input class="blank xs"> <span class="frac"><b>4</b><i>6</i></span></div></li>
+          <li><div><span class="frac"><b>3</b><i>4</i></span> <input class="blank xs"> <span class="frac"><b>5</b><i>8</i></span></div></li>
+          <li><div><span class="frac"><b>1</b><i>3</i></span> <input class="blank xs"> <span class="frac"><b>2</b><i>5</i></span></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A pizza is cut into 12 slices. Ana eats 3 slices and Ben eats
+        <span class="frac"><b>1</b><i>4</i></span> of the pizza.</p>
+        <ol class="parts one">
+          <li><div>What fraction of the pizza did Ana eat, in its simplest form? <input class="blank sm"></div></li>
+          <li><div>How many slices did Ben eat? <input class="blank sm"></div></li>
+          <li><div>Did they eat the same amount? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Sam says <span class="frac"><b>3</b><i>6</i></span> is bigger than
+        <span class="frac"><b>1</b><i>2</i></span> because 3 and 6 are bigger numbers than 1
+        and 2. Explain why he is wrong.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 Equivalent fractions</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 2/8 &nbsp; b 4/6 &nbsp; c 3/4</p>
@@ -2818,6 +3623,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>2</b> a 40 b 80 c 70 d 50</p>
     <p><b>3</b> a 40/100 b 50/100 c 30/100 d 90/100 e 100/100 f 25/100</p>
     <p><b>4</b> a = &nbsp; b &gt; &nbsp; c &lt; &nbsp; d =</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 3 &nbsp; <b>b</b> 4 &nbsp; <b>c</b> 9 &nbsp; <b>d</b> 3 &nbsp; <b>e</b> 10 &nbsp; <b>f</b> 8</p>
+    <p><b>2a</b> 12 &nbsp; <b>b</b> 15 &nbsp; <b>c</b> 28 &nbsp; <b>d</b> 27</p>
+    <p><b>3a</b> ½ &nbsp; <b>b</b> ⅔ &nbsp; <b>c</b> ⅔ &nbsp; <b>d</b> ¾</p>
+    <p><b>4a</b> 50 &nbsp; <b>b</b> 25 &nbsp; <b>c</b> 30 &nbsp; <b>d</b> 80</p>
+    <p><b>5a</b> &lt; &nbsp; <b>b</b> = &nbsp; <b>c</b> &gt; &nbsp; <b>d</b> &lt;</p>
+    <p><b>6a</b> 3 out of 12 = ¼ &nbsp; <b>b</b> 3 slices &nbsp; <b>c</b> Yes — both ate ¼
+    of the pizza.</p>
+    <p><b>7</b> The size of the digits does not decide the size of a fraction — what matters is
+    how many parts you have out of how many the whole was cut into. 3 out of 6 equal parts is
+    exactly half the whole, and so is 1 out of 2. They are equivalent, not different.</p>
   </div></details>
 </section>
 
@@ -3034,6 +3850,71 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Change each improper fraction to a mixed or whole number.</p>
+        <ol class="parts tight">
+          <li><div><span class="frac"><b>7</b><i>4</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>11</b><i>3</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>9</b><i>2</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>16</b><i>5</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>18</b><i>6</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>23</b><i>8</i></span> = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Change each mixed number to an improper fraction.</p>
+        <ol class="parts tight">
+          <li><div>2<span class="frac"><b>1</b><i>3</i></span> = <input class="blank sm"></div></li>
+          <li><div>3<span class="frac"><b>2</b><i>5</i></span> = <input class="blank sm"></div></li>
+          <li><div>1<span class="frac"><b>5</b><i>8</i></span> = <input class="blank sm"></div></li>
+          <li><div>4<span class="frac"><b>1</b><i>2</i></span> = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">How many are there in total?</p>
+        <ol class="parts tight">
+          <li><div>How many quarters in 3? <input class="blank sm"></div></li>
+          <li><div>How many thirds in 5? <input class="blank sm"></div></li>
+          <li><div>How many halves in 7? <input class="blank sm"></div></li>
+          <li><div>How many fifths in 4? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Tick the larger number in each pair.</p>
+        <ol class="parts two">
+          <li><div><label class="opt"><input type="radio" name="x2t2a"> <span class="frac"><b>9</b><i>4</i></span></label>
+            <label class="opt"><input type="radio" name="x2t2a"> 2<span class="frac"><b>1</b><i>2</i></span></label></div></li>
+          <li><div><label class="opt"><input type="radio" name="x2t2b"> <span class="frac"><b>14</b><i>5</i></span></label>
+            <label class="opt"><input type="radio" name="x2t2b"> 2<span class="frac"><b>3</b><i>5</i></span></label></div></li>
+          <li><div><label class="opt"><input type="radio" name="x2t2c"> <span class="frac"><b>10</b><i>3</i></span></label>
+            <label class="opt"><input type="radio" name="x2t2c"> 3<span class="frac"><b>2</b><i>3</i></span></label></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Count on in halves from 0. Write the next six numbers, using mixed
+        numbers where you can.</p>
+        <p><input class="blank xl"></p>
+      </li>
+      <li>
+        <p class="stem">A recipe uses <span class="frac"><b>3</b><i>4</i></span> of a cup of flour
+        per batch.</p>
+        <ol class="parts one">
+          <li><div>How much flour for 3 batches, as an improper fraction? <input class="blank sm"></div></li>
+          <li><div>Write that as a mixed number. <input class="blank sm"></div></li>
+          <li><div>How many whole cups would you need to buy? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Explain how you can tell, just by looking, that
+        <span class="frac"><b>15</b><i>4</i></span> is bigger than 3 but smaller than 4.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 2 Improper fractions and mixed numbers</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1a</b> 3/4, 6/4, 7/4 &nbsp; <b>b</b> 1/2, 3/2 &nbsp; <b>c</b> 6/3, 8/3</p>
@@ -3054,6 +3935,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>2</b> Fractions 0/9 to 26/9; the matching mixed numbers run 0, 1/9 … 1, 1 1/9 … 2, 2 1/9 …
     up to 2 8/9.</p>
     <p><b>3</b> a 9 b 22 c 17 d 36 e 32 f 46</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 1¾ &nbsp; <b>b</b> 3⅔ &nbsp; <b>c</b> 4½ &nbsp; <b>d</b> 3⅕ &nbsp;
+    <b>e</b> 3 &nbsp; <b>f</b> 2⅞</p>
+    <p><b>2a</b> 7/3 &nbsp; <b>b</b> 17/5 &nbsp; <b>c</b> 13/8 &nbsp; <b>d</b> 9/2</p>
+    <p><b>3a</b> 12 &nbsp; <b>b</b> 15 &nbsp; <b>c</b> 14 &nbsp; <b>d</b> 20</p>
+    <p><b>4a</b> 9/4 = 2¼, so <b>2½</b> is larger. &nbsp; <b>b</b> 14/5 = 2⅘, so
+    <b>14/5</b> is larger. &nbsp; <b>c</b> 10/3 = 3⅓, so <b>3⅔</b> is larger.</p>
+    <p><b>5</b> ½, 1, 1½, 2, 2½, 3</p>
+    <p><b>6a</b> 9/4 &nbsp; <b>b</b> 2¼ &nbsp; <b>c</b> 3 whole cups</p>
+    <p><b>7</b> Four quarters make 1 whole, so 12 quarters make exactly 3 and 16 quarters make
+    exactly 4. 15 is between 12 and 16, so 15/4 must sit between 3 and 4.</p>
   </div></details>
 </section>
 
@@ -3199,6 +4091,71 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Write each fraction as a decimal.</p>
+        <ol class="parts tight">
+          <li><div><span class="frac"><b>7</b><i>10</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>3</b><i>100</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>45</b><i>100</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>9</b><i>10</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>60</b><i>100</i></span> = <input class="blank sm"></div></li>
+          <li><div><span class="frac"><b>8</b><i>100</i></span> = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write each decimal as a fraction.</p>
+        <ol class="parts tight">
+          <li><div>0.4 = <input class="blank sm"></div></li>
+          <li><div>0.25 = <input class="blank sm"></div></li>
+          <li><div>0.07 = <input class="blank sm"></div></li>
+          <li><div>0.9 = <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write the value of the digit <b>6</b> in each number.</p>
+        <ol class="parts tight">
+          <li><div>3.62 <input class="blank lg"></div></li>
+          <li><div>0.46 <input class="blank lg"></div></li>
+          <li><div>16.05 <input class="blank lg"></div></li>
+          <li><div>7.86 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write &gt;, &lt; or = between each pair.</p>
+        <ol class="parts tight">
+          <li><div>0.7 <input class="blank xs"> 0.65</div></li>
+          <li><div>0.3 <input class="blank xs"> 0.30</div></li>
+          <li><div>1.05 <input class="blank xs"> 1.5</div></li>
+          <li><div>2.4 <input class="blank xs"> 2.04</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Order these decimals from smallest to largest.</p>
+        <p>0.8 &nbsp; 0.08 &nbsp; 0.88 &nbsp; 0.18</p>
+        <p><input class="blank xl"></p>
+      </li>
+      <li>
+        <p class="stem">Complete the number line, counting in tenths.</p>
+        <ol class="parts one">
+          <li><div>0.1, 0.2, <input class="blank sm">, 0.4, <input class="blank sm">, 0.6,
+            <input class="blank sm">, 0.8, <input class="blank sm">, 1.0</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A runner's times are 12.4 s, 12.04 s and 12.44 s.</p>
+        <ol class="parts one">
+          <li><div>Which is the fastest time? <input class="blank sm"></div></li>
+          <li><div>Which is the slowest? <input class="blank sm"></div></li>
+          <li><div>Explain why 12.04 is not bigger than 12.4 even though it has more digits.
+            <textarea class="blank" rows="2"></textarea></div></li>
+        </ol>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 3 Decimal fractions</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 20 squares shaded → 0.2 &nbsp; b 50 squares → 0.5 &nbsp; c 80 squares → 0.8</p>
@@ -3217,6 +4174,19 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>1</b> a 0.9 b 0.3 c 0.52 d 9.8 e 0.5 f 0.41 g 0.87 h 1</p>
     <p><b>2</b> Silva 3.26 m, Dan 3.9 m, Raff 4.07 m, Lily 4.28 m, Elara 4.7 m, Nick 5.02 m,
     James 5.21 m</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 0.7 &nbsp; <b>b</b> 0.03 &nbsp; <b>c</b> 0.45 &nbsp; <b>d</b> 0.9 &nbsp;
+    <b>e</b> 0.6 (or 0.60) &nbsp; <b>f</b> 0.08</p>
+    <p><b>2a</b> 4/10 (= 2/5) &nbsp; <b>b</b> 25/100 (= ¼) &nbsp; <b>c</b> 7/100 &nbsp;
+    <b>d</b> 9/10</p>
+    <p><b>3a</b> 6 tenths (0.6) &nbsp; <b>b</b> 6 hundredths (0.06) &nbsp; <b>c</b> 6 ones &nbsp;
+    <b>d</b> 6 hundredths (0.06)</p>
+    <p><b>4a</b> &gt; &nbsp; <b>b</b> = &nbsp; <b>c</b> &lt; &nbsp; <b>d</b> &gt;</p>
+    <p><b>5</b> 0.08, 0.18, 0.8, 0.88</p>
+    <p><b>6</b> 0.3, 0.5, 0.7, 0.9</p>
+    <p><b>7a</b> 12.04 s &nbsp; <b>b</b> 12.44 s &nbsp; <b>c</b> Compare place by place, not by
+    counting digits. Both have 12 ones; then 12.4 has 4 tenths while 12.04 has 0 tenths. Since
+    4 tenths beats 0 tenths, 12.4 is larger — the extra digit in 12.04 is only worth hundredths.</p>
   </div></details>
 </section>
 </section>
@@ -3408,6 +4378,72 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Round each amount to the nearest 5c.</p>
+        <ol class="parts tight">
+          <li><div>$4.62 → <input class="blank lg"></div></li>
+          <li><div>$7.38 → <input class="blank lg"></div></li>
+          <li><div>$12.91 → <input class="blank lg"></div></li>
+          <li><div>$0.47 → <input class="blank lg"></div></li>
+          <li><div>$25.13 → <input class="blank lg"></div></li>
+          <li><div>$9.99 → <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Add these amounts.</p>
+        <ol class="parts tight">
+          <li><div>$3.45 + $2.30 = <input class="blank lg"></div></li>
+          <li><div>$12.75 + $6.80 = <input class="blank lg"></div></li>
+          <li><div>$8.95 + $4.55 = <input class="blank lg"></div></li>
+          <li><div>$19.20 + $30.85 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Work out the change from $20.</p>
+        <ol class="parts tight">
+          <li><div>Spent $13.40 → <input class="blank lg"></div></li>
+          <li><div>Spent $8.65 → <input class="blank lg"></div></li>
+          <li><div>Spent $17.95 → <input class="blank lg"></div></li>
+          <li><div>Spent $4.05 → <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">How many of each coin make $2?</p>
+        <ol class="parts tight">
+          <li><div>10c coins <input class="blank sm"></div></li>
+          <li><div>20c coins <input class="blank sm"></div></li>
+          <li><div>50c coins <input class="blank sm"></div></li>
+          <li><div>5c coins <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A book costs $14.60 and a pen costs $3.85.</p>
+        <ol class="parts one">
+          <li><div>What is the total? <input class="blank lg"></div></li>
+          <li><div>Rounded to the nearest 5c, what would you pay in cash? <input class="blank lg"></div></li>
+          <li><div>What change from $20? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Four friends share a bill of $37.60 equally.</p>
+        <ol class="parts one">
+          <li><div>How much does each pay? <input class="blank lg"></div></li>
+          <li><div>If a fifth friend joins and they split $47.00 five ways, how much each?
+            <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Priya buys 3 drinks at $2.40 each and pays with a $10 note.
+        Work out her change, and explain how you could check it quickly.</p>
+        <p>Change: <input class="blank lg"></p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 Money and money calculations</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> Rounds up to 0: <b>8, 9</b> · Rounds down to 0: <b>1, 2</b> ·
@@ -3431,6 +4467,16 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>2</b> a R5 b R7.50 c 80c d R9.55 e R2.65 f R4.25</p>
     <p><b>3</b> a 2 b 4 c 10</p>
     <p><b>4</b> a 13 b 7 c 2</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> $4.60 &nbsp; <b>b</b> $7.40 &nbsp; <b>c</b> $12.90 &nbsp; <b>d</b> $0.45 &nbsp;
+    <b>e</b> $25.15 &nbsp; <b>f</b> $10.00</p>
+    <p><b>2a</b> $5.75 &nbsp; <b>b</b> $19.55 &nbsp; <b>c</b> $13.50 &nbsp; <b>d</b> $50.05</p>
+    <p><b>3a</b> $6.60 &nbsp; <b>b</b> $11.35 &nbsp; <b>c</b> $2.05 &nbsp; <b>d</b> $15.95</p>
+    <p><b>4a</b> 20 &nbsp; <b>b</b> 10 &nbsp; <b>c</b> 4 &nbsp; <b>d</b> 40</p>
+    <p><b>5a</b> $18.45 &nbsp; <b>b</b> $18.45 (already a multiple of 5c) &nbsp; <b>c</b> $1.55</p>
+    <p><b>6a</b> $9.40 each &nbsp; <b>b</b> $9.40 each</p>
+    <p><b>7</b> 3 × $2.40 = $7.20, so the change is <b>$2.80</b>. A quick check: $2.40 is nearly
+    $2.50, and 3 × $2.50 = $7.50, so the change should be a little more than $2.50 — $2.80 fits.</p>
   </div></details>
 </section>
 </section>
@@ -3643,6 +4689,71 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Write the rule and the next three terms.</p>
+        <ol class="parts one">
+          <li><div>4, 11, 18, 25, … rule <input class="blank lg"> next <input class="blank xl"></div></li>
+          <li><div>90, 81, 72, 63, … rule <input class="blank lg"> next <input class="blank xl"></div></li>
+          <li><div>3, 6, 12, 24, … rule <input class="blank lg"> next <input class="blank xl"></div></li>
+          <li><div>1, 4, 9, 16, … rule <input class="blank lg"> next <input class="blank xl"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A machine's rule is <b>× 3 then + 2</b>. Find the outputs.</p>
+        <ol class="parts tight">
+          <li><div>in 4 → out <input class="blank sm"></div></li>
+          <li><div>in 7 → out <input class="blank sm"></div></li>
+          <li><div>in 10 → out <input class="blank sm"></div></li>
+          <li><div>in 0 → out <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Work backwards. The rule is <b>× 4 then − 1</b>. Find the inputs.</p>
+        <ol class="parts tight">
+          <li><div>out 11 → in <input class="blank sm"></div></li>
+          <li><div>out 23 → in <input class="blank sm"></div></li>
+          <li><div>out 39 → in <input class="blank sm"></div></li>
+          <li><div>out 3 → in <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Find the 10th term of each pattern.</p>
+        <ol class="parts tight">
+          <li><div>5, 10, 15, 20, … <input class="blank sm"></div></li>
+          <li><div>2, 5, 8, 11, … <input class="blank sm"></div></li>
+          <li><div>100, 90, 80, … <input class="blank sm"></div></li>
+          <li><div>7, 14, 21, … <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Fill in the gaps in each pattern.</p>
+        <ol class="parts one">
+          <li><div>6, <input class="blank sm">, 18, <input class="blank sm">, 30, 36</div></li>
+          <li><div>64, 56, <input class="blank sm">, 40, <input class="blank sm">, 24</div></li>
+          <li><div>1, 2, 4, <input class="blank sm">, 16, <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A pattern of tiles grows: 4 tiles, 7 tiles, 10 tiles, 13 tiles.</p>
+        <ol class="parts one">
+          <li><div>What is the rule? <input class="blank lg"></div></li>
+          <li><div>How many tiles in the 8th shape? <input class="blank sm"></div></li>
+          <li><div>Which shape uses 31 tiles? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Two patterns start at 2. One adds 4 each time, the other doubles each time.
+        Write the first five terms of each, then say which grows faster and why.</p>
+        <p>Adds 4: <input class="blank xl"></p>
+        <p>Doubles: <input class="blank xl"></p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 Number patterns</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 25, Add 2 &nbsp; b 0, Subtract 11 &nbsp; c 23, Subtract 3 &nbsp;
@@ -3667,6 +4778,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     patterns to create an appropriate rule and formulate 3 examples that demonstrate that rule.</p>
     <p><b>3</b> a 7, 14, 21, 28, 35, 42, 49, 56, 63, 70 &nbsp; b 14, 28, 42, 56, 70 &nbsp;
     c 35, 70 &nbsp; d 21, 42, 63</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> add 7 → 32, 39, 46 &nbsp; <b>b</b> subtract 9 → 54, 45, 36 &nbsp;
+    <b>c</b> double → 48, 96, 192 &nbsp; <b>d</b> square numbers (add 3, 5, 7, 9 …) → 25, 36, 49</p>
+    <p><b>2a</b> 14 &nbsp; <b>b</b> 23 &nbsp; <b>c</b> 32 &nbsp; <b>d</b> 2</p>
+    <p><b>3a</b> 3 &nbsp; <b>b</b> 6 &nbsp; <b>c</b> 10 &nbsp; <b>d</b> 1</p>
+    <p><b>4a</b> 50 &nbsp; <b>b</b> 29 &nbsp; <b>c</b> 10 &nbsp; <b>d</b> 70</p>
+    <p><b>5a</b> 12, 24 &nbsp; <b>b</b> 48, 32 &nbsp; <b>c</b> 8, 32</p>
+    <p><b>6a</b> add 3 each time &nbsp; <b>b</b> 25 tiles &nbsp; <b>c</b> the 10th shape</p>
+    <p><b>7</b> Adds 4: 2, 6, 10, 14, 18. Doubles: 2, 4, 8, 16, 32. Doubling grows faster —
+    adding 4 makes the same size step every time, but doubling makes a bigger step each time
+    because the step is the whole number so far.</p>
   </div></details>
 </section>
 
@@ -3791,6 +4913,74 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Change each word problem into a number sentence, then solve.</p>
+        <ol class="parts one">
+          <li><div>A number added to 27 gives 64. → <input class="blank lg"> answer <input class="blank sm"></div></li>
+          <li><div>When 18 is subtracted from a number, the answer is 45. → <input class="blank lg"> answer <input class="blank sm"></div></li>
+          <li><div>A number multiplied by 6 gives 54. → <input class="blank lg"> answer <input class="blank sm"></div></li>
+          <li><div>A number divided by 7 gives 8. → <input class="blank lg"> answer <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Fill in the gaps.</p>
+        <ol class="parts tight">
+          <li><div>45 + <input class="blank sm"> = 30 + 40</div></li>
+          <li><div><input class="blank sm"> − 26 = 12 × 3</div></li>
+          <li><div>9 × <input class="blank sm"> = 100 − 28</div></li>
+          <li><div>144 ÷ <input class="blank sm"> = 6 × 2</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Solve these two-step problems.</p>
+        <ol class="parts one">
+          <li><div>A box holds 24 pencils. A school buys 15 boxes and gives 80 pencils away.
+            How many are left? <input class="blank lg"></div></li>
+          <li><div>Ravi had $75. He bought 4 shirts at $12 each. How much is left?
+            <input class="blank lg"></div></li>
+          <li><div>A bus carries 52 people. Three buses are full and 17 people walk.
+            How many people in total? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Which operation do these words tell you to use? Write + , − , × or ÷ .</p>
+        <ol class="parts tight">
+          <li><div>altogether <input class="blank xs"></div></li>
+          <li><div>shared equally <input class="blank xs"></div></li>
+          <li><div>how many more <input class="blank xs"></div></li>
+          <li><div>groups of <input class="blank xs"></div></li>
+          <li><div>difference <input class="blank xs"></div></li>
+          <li><div>total <input class="blank xs"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Check each answer by doing the opposite. Tick the correct ones.</p>
+        <ol class="parts one">
+          <li><div><label class="opt"><input type="checkbox"> 96 ÷ 8 = 12</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> 235 − 87 = 158</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> 17 × 6 = 102</label></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A cinema has 18 rows of 24 seats. 63 seats are broken.</p>
+        <ol class="parts one">
+          <li><div>How many seats in total? <input class="blank lg"></div></li>
+          <li><div>How many seats can be used? <input class="blank lg"></div></li>
+          <li><div>If tickets are $9, how much is taken when every usable seat is sold?
+            <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write your own two-step word problem whose answer is <b>36</b>.
+        Then write the number sentence that solves it.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 2 Problem solving</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1a</b> 15 + <b>21</b> = 48 – 12 &nbsp; <b>b</b> 42 + <b>16</b> = 31 + 27 &nbsp;
@@ -3815,6 +5005,18 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     4 each for 12 people, 6 each for 8 people, 8 each for 6 people, 12 each for 4 people,
     16 each for 3 people.</p>
     <p><b>3</b> Teacher to check — there are multiple possible answers for this question.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 27 + ☐ = 64, answer 37 &nbsp; <b>b</b> ☐ − 18 = 45, answer 63 &nbsp;
+    <b>c</b> ☐ × 6 = 54, answer 9 &nbsp; <b>d</b> ☐ ÷ 7 = 8, answer 56</p>
+    <p><b>2a</b> 25 &nbsp; <b>b</b> 62 &nbsp; <b>c</b> 8 &nbsp; <b>d</b> 12</p>
+    <p><b>3a</b> 280 pencils (15 × 24 = 360, then − 80) &nbsp; <b>b</b> $27 &nbsp;
+    <b>c</b> 173 people (3 × 52 = 156, then + 17)</p>
+    <p><b>4a</b> + &nbsp; <b>b</b> ÷ &nbsp; <b>c</b> − &nbsp; <b>d</b> × &nbsp; <b>e</b> − &nbsp; <b>f</b> +</p>
+    <p><b>5</b> Tick <b>a</b> and <b>c</b>. b is wrong: 235 − 87 = 148, and the check
+    148 + 87 = 235 confirms it.</p>
+    <p><b>6a</b> 432 seats &nbsp; <b>b</b> 369 seats &nbsp; <b>c</b> $3321</p>
+    <p><b>7</b> Teacher to check — any sensible two-step problem, for example "A box holds 6 eggs.
+    I buy 8 boxes and drop 12 eggs. How many are left?" with 8 × 6 − 12 = 36.</p>
   </div></details>
 </section>
 </section>
@@ -3849,7 +5051,7 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </div>
     <p><strong>Perimeter</strong> is the distance around the edges of a shape.</p>
     <figure class="dia">
-      <svg viewBox="0 0 260 110" role="img" aria-label="Rectangle with an arrow travelling around its edge">
+      <svg viewBox="0 0 260 110" width="260" height="110" role="img" aria-label="Rectangle with an arrow travelling around its edge">
         <rect x="30" y="20" width="200" height="70" fill="#e8f2fd" stroke="#2C7DD9" stroke-width="3" rx="4"/>
         <path d="M40 30 H220 V80 H40 Z" fill="none" stroke="#E43F7C" stroke-width="2.5" stroke-dasharray="7 5"/>
         <circle cx="40" cy="30" r="7" fill="#22243a"/>
@@ -3931,20 +5133,20 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
         <input class="blank lg"></p></li>
       <li><p class="stem">Find the perimeter of each shape in cm.</p>
         <div class="dia-row">
-          <figure class="dia"><svg viewBox="0 0 120 90" role="img" aria-label="Rectangle 6 cm by 4 cm">
+          <figure class="dia"><svg viewBox="0 0 120 90" width="120" height="90" role="img" aria-label="Rectangle 6 cm by 4 cm">
             <rect x="12" y="16" width="90" height="56" fill="#e8f2fd" stroke="#2C7DD9" stroke-width="2.5"/>
             <text x="57" y="12" text-anchor="middle" font-size="12" font-family="Nunito,sans-serif" font-weight="700" fill="#4a4d6b">6 cm</text>
             <text x="112" y="48" text-anchor="middle" font-size="12" font-family="Nunito,sans-serif" font-weight="700" fill="#4a4d6b">4</text>
           </svg><figcaption>a <input class="blank sm"> cm</figcaption></figure>
-          <figure class="dia"><svg viewBox="0 0 120 90" role="img" aria-label="Square 4.5 cm by 4.5 cm">
+          <figure class="dia"><svg viewBox="0 0 120 90" width="120" height="90" role="img" aria-label="Square 4.5 cm by 4.5 cm">
             <rect x="20" y="16" width="72" height="56" fill="#e8f2fd" stroke="#2C7DD9" stroke-width="2.5"/>
             <text x="56" y="12" text-anchor="middle" font-size="12" font-family="Nunito,sans-serif" font-weight="700" fill="#4a4d6b">5 cm</text>
             <text x="102" y="48" text-anchor="middle" font-size="12" font-family="Nunito,sans-serif" font-weight="700" fill="#4a4d6b">4</text>
           </svg><figcaption>b <input class="blank sm"> cm</figcaption></figure>
-          <figure class="dia"><svg viewBox="0 0 120 90" role="img" aria-label="L-shaped figure">
+          <figure class="dia"><svg viewBox="0 0 120 90" width="120" height="90" role="img" aria-label="L-shaped figure">
             <path d="M14 16 H74 V44 H106 V72 H14 Z" fill="#e8f2fd" stroke="#2C7DD9" stroke-width="2.5"/>
           </svg><figcaption>c <input class="blank sm"> cm</figcaption></figure>
-          <figure class="dia"><svg viewBox="0 0 120 90" role="img" aria-label="Irregular hexagon">
+          <figure class="dia"><svg viewBox="0 0 120 90" width="120" height="90" role="img" aria-label="Irregular hexagon">
             <path d="M14 20 H62 V38 H92 V60 H62 V74 H14 Z" fill="#e8f2fd" stroke="#2C7DD9" stroke-width="2.5"/>
           </svg><figcaption>d <input class="blank sm"> cm</figcaption></figure>
         </div></li>
@@ -3989,6 +5191,70 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Convert these lengths.</p>
+        <ol class="parts tight">
+          <li><div>4 cm = <input class="blank sm"> mm</div></li>
+          <li><div>12 cm = <input class="blank sm"> mm</div></li>
+          <li><div>70 mm = <input class="blank sm"> cm</div></li>
+          <li><div>3 m = <input class="blank sm"> cm</div></li>
+          <li><div>250 cm = <input class="blank sm"> m</div></li>
+          <li><div>6.5 cm = <input class="blank sm"> mm</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Which unit would you use — mm, cm or m?</p>
+        <ol class="parts tight">
+          <li><div>the length of a pencil <input class="blank sm"></div></li>
+          <li><div>the height of a door <input class="blank sm"></div></li>
+          <li><div>the thickness of a coin <input class="blank sm"></div></li>
+          <li><div>the length of a football pitch <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Find the perimeter of each rectangle.</p>
+        <ol class="parts tight">
+          <li><div>8 cm by 5 cm <input class="blank lg"></div></li>
+          <li><div>12 cm by 7 cm <input class="blank lg"></div></li>
+          <li><div>20 m by 15 m <input class="blank lg"></div></li>
+          <li><div>9 cm by 9 cm <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Find the perimeter of each shape.</p>
+        <ol class="parts one">
+          <li><div>A triangle with sides 6 cm, 8 cm and 10 cm <input class="blank lg"></div></li>
+          <li><div>A regular pentagon with sides of 7 cm <input class="blank lg"></div></li>
+          <li><div>A regular hexagon with sides of 40 mm, in cm <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Work backwards.</p>
+        <ol class="parts one">
+          <li><div>A rectangle has a perimeter of 30 cm and is 9 cm long. How wide is it?
+            <input class="blank lg"></div></li>
+          <li><div>A square has a perimeter of 48 cm. How long is each side? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A garden bed is 4 m long and 250 cm wide.</p>
+        <ol class="parts one">
+          <li><div>Write both measurements in metres. <input class="blank lg"></div></li>
+          <li><div>What is the perimeter in metres? <input class="blank lg"></div></li>
+          <li><div>Fencing costs $8 per metre. What is the total cost? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Two rectangles both have a perimeter of 20 cm but they are not the same
+        shape. Give the sides of two such rectangles.</p>
+        <p><input class="blank xl"></p>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 Length and perimeter</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 8 mm b 25 mm c 43 mm d 37 mm</p>
@@ -4009,6 +5275,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>1</b> a–k Teacher to check. Look for students who can match appropriate units of
     measurement to the items they choose, make reasonable estimates, measure accurately, and
     convert units to find the difference between their shortest and longest items.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 40 &nbsp; <b>b</b> 120 &nbsp; <b>c</b> 7 &nbsp; <b>d</b> 300 &nbsp;
+    <b>e</b> 2.5 &nbsp; <b>f</b> 65</p>
+    <p><b>2a</b> cm &nbsp; <b>b</b> m (or cm) &nbsp; <b>c</b> mm &nbsp; <b>d</b> m</p>
+    <p><b>3a</b> 26 cm &nbsp; <b>b</b> 38 cm &nbsp; <b>c</b> 70 m &nbsp; <b>d</b> 36 cm</p>
+    <p><b>4a</b> 24 cm &nbsp; <b>b</b> 35 cm &nbsp; <b>c</b> 24 cm (6 × 4 cm)</p>
+    <p><b>5a</b> 6 cm — the two lengths use 18 cm, leaving 12 cm for the two widths &nbsp;
+    <b>b</b> 12 cm</p>
+    <p><b>6a</b> 4 m by 2.5 m &nbsp; <b>b</b> 13 m &nbsp; <b>c</b> $104</p>
+    <p><b>7</b> Any two different pairs whose sides add to 10, for example 1 cm by 9 cm and
+    4 cm by 6 cm. (Also 2 by 8, 3 by 7, 5 by 5.)</p>
   </div></details>
 </section>
 
@@ -4102,6 +5379,67 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Find the area of each rectangle.</p>
+        <ol class="parts tight">
+          <li><div>6 cm by 4 cm <input class="blank lg"></div></li>
+          <li><div>9 cm by 7 cm <input class="blank lg"></div></li>
+          <li><div>12 m by 5 m <input class="blank lg"></div></li>
+          <li><div>8 cm by 8 cm <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Would you measure these in cm² or m²?</p>
+        <ol class="parts tight">
+          <li><div>a postage stamp <input class="blank sm"></div></li>
+          <li><div>a classroom floor <input class="blank sm"></div></li>
+          <li><div>a phone screen <input class="blank sm"></div></li>
+          <li><div>a tennis court <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Work backwards.</p>
+        <ol class="parts one">
+          <li><div>A rectangle has an area of 24 cm² and is 6 cm long. How wide is it?
+            <input class="blank lg"></div></li>
+          <li><div>A square has an area of 49 cm². How long is each side? <input class="blank lg"></div></li>
+          <li><div>A rectangle has an area of 60 m² and is 12 m wide. How long is it?
+            <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Find the area of each compound shape, made from two rectangles.</p>
+        <ol class="parts one">
+          <li><div>A 10 cm by 4 cm rectangle joined to a 5 cm by 3 cm rectangle
+            <input class="blank lg"></div></li>
+          <li><div>A 7 m by 6 m rectangle with a 2 m by 3 m rectangle cut out of it
+            <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write the sides of <b>three</b> different rectangles with an area of
+        36 cm².</p>
+        <p><input class="blank xl"></p>
+      </li>
+      <li>
+        <p class="stem">A wall is 5 m long and 3 m high. Tiles are 1 m².</p>
+        <ol class="parts one">
+          <li><div>What is the area of the wall? <input class="blank lg"></div></li>
+          <li><div>How many tiles are needed? <input class="blank lg"></div></li>
+          <li><div>Tiles come in packs of 4. How many packs? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Two rectangles both have a perimeter of 16 cm. One is 2 cm by 6 cm and the
+        other is 4 cm by 4 cm. Do they have the same area? What does this tell you?</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 2 Area</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> matchbox lid 19 cm² · netball court 465 m² · smart phone 81 cm² ·
@@ -4118,6 +5456,15 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     d 3 cm × 5 cm = 15 cm²</p>
     <p><b>2</b> Teacher to check. Look for students who demonstrate an understanding of area by
     being able to draw shapes that meet the given specifications.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 24 cm² &nbsp; <b>b</b> 63 cm² &nbsp; <b>c</b> 60 m² &nbsp; <b>d</b> 64 cm²</p>
+    <p><b>2a</b> cm² &nbsp; <b>b</b> m² &nbsp; <b>c</b> cm² &nbsp; <b>d</b> m²</p>
+    <p><b>3a</b> 4 cm &nbsp; <b>b</b> 7 cm &nbsp; <b>c</b> 5 m</p>
+    <p><b>4a</b> 55 cm² (40 + 15) &nbsp; <b>b</b> 36 m² (42 − 6)</p>
+    <p><b>5</b> Any three of: 1 × 36, 2 × 18, 3 × 12, 4 × 9, 6 × 6.</p>
+    <p><b>6a</b> 15 m² &nbsp; <b>b</b> 15 tiles &nbsp; <b>c</b> 4 packs (3 packs give only 12)</p>
+    <p><b>7</b> No — 2 × 6 = 12 cm² but 4 × 4 = 16 cm². Shapes with the same perimeter can have
+    very different areas, and the squarer the rectangle the bigger its area.</p>
   </div></details>
 </section>
 
@@ -4223,6 +5570,69 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Convert these capacities.</p>
+        <ol class="parts tight">
+          <li><div>3 L = <input class="blank lg"> mL</div></li>
+          <li><div>2500 mL = <input class="blank lg"> L</div></li>
+          <li><div>0.5 L = <input class="blank lg"> mL</div></li>
+          <li><div>7500 mL = <input class="blank lg"> L</div></li>
+          <li><div>1.25 L = <input class="blank lg"> mL</div></li>
+          <li><div>400 mL = <input class="blank lg"> L</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Find the volume of each cuboid built from 1 cm³ cubes.</p>
+        <ol class="parts tight">
+          <li><div>3 by 2 by 4 <input class="blank lg"></div></li>
+          <li><div>5 by 5 by 2 <input class="blank lg"></div></li>
+          <li><div>6 by 3 by 3 <input class="blank lg"></div></li>
+          <li><div>10 by 4 by 2 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Would you measure these in mL or L?</p>
+        <ol class="parts tight">
+          <li><div>a teaspoon of medicine <input class="blank sm"></div></li>
+          <li><div>a bucket of water <input class="blank sm"></div></li>
+          <li><div>a carton of juice <input class="blank sm"></div></li>
+          <li><div>a bath <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Add or subtract these capacities.</p>
+        <ol class="parts one">
+          <li><div>1 L 250 mL + 750 mL = <input class="blank lg"></div></li>
+          <li><div>3 L − 1200 mL = <input class="blank lg"></div></li>
+          <li><div>500 mL × 6 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A jug holds 2 L. Cups hold 250 mL each.</p>
+        <ol class="parts one">
+          <li><div>How many cups can be filled from the full jug? <input class="blank sm"></div></li>
+          <li><div>After filling 5 cups, how much is left in the jug? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A box is 8 cm long, 5 cm wide and 3 cm high.</p>
+        <ol class="parts one">
+          <li><div>What is its volume? <input class="blank lg"></div></li>
+          <li><div>How many 1 cm³ cubes would fill it? <input class="blank lg"></div></li>
+          <li><div>If the height doubled, what would the new volume be? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Two containers have the same capacity but very different shapes.
+        Is that possible? Explain.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 3 Volume and capacity</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 6 cm³ b 12 cm³ c 16 cm³ &nbsp; <b>2</b> c &nbsp;
@@ -4240,6 +5650,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>2</b> a 1 litre 400 millilitres &nbsp; b 2 litres 500 millilitres &nbsp;
     c 3 litres 859 millilitres &nbsp; d 7 litres 643 millilitres</p>
     <p><b>3</b> a 3025 mL b 5340 mL c 7654 mL d 19 999 mL</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 3000 mL &nbsp; <b>b</b> 2.5 L &nbsp; <b>c</b> 500 mL &nbsp; <b>d</b> 7.5 L &nbsp;
+    <b>e</b> 1250 mL &nbsp; <b>f</b> 0.4 L</p>
+    <p><b>2a</b> 24 cm³ &nbsp; <b>b</b> 50 cm³ &nbsp; <b>c</b> 54 cm³ &nbsp; <b>d</b> 80 cm³</p>
+    <p><b>3a</b> mL &nbsp; <b>b</b> L &nbsp; <b>c</b> mL (or L) &nbsp; <b>d</b> L</p>
+    <p><b>4a</b> 2 L &nbsp; <b>b</b> 1 L 800 mL (1800 mL) &nbsp; <b>c</b> 3 L (3000 mL)</p>
+    <p><b>5a</b> 8 cups &nbsp; <b>b</b> 750 mL</p>
+    <p><b>6a</b> 120 cm³ &nbsp; <b>b</b> 120 cubes &nbsp; <b>c</b> 240 cm³</p>
+    <p><b>7</b> Yes. Capacity is how much a container holds, not how tall or wide it is. A tall
+    narrow bottle and a short wide bowl can both hold exactly 1 litre — the only way to be sure
+    is to fill one and pour it into the other.</p>
   </div></details>
 </section>
 
@@ -4357,6 +5778,67 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Convert these masses.</p>
+        <ol class="parts tight">
+          <li><div>2 kg = <input class="blank lg"> g</div></li>
+          <li><div>3500 g = <input class="blank lg"> kg</div></li>
+          <li><div>0.25 kg = <input class="blank lg"> g</div></li>
+          <li><div>1.75 kg = <input class="blank lg"> g</div></li>
+          <li><div>500 g = <input class="blank lg"> kg</div></li>
+          <li><div>4200 g = <input class="blank lg"> kg</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write each mass in two ways, as in the Learn it panel.</p>
+        <ol class="parts one">
+          <li><div>1500 g = <input class="blank lg"> kg = <input class="blank lg"></div></li>
+          <li><div>2250 g = <input class="blank lg"> kg = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Would you measure these in g or kg?</p>
+        <ol class="parts tight">
+          <li><div>an apple <input class="blank sm"></div></li>
+          <li><div>a bag of rice <input class="blank sm"></div></li>
+          <li><div>a feather <input class="blank sm"></div></li>
+          <li><div>a person <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Add or subtract these masses.</p>
+        <ol class="parts one">
+          <li><div>1 kg 400 g + 800 g = <input class="blank lg"></div></li>
+          <li><div>5 kg − 1750 g = <input class="blank lg"></div></li>
+          <li><div>250 g × 8 = <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A muffin recipe needs 300 g of flour and makes 12 muffins.</p>
+        <ol class="parts one">
+          <li><div>How much flour for 24 muffins? <input class="blank lg"></div></li>
+          <li><div>How much for 6 muffins? <input class="blank lg"></div></li>
+          <li><div>How many muffins could you make with 1.5 kg of flour? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A parcel weighs 2.4 kg. Postage costs $3 per kilogram, rounded up to the
+        next whole kilogram.</p>
+        <ol class="parts one">
+          <li><div>How many kilograms will be charged? <input class="blank sm"></div></li>
+          <li><div>What is the cost? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Order these from lightest to heaviest: 1.2 kg, 950 g, 1 kg 50 g, 890 g.</p>
+        <p><input class="blank xl"></p>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 4 Mass</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 1.3 kg, 1 kg and 300 g &nbsp; b 3.2 kg, 3 kg and 200 g &nbsp;
@@ -4375,6 +5857,16 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>2a</b> 125 g · 840 g · 2000 g · 1500 g · 1650 g · 250 g</p>
     <p><b>2b</b> 715 g &nbsp; <b>c</b> 4715 g, 4 kg 715 g or 4.715 kg &nbsp;
     <b>d</b> 140 g (0.14 kg)</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 2000 g &nbsp; <b>b</b> 3.5 kg &nbsp; <b>c</b> 250 g &nbsp; <b>d</b> 1750 g &nbsp;
+    <b>e</b> 0.5 kg &nbsp; <b>f</b> 4.2 kg</p>
+    <p><b>2a</b> 1.5 kg = 1 kg and 500 g &nbsp; <b>b</b> 2.25 kg = 2 kg and 250 g</p>
+    <p><b>3a</b> g &nbsp; <b>b</b> kg &nbsp; <b>c</b> g &nbsp; <b>d</b> kg</p>
+    <p><b>4a</b> 2 kg 200 g (2200 g) &nbsp; <b>b</b> 3 kg 250 g (3250 g) &nbsp;
+    <b>c</b> 2 kg (2000 g)</p>
+    <p><b>5a</b> 600 g &nbsp; <b>b</b> 150 g &nbsp; <b>c</b> 60 muffins</p>
+    <p><b>6a</b> 3 kg &nbsp; <b>b</b> $9</p>
+    <p><b>7</b> 890 g, 950 g, 1 kg 50 g (1050 g), 1.2 kg (1200 g)</p>
   </div></details>
 </section>
 
@@ -4389,7 +5881,7 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
   <div class="learn">
     <p>Temperature can be measured in <strong>degrees Celsius (°C)</strong>.</p>
     <figure class="dia">
-      <svg viewBox="0 0 300 130" role="img" aria-label="Thermometer scale from minus 10 to 100 degrees Celsius">
+      <svg viewBox="0 0 300 130" width="300" height="130" role="img" aria-label="Thermometer scale from minus 10 to 100 degrees Celsius">
         <rect x="20" y="52" width="250" height="20" rx="10" fill="#eef2f6" stroke="#9aa4b0"/>
         <rect x="20" y="52" width="120" height="20" rx="10" fill="#2C7DD9"/>
         <g font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#4a4d6b" text-anchor="middle">
@@ -4485,6 +5977,64 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Write a sensible temperature in °C for each.</p>
+        <ol class="parts tight">
+          <li><div>ice <input class="blank sm"></div></li>
+          <li><div>a hot summer day <input class="blank sm"></div></li>
+          <li><div>boiling water <input class="blank sm"></div></li>
+          <li><div>a fridge <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Which is colder? Write the colder one.</p>
+        <ol class="parts tight">
+          <li><div>12 °C or 21 °C <input class="blank sm"></div></li>
+          <li><div>0 °C or 5 °C <input class="blank sm"></div></li>
+          <li><div>−3 °C or 2 °C <input class="blank sm"></div></li>
+          <li><div>−8 °C or −1 °C <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Work out the change in temperature.</p>
+        <ol class="parts tight">
+          <li><div>From 8 °C to 19 °C <input class="blank lg"></div></li>
+          <li><div>From 25 °C to 13 °C <input class="blank lg"></div></li>
+          <li><div>From −4 °C to 6 °C <input class="blank lg"></div></li>
+          <li><div>From 3 °C to −5 °C <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Order these temperatures from coldest to warmest.</p>
+        <p>7 °C &nbsp; −2 °C &nbsp; 15 °C &nbsp; 0 °C &nbsp; −9 °C</p>
+        <p><input class="blank xl"></p>
+      </li>
+      <li>
+        <p class="stem">A week of midday temperatures: 14, 17, 12, 19, 16, 21, 15 °C.</p>
+        <ol class="parts one">
+          <li><div>What was the highest? <input class="blank sm"></div></li>
+          <li><div>What was the lowest? <input class="blank sm"></div></li>
+          <li><div>What is the difference between them? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">The temperature at 6 am was 4 °C. By midday it had risen 11 degrees.
+        By 9 pm it had fallen 8 degrees from the midday reading.</p>
+        <ol class="parts one">
+          <li><div>What was the midday temperature? <input class="blank sm"></div></li>
+          <li><div>What was the temperature at 9 pm? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Why does a thermometer need numbers below zero?</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 5 Temperature</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 30 °C b 60 °C c 0 °C d 44 °C e 89 °C f 100 °C</p>
@@ -4506,6 +6056,18 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     Cold winter morning 12 °C · Inside a fridge 2 °C</p>
     <p><b>2</b> a–f Teacher to check. Look for the ability to accurately measure and record
     temperature and to understand how thermometers are used to compare places.</p>
+    <h5>Extra practice</h5>
+    <p><b>1</b> Sensible answers: <b>a</b> 0 °C &nbsp; <b>b</b> about 30–35 °C &nbsp;
+    <b>c</b> 100 °C &nbsp; <b>d</b> about 4 °C</p>
+    <p><b>2a</b> 12 °C &nbsp; <b>b</b> 0 °C &nbsp; <b>c</b> −3 °C &nbsp; <b>d</b> −8 °C</p>
+    <p><b>3a</b> up 11 degrees &nbsp; <b>b</b> down 12 degrees &nbsp; <b>c</b> up 10 degrees &nbsp;
+    <b>d</b> down 8 degrees</p>
+    <p><b>4</b> −9 °C, −2 °C, 0 °C, 7 °C, 15 °C</p>
+    <p><b>5a</b> 21 °C &nbsp; <b>b</b> 12 °C &nbsp; <b>c</b> 9 degrees</p>
+    <p><b>6a</b> 15 °C &nbsp; <b>b</b> 7 °C</p>
+    <p><b>7</b> Because temperatures can fall below the freezing point of water, which is marked
+    as zero. Without negative numbers there would be no way to record how much colder than
+    freezing it is — −5 °C and −15 °C are both "below zero" but very different.</p>
   </div></details>
 </section>
 
@@ -4643,6 +6205,72 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Convert these times.</p>
+        <ol class="parts tight">
+          <li><div>4 minutes = <input class="blank lg"> seconds</div></li>
+          <li><div>3 hours = <input class="blank lg"> minutes</div></li>
+          <li><div>180 seconds = <input class="blank lg"> minutes</div></li>
+          <li><div>240 minutes = <input class="blank lg"> hours</div></li>
+          <li><div>2 days = <input class="blank lg"> hours</div></li>
+          <li><div>1 week = <input class="blank lg"> days</div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write each as an am or pm time.</p>
+        <ol class="parts tight">
+          <li><div>14:00 <input class="blank lg"></div></li>
+          <li><div>07:30 <input class="blank lg"></div></li>
+          <li><div>19:45 <input class="blank lg"></div></li>
+          <li><div>00:15 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">How long between these times?</p>
+        <ol class="parts tight">
+          <li><div>9:15 am to 11:45 am <input class="blank lg"></div></li>
+          <li><div>1:30 pm to 4:15 pm <input class="blank lg"></div></li>
+          <li><div>10:40 am to 1:10 pm <input class="blank lg"></div></li>
+          <li><div>8:50 pm to 11:05 pm <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Tick the longer time period in each pair.</p>
+        <ol class="parts two">
+          <li><div><label class="opt"><input type="radio" name="x5t6a"> 90 minutes</label>
+            <label class="opt"><input type="radio" name="x5t6a"> 1½ hours</label></div></li>
+          <li><div><label class="opt"><input type="radio" name="x5t6b"> 200 seconds</label>
+            <label class="opt"><input type="radio" name="x5t6b"> 4 minutes</label></div></li>
+          <li><div><label class="opt"><input type="radio" name="x5t6c"> 50 hours</label>
+            <label class="opt"><input type="radio" name="x5t6c"> 2 days</label></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A film starts at 6:40 pm and lasts 1 hour 55 minutes.</p>
+        <ol class="parts one">
+          <li><div>What time does it finish? <input class="blank lg"></div></li>
+          <li><div>How many minutes long is it? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A train leaves at 08:25 and arrives at 11:10.</p>
+        <ol class="parts one">
+          <li><div>How long is the journey? <input class="blank lg"></div></li>
+          <li><div>If it leaves 20 minutes late but still takes the same time, when does it
+            arrive? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Ana says 2.5 hours is the same as 2 hours 50 minutes.
+        Explain her mistake and give the correct time.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 6 Time</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 60 b 60 c 24 d 7 e 365 (or 366) f 52</p>
@@ -4661,6 +6289,19 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>1</b> a 11:30 am &nbsp; b 16 minutes &nbsp; c 9 hours 35 minutes &nbsp;
     d My Mother the Plumber &nbsp; e 3:01 pm &nbsp; f Cop Capers &nbsp; g Cakes on a Train &nbsp;
     h start 7:20 pm, finish 8:52 pm</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 240 &nbsp; <b>b</b> 180 &nbsp; <b>c</b> 3 &nbsp; <b>d</b> 4 &nbsp;
+    <b>e</b> 48 &nbsp; <b>f</b> 7</p>
+    <p><b>2a</b> 2:00 pm &nbsp; <b>b</b> 7:30 am &nbsp; <b>c</b> 7:45 pm &nbsp; <b>d</b> 12:15 am</p>
+    <p><b>3a</b> 2 h 30 min &nbsp; <b>b</b> 2 h 45 min &nbsp; <b>c</b> 2 h 30 min &nbsp;
+    <b>d</b> 2 h 15 min</p>
+    <p><b>4a</b> They are equal — 1½ hours is 90 minutes. &nbsp; <b>b</b> 4 minutes (240 s) &nbsp;
+    <b>c</b> 50 hours (2 days is 48 hours)</p>
+    <p><b>5a</b> 8:35 pm &nbsp; <b>b</b> 115 minutes</p>
+    <p><b>6a</b> 2 h 45 min &nbsp; <b>b</b> 11:30</p>
+    <p><b>7</b> The .5 in 2.5 hours means <i>half</i> an hour, not 50 minutes. Half an hour is
+    30 minutes, so 2.5 hours = <b>2 hours 30 minutes</b>. Decimals of an hour are out of 60,
+    not out of 100.</p>
   </div></details>
 </section>
 
@@ -4788,6 +6429,61 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">A timeline runs from 2015 to 2025, with a mark every year.</p>
+        <ol class="parts one">
+          <li><div>How many marks are there altogether? <input class="blank sm"></div></li>
+          <li><div>How many years does the timeline cover? <input class="blank sm"></div></li>
+          <li><div>Which year is exactly halfway? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Work out how long ago each event was, if this year is 2025.</p>
+        <ol class="parts tight">
+          <li><div>2010 <input class="blank lg"></div></li>
+          <li><div>1998 <input class="blank lg"></div></li>
+          <li><div>1975 <input class="blank lg"></div></li>
+          <li><div>1900 <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Put these events in order on a timeline, earliest first.</p>
+        <p>Started school (2019) · Born (2014) · Learned to ride a bike (2020) ·
+        First tooth (2015) · Moved house (2022)</p>
+        <p><input class="blank xl"></p>
+      </li>
+      <li>
+        <p class="stem">A timeline of a single day runs from 6 am to 6 pm.</p>
+        <ol class="parts one">
+          <li><div>How many hours does it cover? <input class="blank sm"></div></li>
+          <li><div>If each hour is 1 cm, how long is the timeline? <input class="blank lg"></div></li>
+          <li><div>Where would midday sit? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Use this school timeline to answer: 1998 school opened · 2005 library
+        built · 2012 hall built · 2020 new playground.</p>
+        <ol class="parts one">
+          <li><div>How many years between the library and the hall? <input class="blank sm"></div></li>
+          <li><div>How old was the school when the playground was built? <input class="blank sm"></div></li>
+          <li><div>Which gap was the longest? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Why must the spaces on a timeline be evenly sized?</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+      <li>
+        <p class="stem">Design a timeline for your own week, with one mark per day.
+        Write two events and which day each belongs to.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 7 Timelines</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a after &nbsp; b 6 months &nbsp; c 2 years</p>
@@ -4808,6 +6504,21 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     event.</p>
     <p><b>2</b> This task could be as simple or as complex as desired. Students could, for example,
     be encouraged to make a digital display of the timeline including photographs.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 11 marks &nbsp; <b>b</b> 10 years &nbsp; <b>c</b> 2020</p>
+    <p><b>2a</b> 15 years &nbsp; <b>b</b> 27 years &nbsp; <b>c</b> 50 years &nbsp;
+    <b>d</b> 125 years</p>
+    <p><b>3</b> Born (2014), First tooth (2015), Started school (2019), Learned to ride a bike
+    (2020), Moved house (2022)</p>
+    <p><b>4a</b> 12 hours &nbsp; <b>b</b> 12 cm &nbsp; <b>c</b> exactly halfway, 6 cm along</p>
+    <p><b>5a</b> 7 years &nbsp; <b>b</b> 22 years old &nbsp; <b>c</b> The gaps are 7 years
+    (1998–2005), 7 years (2005–2012) and 8 years (2012–2020), so the longest is
+    <b>2012 to 2020</b>.</p>
+    <p><b>6</b> So that the distance along the line always means the same amount of time. If the
+    spaces were uneven, a long gap could look short and you could not compare periods just by
+    looking — which is the whole point of a timeline.</p>
+    <p><b>7</b> Teacher to check — any week timeline with 7 evenly spaced marks and events placed
+    on the correct days.</p>
   </div></details>
 </section>
 </section>
@@ -4837,10 +6548,10 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
 
   <div class="learn">
     <div class="dia-row">
-      <figure class="dia"><svg viewBox="0 0 100 100" role="img" aria-label="A square">
+      <figure class="dia"><svg viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="A square">
         <rect x="18" y="18" width="64" height="64" fill="#fdeaf2" stroke="#E43F7C" stroke-width="3"/>
       </svg><figcaption>A square: 4 sides · 4 angles · <b>regular</b></figcaption></figure>
-      <figure class="dia"><svg viewBox="0 0 100 100" role="img" aria-label="An irregular quadrilateral">
+      <figure class="dia"><svg viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="An irregular quadrilateral">
         <polygon points="14,26 86,14 74,84 26,70" fill="#fdeaf2" stroke="#E43F7C" stroke-width="3"/>
       </svg><figcaption>This shape: 4 sides · 4 angles · <b>irregular</b></figcaption></figure>
     </div>
@@ -4870,7 +6581,7 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <div class="practice-head"><span class="pill">Independent practice</span><span class="lvl">Your turn</span></div>
     <ol class="qs">
       <li><p class="stem">Look at the big shape below, which is split into smaller shapes.</p>
-        <figure class="dia"><svg viewBox="0 0 220 110" role="img" aria-label="A trapezium split into a rectangle and two triangles">
+        <figure class="dia"><svg viewBox="0 0 220 110" width="220" height="110" role="img" aria-label="A trapezium split into a rectangle and two triangles">
           <polygon points="14,92 60,20 160,20 206,92" fill="#fdeaf2" stroke="#E43F7C" stroke-width="3"/>
           <line x1="60" y1="20" x2="60" y2="92" stroke="#E43F7C" stroke-width="2" stroke-dasharray="5 4"/>
           <line x1="160" y1="20" x2="160" y2="92" stroke="#E43F7C" stroke-width="2" stroke-dasharray="5 4"/>
@@ -4954,6 +6665,70 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Complete the table for each regular shape.</p>
+        <table class="pv">
+          <tr><th>Shape</th><th>Sides</th><th>Angles</th></tr>
+          <tr><td style="width:auto;padding:0 10px;font-size:14px">triangle</td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td></tr>
+          <tr><td style="width:auto;padding:0 10px;font-size:14px">pentagon</td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td></tr>
+          <tr><td style="width:auto;padding:0 10px;font-size:14px">hexagon</td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td></tr>
+          <tr><td style="width:auto;padding:0 10px;font-size:14px">octagon</td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td></tr>
+        </table>
+      </li>
+      <li>
+        <p class="stem">Write <b>regular</b> or <b>irregular</b>.</p>
+        <ol class="parts one">
+          <li><div>A square <input class="blank lg"></div></li>
+          <li><div>A rectangle that is 8 cm by 3 cm <input class="blank lg"></div></li>
+          <li><div>An equilateral triangle <input class="blank lg"></div></li>
+          <li><div>A triangle with sides 3 cm, 4 cm and 5 cm <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Name the quadrilateral from its properties.</p>
+        <ol class="parts one">
+          <li><div>4 equal sides and 4 right angles <input class="blank lg"></div></li>
+          <li><div>2 pairs of parallel sides, no right angles, all sides equal <input class="blank lg"></div></li>
+          <li><div>Exactly one pair of parallel sides <input class="blank lg"></div></li>
+          <li><div>2 pairs of equal adjacent sides, one line of symmetry <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">How many lines of symmetry?</p>
+        <ol class="parts tight">
+          <li><div>square <input class="blank sm"></div></li>
+          <li><div>rectangle <input class="blank sm"></div></li>
+          <li><div>equilateral triangle <input class="blank sm"></div></li>
+          <li><div>regular hexagon <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">True or false? Tick the true statements.</p>
+        <ol class="parts one">
+          <li><div><label class="opt"><input type="checkbox"> All squares are rectangles.</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> All rectangles are squares.</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> A regular shape has all sides and all angles equal.</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> A shape with 6 sides is always regular.</label></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A large rectangle is split into 4 equal smaller rectangles.</p>
+        <ol class="parts one">
+          <li><div>If the large one is 12 cm by 8 cm and is cut into 4 equal strips across its
+            length, what size is each strip? <input class="blank lg"></div></li>
+          <li><div>What is the perimeter of one strip? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Can a triangle be regular and also have a right angle? Explain.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 2D shapes</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> square 4 sides, 4 angles · octagon 8, 8 · <b>pentagon</b> 5, 5 · trapezium 4, 4 ·
@@ -4980,6 +6755,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     e Teacher to check the division. &nbsp; f <b>4 cm²</b></p>
     <p><b>2</b> a 2 smaller rectangles and 4 larger rectangles &nbsp; b 1 pentagon and 5 triangles
     &nbsp; c 2 circles and 1 rectangle</p>
+    <h5>Extra practice</h5>
+    <p><b>1</b> triangle 3 and 3; pentagon 5 and 5; hexagon 6 and 6; octagon 8 and 8.</p>
+    <p><b>2a</b> regular &nbsp; <b>b</b> irregular &nbsp; <b>c</b> regular &nbsp; <b>d</b> irregular</p>
+    <p><b>3a</b> square &nbsp; <b>b</b> rhombus &nbsp; <b>c</b> trapezium &nbsp; <b>d</b> kite</p>
+    <p><b>4a</b> 4 &nbsp; <b>b</b> 2 &nbsp; <b>c</b> 3 &nbsp; <b>d</b> 6</p>
+    <p><b>5</b> Tick <b>a</b> and <b>c</b>. Not all rectangles are squares, and a hexagon is only
+    regular if all six sides and angles match.</p>
+    <p><b>6a</b> 3 cm by 8 cm &nbsp; <b>b</b> 22 cm</p>
+    <p><b>7</b> No. In a regular triangle all three angles are equal, and the three angles of any
+    triangle add to 180°, so each must be 60°. A right angle is 90°, so it cannot appear in a
+    regular triangle.</p>
   </div></details>
 </section>
 
@@ -4999,7 +6785,7 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
         the base corners.</li>
     </ol>
     <div class="dia-row">
-      <figure class="dia"><svg viewBox="0 0 120 100" role="img" aria-label="A rectangular prism">
+      <figure class="dia"><svg viewBox="0 0 120 100" width="120" height="100" role="img" aria-label="A rectangular prism">
         <g fill="none" stroke="#E43F7C" stroke-width="2.5">
           <rect x="16" y="30" width="60" height="46"/>
           <rect x="44" y="16" width="60" height="46"/>
@@ -5007,7 +6793,7 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
           <line x1="16" y1="76" x2="44" y2="62"/><line x1="76" y1="76" x2="104" y2="62"/>
         </g>
       </svg><figcaption>Rectangular prism</figcaption></figure>
-      <figure class="dia"><svg viewBox="0 0 120 100" role="img" aria-label="A square pyramid">
+      <figure class="dia"><svg viewBox="0 0 120 100" width="120" height="100" role="img" aria-label="A square pyramid">
         <g fill="none" stroke="#E43F7C" stroke-width="2.5">
           <polygon points="24,74 76,74 96,58 44,58"/>
           <line x1="24" y1="74" x2="60" y2="16"/><line x1="76" y1="74" x2="60" y2="16"/>
@@ -5084,6 +6870,67 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Complete the table.</p>
+        <table class="pv">
+          <tr><th>Shape</th><th>Faces</th><th>Edges</th><th>Vertices</th></tr>
+          <tr><td style="width:auto;padding:0 10px;font-size:14px">cube</td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td></tr>
+          <tr><td style="width:auto;padding:0 10px;font-size:14px">rectangular prism</td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td></tr>
+          <tr><td style="width:auto;padding:0 10px;font-size:14px">square pyramid</td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td></tr>
+          <tr><td style="width:auto;padding:0 10px;font-size:14px">triangular prism</td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td><td><input inputmode="numeric"></td></tr>
+        </table>
+      </li>
+      <li>
+        <p class="stem">Name the 3D shape from its description.</p>
+        <ol class="parts one">
+          <li><div>2 triangular bases and 3 rectangular faces <input class="blank lg"></div></li>
+          <li><div>1 square base and 4 triangular faces <input class="blank lg"></div></li>
+          <li><div>2 circular faces and 1 curved surface <input class="blank lg"></div></li>
+          <li><div>6 identical square faces <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">What shape is the cross-section if you slice straight through:</p>
+        <ol class="parts tight">
+          <li><div>a cylinder, parallel to its base <input class="blank lg"></div></li>
+          <li><div>a cube, parallel to a face <input class="blank lg"></div></li>
+          <li><div>a triangular prism, parallel to its base <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write <b>prism</b> or <b>pyramid</b>.</p>
+        <ol class="parts tight">
+          <li><div>Two identical bases <input class="blank lg"></div></li>
+          <li><div>One base and a point <input class="blank lg"></div></li>
+          <li><div>Same cross-section all the way through <input class="blank lg"></div></li>
+          <li><div>Faces meeting at an apex <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A shape has 5 faces and 5 vertices. Name it and say how many edges
+        it has.</p>
+        <p>Name <input class="blank lg"> Edges <input class="blank sm"></p>
+      </li>
+      <li>
+        <p class="stem">Describe the top, front and side views of a cylinder standing upright.</p>
+        <ol class="parts one">
+          <li><div>Top <input class="blank lg"></div></li>
+          <li><div>Front <input class="blank lg"></div></li>
+          <li><div>Side <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">For a cube, add faces + vertices, then subtract edges.
+        Try it again for a square pyramid. What do you notice?</p>
+        <p>Cube: <input class="blank sm"> &nbsp; Square pyramid: <input class="blank sm"></p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 2 3D shapes</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a rectangular prism &nbsp; b pentagonal prism</p>
@@ -5102,6 +6949,19 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     2 hexagonal bases, 12 corners, 18 edges → <b>hexagonal prism</b></p>
     <p><b>2</b> Teacher to check. Look for students’ ability to make a reasonable representation of
     their 2 objects and accurately draw front, top and side views.</p>
+    <h5>Extra practice</h5>
+    <p><b>1</b> cube 6, 12, 8; rectangular prism 6, 12, 8; square pyramid 5, 8, 5;
+    triangular prism 5, 9, 6.</p>
+    <p><b>2a</b> triangular prism &nbsp; <b>b</b> square pyramid &nbsp; <b>c</b> cylinder &nbsp;
+    <b>d</b> cube</p>
+    <p><b>3a</b> a circle &nbsp; <b>b</b> a square &nbsp; <b>c</b> a triangle</p>
+    <p><b>4a</b> prism &nbsp; <b>b</b> pyramid &nbsp; <b>c</b> prism &nbsp; <b>d</b> pyramid</p>
+    <p><b>5</b> A square pyramid, with <b>8</b> edges.</p>
+    <p><b>6a</b> a circle &nbsp; <b>b</b> a rectangle &nbsp; <b>c</b> a rectangle (the same as
+    the front)</p>
+    <p><b>7</b> Cube: 6 + 8 − 12 = <b>2</b>. Square pyramid: 5 + 5 − 8 = <b>2</b>. The answer is
+    always 2 for these solids — a famous result called Euler's rule. Try it on the triangular
+    prism: 5 + 6 − 9 = 2 as well.</p>
   </div></details>
 </section>
 </section>
@@ -5131,26 +6991,26 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
 
   <div class="learn">
     <div class="dia-row">
-      <figure class="dia"><svg viewBox="0 0 110 90" role="img" aria-label="Acute angle">
+      <figure class="dia"><svg viewBox="0 0 110 90" width="110" height="90" role="img" aria-label="Acute angle">
         <path d="M14 74 H96" stroke="#0B9AA8" stroke-width="3" fill="none"/>
         <path d="M14 74 L82 26" stroke="#0B9AA8" stroke-width="3" fill="none"/>
         <path d="M44 74 A30 30 0 0 0 32 56" fill="none" stroke="#E43F7C" stroke-width="2.5"/>
       </svg><figcaption><b>Acute</b> — smaller than a right angle</figcaption></figure>
-      <figure class="dia"><svg viewBox="0 0 110 90" role="img" aria-label="Right angle">
+      <figure class="dia"><svg viewBox="0 0 110 90" width="110" height="90" role="img" aria-label="Right angle">
         <path d="M14 74 H96 M14 74 V12" stroke="#0B9AA8" stroke-width="3" fill="none"/>
         <path d="M14 58 H30 V74" fill="none" stroke="#E43F7C" stroke-width="2.5"/>
       </svg><figcaption><b>Right</b> — exactly 90°</figcaption></figure>
-      <figure class="dia"><svg viewBox="0 0 110 90" role="img" aria-label="Obtuse angle">
+      <figure class="dia"><svg viewBox="0 0 110 90" width="110" height="90" role="img" aria-label="Obtuse angle">
         <path d="M50 74 H100" stroke="#0B9AA8" stroke-width="3" fill="none"/>
         <path d="M50 74 L10 22" stroke="#0B9AA8" stroke-width="3" fill="none"/>
         <path d="M78 74 A28 28 0 0 0 34 52" fill="none" stroke="#E43F7C" stroke-width="2.5"/>
       </svg><figcaption><b>Obtuse</b> — between 90° and 180°</figcaption></figure>
-      <figure class="dia"><svg viewBox="0 0 110 90" role="img" aria-label="Straight angle">
+      <figure class="dia"><svg viewBox="0 0 110 90" width="110" height="90" role="img" aria-label="Straight angle">
         <path d="M10 56 H100" stroke="#0B9AA8" stroke-width="3" fill="none"/>
         <path d="M28 56 A27 27 0 0 1 82 56" fill="none" stroke="#E43F7C" stroke-width="2.5"/>
         <circle cx="55" cy="56" r="4" fill="#22243a"/>
       </svg><figcaption><b>Straight</b> — exactly 180°</figcaption></figure>
-      <figure class="dia"><svg viewBox="0 0 110 90" role="img" aria-label="Reflex angle">
+      <figure class="dia"><svg viewBox="0 0 110 90" width="110" height="90" role="img" aria-label="Reflex angle">
         <path d="M52 60 H100 M52 60 L18 22" stroke="#0B9AA8" stroke-width="3" fill="none"/>
         <path d="M86 60 A34 34 0 1 1 28 36" fill="none" stroke="#E43F7C" stroke-width="2.5"/>
       </svg><figcaption><b>Reflex</b> — between 180° and 360°</figcaption></figure>
@@ -5246,6 +7106,68 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Name each angle: acute, right, obtuse, straight or reflex.</p>
+        <ol class="parts tight">
+          <li><div>45° <input class="blank lg"></div></li>
+          <li><div>90° <input class="blank lg"></div></li>
+          <li><div>135° <input class="blank lg"></div></li>
+          <li><div>180° <input class="blank lg"></div></li>
+          <li><div>270° <input class="blank lg"></div></li>
+          <li><div>15° <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">How many degrees in each turn?</p>
+        <ol class="parts tight">
+          <li><div>a quarter turn <input class="blank lg"></div></li>
+          <li><div>a half turn <input class="blank lg"></div></li>
+          <li><div>three quarter turns <input class="blank lg"></div></li>
+          <li><div>a whole turn <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Order these angles from smallest to greatest.</p>
+        <p>120° &nbsp; 35° &nbsp; 200° &nbsp; 90° &nbsp; 175°</p>
+        <p><input class="blank xl"></p>
+      </li>
+      <li>
+        <p class="stem">A clock's hands. What angle do they make at:</p>
+        <ol class="parts tight">
+          <li><div>3 o'clock <input class="blank lg"></div></li>
+          <li><div>6 o'clock <input class="blank lg"></div></li>
+          <li><div>9 o'clock <input class="blank lg"></div></li>
+          <li><div>12 o'clock <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Two angles on a straight line add to 180°. Find the missing angle.</p>
+        <ol class="parts tight">
+          <li><div>60° and <input class="blank lg"></div></li>
+          <li><div>135° and <input class="blank lg"></div></li>
+          <li><div>90° and <input class="blank lg"></div></li>
+          <li><div>25° and <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Angles around a point add to 360°. Find the missing angle.</p>
+        <ol class="parts one">
+          <li><div>120°, 100° and <input class="blank lg"></div></li>
+          <li><div>90°, 90°, 45° and <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A door is opened from closed until it is at right angles to the wall,
+        then opened the same amount again. What angle has it turned through in total,
+        and what type of angle is that?</p>
+        <p><input class="blank lg"> — a <input class="blank lg"> angle</p>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 Angles</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1a</b> smaller than a right angle → <b>acute angle</b><br>
@@ -5272,6 +7194,15 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     draw it to meet the angle criteria.</p>
     <p><b>2</b> a &amp; b Teacher to check. Look for an understanding of the concept of invisible
     angle arms, and the application of angle types to real-life situations.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> acute &nbsp; <b>b</b> right &nbsp; <b>c</b> obtuse &nbsp; <b>d</b> straight &nbsp;
+    <b>e</b> reflex &nbsp; <b>f</b> acute</p>
+    <p><b>2a</b> 90° &nbsp; <b>b</b> 180° &nbsp; <b>c</b> 270° &nbsp; <b>d</b> 360°</p>
+    <p><b>3</b> 35°, 90°, 120°, 175°, 200°</p>
+    <p><b>4a</b> 90° &nbsp; <b>b</b> 180° &nbsp; <b>c</b> 90° &nbsp; <b>d</b> 0°</p>
+    <p><b>5a</b> 120° &nbsp; <b>b</b> 45° &nbsp; <b>c</b> 90° &nbsp; <b>d</b> 155°</p>
+    <p><b>6a</b> 140° &nbsp; <b>b</b> 135°</p>
+    <p><b>7</b> 180° — a <b>straight</b> angle. Two right angles together make a half turn.</p>
   </div></details>
 </section>
 </section>
@@ -5303,18 +7234,18 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p>You can make symmetrical patterns by <strong>reflecting</strong>, <strong>translating</strong>
     or <strong>rotating</strong>.</p>
     <div class="dia-row">
-      <figure class="dia"><svg viewBox="0 0 120 80" role="img" aria-label="A shape reflected across a line">
+      <figure class="dia"><svg viewBox="0 0 120 80" width="120" height="80" role="img" aria-label="A shape reflected across a line">
         <polygon points="12,66 12,20 46,66" fill="#f0f7e2" stroke="#6F9E12" stroke-width="2.5"/>
         <polygon points="108,66 108,20 74,66" fill="#f0f7e2" stroke="#6F9E12" stroke-width="2.5"/>
         <line x1="60" y1="10" x2="60" y2="74" stroke="#E43F7C" stroke-width="2" stroke-dasharray="5 4"/>
       </svg><figcaption><b>Reflecting</b> is flipping</figcaption></figure>
-      <figure class="dia"><svg viewBox="0 0 120 80" role="img" aria-label="A shape translated sideways">
+      <figure class="dia"><svg viewBox="0 0 120 80" width="120" height="80" role="img" aria-label="A shape translated sideways">
         <polygon points="12,66 12,20 46,66" fill="#f0f7e2" stroke="#6F9E12" stroke-width="2.5"/>
         <polygon points="70,66 70,20 104,66" fill="#f0f7e2" stroke="#6F9E12" stroke-width="2.5"/>
         <path d="M50 44 H66" stroke="#E43F7C" stroke-width="2.5" marker-end="url(#ar8)"/>
         <defs><marker id="ar8" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#E43F7C"/></marker></defs>
       </svg><figcaption><b>Translating</b> is sliding</figcaption></figure>
-      <figure class="dia"><svg viewBox="0 0 120 80" role="img" aria-label="A shape rotated a quarter turn">
+      <figure class="dia"><svg viewBox="0 0 120 80" width="120" height="80" role="img" aria-label="A shape rotated a quarter turn">
         <polygon points="14,66 14,20 48,66" fill="#f0f7e2" stroke="#6F9E12" stroke-width="2.5"/>
         <polygon points="74,20 108,20 74,54" fill="#f0f7e2" stroke="#6F9E12" stroke-width="2.5"/>
         <path d="M52 40 A12 12 0 0 1 68 34" fill="none" stroke="#E43F7C" stroke-width="2.5"/>
@@ -5400,6 +7331,75 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Name the transformation: reflecting, translating or rotating.</p>
+        <ol class="parts one">
+          <li><div>Sliding a shape 3 squares to the right <input class="blank lg"></div></li>
+          <li><div>Flipping a shape over a mirror line <input class="blank lg"></div></li>
+          <li><div>Turning a shape a quarter turn about a point <input class="blank lg"></div></li>
+          <li><div>Moving a shape without turning or flipping it <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">How many lines of symmetry does each have?</p>
+        <ol class="parts tight">
+          <li><div>a regular pentagon <input class="blank sm"></div></li>
+          <li><div>a rhombus <input class="blank sm"></div></li>
+          <li><div>an isosceles triangle <input class="blank sm"></div></li>
+          <li><div>a parallelogram <input class="blank sm"></div></li>
+          <li><div>a circle <input class="blank lg"></div></li>
+          <li><div>a regular octagon <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Which capital letters have a vertical line of symmetry? Tick them.</p>
+        <ol class="parts tight">
+          <li><div><label class="opt"><input type="checkbox"> A</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> F</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> M</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> T</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> R</label></div></li>
+          <li><div><label class="opt"><input type="checkbox"> W</label></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Which of these regular shapes tessellate by themselves?
+        Write yes or no.</p>
+        <ol class="parts tight">
+          <li><div>equilateral triangle <input class="blank sm"></div></li>
+          <li><div>square <input class="blank sm"></div></li>
+          <li><div>regular pentagon <input class="blank sm"></div></li>
+          <li><div>regular hexagon <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A shape has rotational symmetry of order 4.</p>
+        <ol class="parts one">
+          <li><div>How many times does it look the same in a full turn? <input class="blank sm"></div></li>
+          <li><div>How many degrees between each match? <input class="blank lg"></div></li>
+          <li><div>Name a shape with order 4. <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Give the order of rotational symmetry for each.</p>
+        <ol class="parts tight">
+          <li><div>equilateral triangle <input class="blank sm"></div></li>
+          <li><div>rectangle <input class="blank sm"></div></li>
+          <li><div>regular hexagon <input class="blank sm"></div></li>
+          <li><div>the letter S <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Why do regular pentagons leave gaps when you try to tessellate them,
+        while regular hexagons do not?</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 Symmetry</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a, b &amp; c Teacher to check the completed symmetrical patterns.</p>
@@ -5421,6 +7421,19 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     with each other.<br>
     c <b>Tessellates</b> — check students have shown how regular hexagons tessellate.</p>
     <p><b>2</b> Teacher to check. Look for an understanding of both symmetry and tessellation.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> translating &nbsp; <b>b</b> reflecting &nbsp; <b>c</b> rotating &nbsp;
+    <b>d</b> translating</p>
+    <p><b>2a</b> 5 &nbsp; <b>b</b> 2 &nbsp; <b>c</b> 1 &nbsp; <b>d</b> 0 &nbsp;
+    <b>e</b> infinitely many &nbsp; <b>f</b> 8</p>
+    <p><b>3</b> Tick <b>A</b>, <b>M</b>, <b>T</b> and <b>W</b>. F and R have none.</p>
+    <p><b>4a</b> yes &nbsp; <b>b</b> yes &nbsp; <b>c</b> no &nbsp; <b>d</b> yes</p>
+    <p><b>5a</b> 4 times &nbsp; <b>b</b> 90° &nbsp; <b>c</b> a square</p>
+    <p><b>6a</b> 3 &nbsp; <b>b</b> 2 &nbsp; <b>c</b> 6 &nbsp; <b>d</b> 2</p>
+    <p><b>7</b> The angles at each corner have to add up to exactly 360° to close the gap around a
+    point. A regular hexagon's angles are 120°, and three of them make 360°. A regular pentagon's
+    angles are 108°, and three make only 324° while four make 432° — so there is always a gap or
+    an overlap.</p>
   </div></details>
 </section>
 
@@ -5543,6 +7556,61 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">A map has a scale of <b>1 cm = 10 m</b>. Find the real distance.</p>
+        <ol class="parts tight">
+          <li><div>3 cm on the map <input class="blank lg"></div></li>
+          <li><div>7.5 cm on the map <input class="blank lg"></div></li>
+          <li><div>12 cm on the map <input class="blank lg"></div></li>
+          <li><div>0.5 cm on the map <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Same scale. Find the map distance.</p>
+        <ol class="parts tight">
+          <li><div>80 m in real life <input class="blank lg"></div></li>
+          <li><div>150 m in real life <input class="blank lg"></div></li>
+          <li><div>45 m in real life <input class="blank lg"></div></li>
+          <li><div>5 m in real life <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A different map uses <b>1 cm = 5 m</b>. A garden is 9 m by 6 m.</p>
+        <ol class="parts one">
+          <li><div>What size is the garden on the map? <input class="blank lg"></div></li>
+          <li><div>What is the real perimeter of the garden? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Use grid references. A grid is labelled A–E across and 1–5 up.</p>
+        <ol class="parts one">
+          <li><div>Write the reference for the square 3 across and 2 up. <input class="blank lg"></div></li>
+          <li><div>How many squares are in the whole grid? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">What is a legend on a map for?</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+      <li>
+        <p class="stem">A path on a map is 8 cm long. The scale is 1 cm = 20 m.
+        A person walks the path at 80 m per minute.</p>
+        <ol class="parts one">
+          <li><div>How long is the path in real life? <input class="blank lg"></div></li>
+          <li><div>How long does the walk take? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Two maps show the same park. One uses 1 cm = 10 m, the other 1 cm = 50 m.
+        Which map shows the park bigger, and why?</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 2 Scales and maps</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a 24 metres &nbsp; b 4 &nbsp; c In between the horse pavilion and the animal nursery
@@ -5570,6 +7638,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>2</b> a–e Teacher to check. Look for the ability to accurately interpret maps using both
     grid references and compass directions, and an awareness of why one route may be a better choice
     than another.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 30 m &nbsp; <b>b</b> 75 m &nbsp; <b>c</b> 120 m &nbsp; <b>d</b> 5 m</p>
+    <p><b>2a</b> 8 cm &nbsp; <b>b</b> 15 cm &nbsp; <b>c</b> 4.5 cm &nbsp; <b>d</b> 0.5 cm</p>
+    <p><b>3a</b> 1.8 cm by 1.2 cm &nbsp; <b>b</b> 30 m</p>
+    <p><b>4a</b> C2 &nbsp; <b>b</b> 25 squares</p>
+    <p><b>5</b> A legend (or key) explains what the symbols and colours on the map stand for,
+    so that a small picture can replace a lot of writing and everyone reads the map the same way.</p>
+    <p><b>6a</b> 160 m &nbsp; <b>b</b> 2 minutes</p>
+    <p><b>7</b> The <b>1 cm = 10 m</b> map. On that map each centimetre covers less ground, so the
+    park needs more centimetres to be drawn — it appears larger and shows more detail. The
+    1 cm = 50 m map squeezes the same park into a fifth of the space.</p>
   </div></details>
 </section>
 </section>
@@ -5728,6 +7807,60 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Write <b>open</b> or <b>closed</b> for each survey question.</p>
+        <ol class="parts one">
+          <li><div>"Do you walk to school?" <input class="blank lg"></div></li>
+          <li><div>"How do you get to school?" <input class="blank lg"></div></li>
+          <li><div>"What is your favourite sport?" <input class="blank lg"></div></li>
+          <li><div>"Do you like football — yes or no?" <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Which question would be better for finding out each thing? Write A or B.</p>
+        <ol class="parts one">
+          <li><div>How many children own a bike. A: "Do you own a bike?" B: "What do you think of
+            bikes?" <input class="blank xs"></div></li>
+          <li><div>Which flavours to sell. A: "Do you like ice-cream?" B: "Which flavour of
+            ice-cream do you like best?" <input class="blank xs"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">What is wrong with each survey question? Write a better version.</p>
+        <ol class="parts one">
+          <li><div>"You agree that maths is the best subject, don't you?" <input class="blank xl"></div></li>
+          <li><div>"How old are you? Under 8 / 8–10 / 10–12" <input class="blank xl"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A class of 30 is surveyed about pets. The tally shows dog 12, cat 9,
+        fish 5, none 4.</p>
+        <ol class="parts one">
+          <li><div>Do the numbers add up correctly? <input class="blank lg"></div></li>
+          <li><div>Which pet was most common? <input class="blank lg"></div></li>
+          <li><div>How many more dogs than fish? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A survey about school lunches is carried out only in the canteen queue.
+        Why might the results be misleading?</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+      <li>
+        <p class="stem">Write three survey questions you could ask about how classmates spend
+        their weekends. Make at least one of them a closed question.</p>
+        <textarea class="blank" rows="3"></textarea>
+      </li>
+      <li>
+        <p class="stem">Why is it usually better to survey 60 people than 6?</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 Collecting data</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a &amp; b Teacher to check. Look for students who can write a yes/no question on the
@@ -5756,6 +7889,21 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>2</b> a &amp; b Teacher to check. Students should have exactly 15 responses recorded.</p>
     <p><b>3</b> Teacher to check. Look for an understanding of the conventions of graph construction,
     and data that matches the previous question.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> closed &nbsp; <b>b</b> open &nbsp; <b>c</b> open &nbsp; <b>d</b> closed</p>
+    <p><b>2a</b> A &nbsp; <b>b</b> B</p>
+    <p><b>3a</b> It is a leading question — it pushes people to agree. Better: "Which subject do
+    you like best?" &nbsp; <b>b</b> The groups overlap (a 10-year-old fits two boxes) and there is
+    no option above 12. Better: "Under 8 / 8–9 / 10–11 / 12 or over".</p>
+    <p><b>4a</b> Yes — 12 + 9 + 5 + 4 = 30 &nbsp; <b>b</b> dog &nbsp; <b>c</b> 7 more</p>
+    <p><b>5</b> Everyone in the queue has already chosen to buy a school lunch, so children who
+    bring a packed lunch — the very people whose opinion would change the answer — are never
+    asked. The sample is biased.</p>
+    <p><b>6</b> Teacher to check — for example "Do you play sport at the weekend? (yes/no)",
+    "What do you enjoy doing most at the weekend?", "How many hours do you spend outside?"</p>
+    <p><b>7</b> A larger sample gives a more reliable picture. With only 6 people, one unusual
+    answer changes the result completely; with 60, the pattern in the data is much more likely to
+    match the whole group.</p>
   </div></details>
 </section>
 
@@ -5922,6 +8070,69 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">A pictograph uses ● = 4 people. How many people are shown by:</p>
+        <ol class="parts tight">
+          <li><div>3 symbols <input class="blank sm"></div></li>
+          <li><div>5 symbols <input class="blank sm"></div></li>
+          <li><div>half a symbol <input class="blank sm"></div></li>
+          <li><div>2½ symbols <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Using the same key, how many symbols would you draw for:</p>
+        <ol class="parts tight">
+          <li><div>16 people <input class="blank sm"></div></li>
+          <li><div>28 people <input class="blank sm"></div></li>
+          <li><div>6 people <input class="blank sm"></div></li>
+          <li><div>2 people <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A bar graph of favourite fruit shows: apple 14, banana 20, mango 8,
+        orange 6.</p>
+        <ol class="parts one">
+          <li><div>How many were surveyed? <input class="blank sm"></div></li>
+          <li><div>Which fruit was most popular? <input class="blank lg"></div></li>
+          <li><div>How many more chose banana than mango? <input class="blank sm"></div></li>
+          <li><div>Which two fruits together equal the banana total? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Homework times per night for Year 4: 0–15 min 5 children,
+        16–30 min 12, 31–45 min 9, over 45 min 4.</p>
+        <ol class="parts one">
+          <li><div>How many children in total? <input class="blank sm"></div></li>
+          <li><div>Which group was largest? <input class="blank lg"></div></li>
+          <li><div>How many did more than 30 minutes? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Answer yes or no. Can this data tell you:</p>
+        <ol class="parts one">
+          <li><div>which child did the most homework? <input class="blank sm"></div></li>
+          <li><div>how many children did under 16 minutes? <input class="blank sm"></div></li>
+          <li><div>what subject the homework was? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Which graph would you choose, and why?</p>
+        <ol class="parts one">
+          <li><div>Showing how a plant's height changed over 8 weeks <input class="blank lg"></div></li>
+          <li><div>Comparing how many children chose each of 5 sports <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A pictograph leaves the key off. Explain why the graph then becomes
+        impossible to read properly.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 2 Displaying and interpreting data</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1a</b> The completed bar graph:</p>
@@ -5981,6 +8192,17 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <b>d &amp; e</b> Teacher to check — e.g. Graph 1 makes barbecue look more popular than Graph 2
     because of the scale used.<br>
     <b>f</b> 48</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 12 &nbsp; <b>b</b> 20 &nbsp; <b>c</b> 2 &nbsp; <b>d</b> 10</p>
+    <p><b>2a</b> 4 &nbsp; <b>b</b> 7 &nbsp; <b>c</b> 1½ &nbsp; <b>d</b> ½</p>
+    <p><b>3a</b> 48 &nbsp; <b>b</b> banana &nbsp; <b>c</b> 12 more &nbsp; <b>d</b> apple and
+    orange (14 + 6 = 20)</p>
+    <p><b>4a</b> 30 children &nbsp; <b>b</b> 16–30 minutes &nbsp; <b>c</b> 13 children</p>
+    <p><b>5a</b> no &nbsp; <b>b</b> yes (5) &nbsp; <b>c</b> no</p>
+    <p><b>6a</b> A line graph — it shows change over time. &nbsp; <b>b</b> A bar graph or
+    pictograph — it compares separate categories.</p>
+    <p><b>7</b> Without the key you cannot tell what one symbol is worth. Five symbols might mean
+    5 people, 20 people or 500 — the picture alone carries no information about scale.</p>
   </div></details>
 </section>
 </section>
@@ -6140,6 +8362,68 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">Write <b>certain</b>, <b>likely</b>, <b>unlikely</b> or <b>impossible</b>.</p>
+        <ol class="parts one">
+          <li><div>The sun will rise tomorrow. <input class="blank lg"></div></li>
+          <li><div>You will roll a 7 on an ordinary dice. <input class="blank lg"></div></li>
+          <li><div>It will rain at some point next month. <input class="blank lg"></div></li>
+          <li><div>A coin will land on heads. <input class="blank lg"></div></li>
+          <li><div>You will grow younger next year. <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Order these on a likelihood scale, least likely first.</p>
+        <p>A: rolling an even number on a dice · B: rolling a 6 · C: rolling a number under 7 ·
+        D: rolling a 0</p>
+        <p><input class="blank xl"></p>
+      </li>
+      <li>
+        <p class="stem">A bag holds 5 red, 3 blue and 2 green counters. Write more likely,
+        less likely or equally likely.</p>
+        <ol class="parts one">
+          <li><div>Red compared with blue <input class="blank lg"></div></li>
+          <li><div>Green compared with red <input class="blank lg"></div></li>
+          <li><div>Blue compared with green <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Match the pairs of events that cannot happen at the same time.
+        Write yes if they cannot, no if they can.</p>
+        <ol class="parts one">
+          <li><div>Rolling a 3 and rolling an even number <input class="blank sm"></div></li>
+          <li><div>Rolling a 4 and rolling an even number <input class="blank sm"></div></li>
+          <li><div>It is Monday and it is the weekend <input class="blank sm"></div></li>
+          <li><div>It is raining and it is sunny <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Write an event that is:</p>
+        <ol class="parts one">
+          <li><div>certain <input class="blank xl"></div></li>
+          <li><div>impossible <input class="blank xl"></div></li>
+          <li><div>about equally likely to happen or not <input class="blank xl"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A spinner has 8 equal sections: 4 red, 2 blue, 1 green, 1 yellow.</p>
+        <ol class="parts one">
+          <li><div>Which colour is most likely? <input class="blank lg"></div></li>
+          <li><div>Which two colours are equally likely? <input class="blank lg"></div></li>
+          <li><div>Is red more likely than all the others put together? <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Ben says "I did not win the raffle last time, so I am more likely to win
+        this time." Explain why that reasoning is wrong.</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 1 Chance events</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1 &amp; 2</b> Teacher to check. Look for the ability to offer appropriate justification for
@@ -6165,6 +8449,21 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>2</b> a &amp; b Teacher to check. Look for students’ ability to make reasonable guesses about
     the probability of their Year 4 teacher having specific attributes, and to put forward their own
     speculations and rank the likelihood of them occurring.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> certain &nbsp; <b>b</b> impossible &nbsp; <b>c</b> likely &nbsp;
+    <b>d</b> equally likely (an even chance) &nbsp; <b>e</b> impossible</p>
+    <p><b>2</b> D (impossible), B, A, C (certain)</p>
+    <p><b>3a</b> more likely &nbsp; <b>b</b> less likely &nbsp; <b>c</b> more likely</p>
+    <p><b>4a</b> yes — 3 is odd &nbsp; <b>b</b> no — 4 is even, so both happen at once &nbsp;
+    <b>c</b> yes &nbsp; <b>d</b> no — it can rain while the sun shines</p>
+    <p><b>5</b> Teacher to check — for example certain: "tomorrow will be a day of the week";
+    impossible: "I will breathe underwater without equipment"; even chance: "a tossed coin
+    shows tails".</p>
+    <p><b>6a</b> red &nbsp; <b>b</b> green and yellow &nbsp; <b>c</b> No — red is 4 out of 8 and
+    the others together are also 4 out of 8, so they are equally likely.</p>
+    <p><b>7</b> Each raffle is a separate event. The tickets do not remember what happened last
+    time, so losing before does not change this draw's chances at all. This mistake is common
+    enough to have a name — the gambler's fallacy.</p>
   </div></details>
 </section>
 
@@ -6178,7 +8477,7 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
 
   <div class="learn">
     <figure class="dia">
-      <svg viewBox="0 0 160 160" role="img" aria-label="Spinner divided into segments: mostly green, with equal red and purple, and a small blue segment">
+      <svg viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Spinner divided into segments: mostly green, with equal red and purple, and a small blue segment">
         <g stroke="#fff" stroke-width="2">
           <path d="M80 80 L80 10 A70 70 0 0 1 145 55 Z" fill="#12A05C"/>
           <path d="M80 80 L145 55 A70 70 0 0 1 132 128 Z" fill="#12A05C"/>
@@ -6312,6 +8611,64 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     </ol>
   </div>
 
+  <div class="practice extra">
+    <div class="practice-head"><span class="pill">Extra practice</span><span class="lvl">More questions to build fluency</span></div>
+    <ol class="qs">
+      <li>
+        <p class="stem">A fair dice is rolled once. How many outcomes give:</p>
+        <ol class="parts tight">
+          <li><div>an even number <input class="blank sm"></div></li>
+          <li><div>a number over 4 <input class="blank sm"></div></li>
+          <li><div>a multiple of 3 <input class="blank sm"></div></li>
+          <li><div>a number under 7 <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A coin is tossed twice. List all the possible outcomes.</p>
+        <p><input class="blank xl"></p>
+        <p>How many are there? <input class="blank sm"></p>
+      </li>
+      <li>
+        <p class="stem">Two dice are rolled and the numbers are added.</p>
+        <ol class="parts one">
+          <li><div>What is the smallest possible total? <input class="blank sm"></div></li>
+          <li><div>What is the largest possible total? <input class="blank sm"></div></li>
+          <li><div>How many different ways can you make a total of 7? <input class="blank sm"></div></li>
+          <li><div>How many ways can you make a total of 2? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A spinner is spun 100 times and lands on red 48 times, blue 27 times
+        and green 25 times.</p>
+        <ol class="parts one">
+          <li><div>Which colour is the largest section likely to be? <input class="blank lg"></div></li>
+          <li><div>Roughly what fraction of the spinner is red? <input class="blank lg"></div></li>
+          <li><div>Would you expect exactly the same result if you spun it again?
+            <input class="blank lg"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Design a spinner with 6 equal sections so that:</p>
+        <ol class="parts one">
+          <li><div>red is twice as likely as blue, and green is impossible.
+            Write how many sections of each colour. <input class="blank xl"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">A bag has 10 counters. You draw one 40 times, replacing it each time,
+        and get red 32 times.</p>
+        <ol class="parts one">
+          <li><div>Roughly what fraction of the draws were red? <input class="blank lg"></div></li>
+          <li><div>How many red counters do you estimate are in the bag? <input class="blank sm"></div></li>
+        </ol>
+      </li>
+      <li>
+        <p class="stem">Why do we replace the counter each time in an experiment like question 6?</p>
+        <textarea class="blank" rows="2"></textarea>
+      </li>
+    </ol>
+  </div>
+
   <details class="ans"><summary>Answers · Topic 2 Chance experiments</summary><div class="ans-body">
     <h5>Guided practice</h5>
     <p><b>1</b> a False &nbsp; b True &nbsp; c True &nbsp; d False &nbsp; e False &nbsp; f False</p>
@@ -6351,6 +8708,20 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
     <p><b>1f</b> Teacher to check. Look for students who demonstrate an understanding that, although
     you can predict the likelihood of certain outcomes of the experiment, the actual outcomes will
     vary because chance plays a part.</p>
+    <h5>Extra practice</h5>
+    <p><b>1a</b> 3 (2, 4, 6) &nbsp; <b>b</b> 2 (5, 6) &nbsp; <b>c</b> 2 (3, 6) &nbsp;
+    <b>d</b> 6 — all of them</p>
+    <p><b>2</b> HH, HT, TH, TT — <b>4</b> outcomes.</p>
+    <p><b>3a</b> 2 &nbsp; <b>b</b> 12 &nbsp; <b>c</b> 6 ways (1+6, 2+5, 3+4, 4+3, 5+2, 6+1) &nbsp;
+    <b>d</b> 1 way (1+1)</p>
+    <p><b>4a</b> red &nbsp; <b>b</b> about a half (48 out of 100) &nbsp; <b>c</b> No — the results
+    would be close but almost certainly not identical, because each spin is chance.</p>
+    <p><b>5</b> For example 4 red and 2 blue, with no green sections. (Any answer where red is
+    double blue and green is 0 is correct: 2 red and 1 blue with 3 of a fourth colour also works.)</p>
+    <p><b>6a</b> about ⅘ (32 out of 40) &nbsp; <b>b</b> about 8 red counters</p>
+    <p><b>7</b> So that every draw has the same chance. If counters were kept out, the contents of
+    the bag would change after each draw and the later results would not be comparable with the
+    earlier ones.</p>
   </div></details>
 </section>
 </section>
@@ -7225,6 +9596,7 @@ html[data-theme="dark"] #pyp4 .pane-ref{--unit:#8390f0;--unit-ink:#c0c7fa;--unit
           <li><a href="grade-12-differential-equation" data-i18n="nav.diff">Differential Equations</a></li>
           <li><a href="grade-12-probability-exercise" data-i18n="nav.prob">Probability</a></li>
           <li><a href="cambridge-lower-secondary-maths-7" data-i18n="nav.cam7">Mathematics Stage 7</a></li>
+          <li><a href="oxford-maths-pyp-4" data-i18n="nav.pyp4">Oxford Maths PYP 4</a></li>
           <li><a href="oxford-maths-pyp-4" data-i18n="nav.pyp4">Oxford Maths PYP 4</a></li>
           <li><a href="periodic-table-of-elements" data-i18n="nav.pt">Periodic Table</a></li>
           <li><a href="english-kindergarten" data-i18n="nav.kg">English for Kindergarten</a></li>

@@ -29,8 +29,9 @@ cambridge-lower-secondary-maths-7.html
                   and 3 section reviews, each with objectives, a summary, key
                   terms, worked examples, common mistakes and graded exercises.
                   540 questions with answers, 171 inline SVG diagrams, progress
-                  tracker, editable notes and a copy/download of the whole guide
-                  with the reader's progress baked in. English (Cambridge syllabus)
+                  tracker and editable notes, saved in the reader's own browser.
+                  The guide cannot be copied or downloaded out of the page — the
+                  material stays the school's. English (Cambridge syllabus)
 khmer-kindergarten.html
                   Khmer for Kindergarten (ages 4–6) — the 33 consonants with
                   their series, the 23 vowel signs on both series, building

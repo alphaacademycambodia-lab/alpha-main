@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha Academy — Page Editor (Local)</title>
+<style>
+  :root{
+    --brand:#0b57d0; --brand-dark:#083f9c; --ink:#0f1b2d; --muted:#5b6b83;
+    --line:#e2e8f2; --bg:#f3f6fb; --panel:#ffffff; --good:#16a34a; --warn:#e07a1f;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    display:flex; flex-direction:column;
+  }
+  .app{ display:flex; flex-direction:column; height:100vh; }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding:10px 18px; background:linear-gradient(180deg,#0b57d0,#0a4dbb);
+    color:#fff; box-shadow:0 2px 10px rgba(11,87,208,.25); z-index:20;
+  }
+  .toolbar-brand{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:15px; margin-right:auto; }
+  .toolbar-brand .lg{ font-size:19px; }
+  .toolbar-brand .badge{
+    font-size:11px; font-weight:600; letter-spacing:.02em; text-transform:uppercase;
+    background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3);
+    padding:3px 8px; border-radius:999px;
+  }
+  .toolbar-group{ display:flex; align-items:center; gap:6px; }
+  .toolbar button{
+    appearance:none; border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.08);
+    color:#fff; font:600 13px/1 inherit; padding:9px 14px; border-radius:8px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; transition:background .15s,opacity .15s,transform .1s;
+    white-space:nowrap;
+  }
+  .toolbar button:hover:not(:disabled){ background:rgba(255,255,255,.2); }
+  .toolbar button:active:not(:disabled){ transform:translateY(1px); }
+  .toolbar button:disabled{ opacity:.4; cursor:not-allowed; }
+  .toolbar button.primary{ background:#fff; color:var(--brand-dark); border-color:#fff; }
+  .toolbar button.primary:hover:not(:disabled){ background:#eaf1ff; }
+  .toolbar .sep{ width:1px; align-self:stretch; background:rgba(255,255,255,.25); margin:0 2px; }
+  .view-toggle{ display:flex; border:1px solid rgba(255,255,255,.35); border-radius:8px; overflow:hidden; }
+  .view-toggle button{ border:none; border-radius:0; background:transparent; }
+  .view-toggle button.is-active{ background:rgba(255,255,255,.25); }
+  .toolbar button.danger:hover:not(:disabled){ background:rgba(224,60,60,.28); border-color:rgba(255,255,255,.55); }
+
+  .dropdown{ position:relative; }
+  .dropdown-menu{
+    position:absolute; top:calc(100% + 8px); left:0; z-index:50;
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    box-shadow:0 12px 34px rgba(20,30,60,.20); padding:6px; min-width:240px;
+    display:flex; flex-direction:column; gap:1px;
+  }
+  .dropdown-menu button{
+    color:var(--ink); background:transparent; border:none; text-align:left;
+    padding:9px 10px; border-radius:7px; font:600 13px/1.25 inherit; cursor:pointer;
+    display:flex; align-items:center; gap:9px; white-space:normal; width:100%;
+  }
+  .dropdown-menu button:hover{ background:var(--bg); }
+  .dropdown-menu .menu-icon{ font-size:15px; flex:none; }
+
+  /* ---------- Status bar ---------- */
+  .status{
+    padding:8px 18px; font-size:12.5px; color:var(--muted); background:var(--panel);
+    border-bottom:1px solid var(--line); display:flex; align-items:center; gap:8px;
+  }
+  .status .dot{ width:7px; height:7px; border-radius:50%; background:#c7d0de; flex:none; }
+  .status.ok .dot{ background:var(--good); }
+  .status.busy .dot{ background:var(--warn); }
+
+  /* ---------- Stage ---------- */
+  .stage{ flex:1; position:relative; overflow:auto; background:
+      radial-gradient(circle at 1px 1px, #dde5f1 1px, transparent 0) 0 0/18px 18px, var(--bg); }
+  .stage-inner{ min-height:100%; display:flex; justify-content:center; padding:22px; }
+  iframe#preview{
+    background:#fff; border:1px solid var(--line); border-radius:10px;
+    box-shadow:0 8px 30px rgba(20,30,60,.10); width:100%; max-width:1400px;
+    height:calc(100vh - 108px); transition:max-width .2s ease;
+  }
+  .stage.w-mobile iframe#preview{ max-width:420px; }
+  #preview.hidden{ display:none; }
+
+  .empty-state{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:40px;
+  }
+  .empty-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:36px 40px;
+    max-width:520px; text-align:center; box-shadow:0 10px 40px rgba(20,30,60,.08);
+  }
+  .empty-card .icon{ font-size:38px; margin-bottom:10px; }
+  .empty-card h1{ font-size:19px; margin:0 0 8px; }
+  .empty-card p{ color:var(--muted); margin:0 0 20px; }
+  .empty-card ul{ text-align:left; color:var(--muted); font-size:13px; margin:0 0 22px; padding-left:20px; }
+  .empty-card li{ margin-bottom:6px; }
+  .empty-card button{
+    appearance:none; border:none; background:var(--brand); color:#fff; font:700 14px/1 inherit;
+    padding:12px 22px; border-radius:9px; cursor:pointer;
+  }
+  .empty-card button:hover{ background:var(--brand-dark); }
+  .empty-card .hint{ margin-top:14px; font-size:12px; color:#8a96ab; }
+
+  @media (max-width:760px){
+    .toolbar-brand .lg-only{ display:none; }
+    .toolbar{ gap:8px; }
+    .toolbar button{ padding:8px 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="toolbar">
+    <div class="toolbar-brand">
+      <span class="lg">🎓</span>
+      <span class="lg-only">Page Editor</span>
+      <span class="badge" id="fileBadge" hidden>index.html</span>
+      <span class="badge">Local only — nothing is uploaded</span>
+    </div>
+
+    <div class="toolbar-group">
+      <button id="btnOpen" type="button">📂 Open a page</button>
+      <input type="file" id="fileOpen" accept=".html,.htm" hidden>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="toolbar-group">
+      <div class="dropdown">
+        <button id="btnInsert" type="button" disabled>➕ Insert ▾</button>
+        <div class="dropdown-menu" id="insertMenu" hidden>
+          <button type="button" data-insert="section"><span class="menu-icon">🗂️</span> Section (heading + text)</button>
+          <button type="button" data-insert="text"><span class="menu-icon">📝</span> Text paragraph</button>
+          <button type="button" data-insert="photo"><span class="menu-icon">🖼️</span> Photo</button>
+          <button type="button" data-insert="video"><span class="menu-icon">🎬</span> YouTube video</button>
+          <button type="button" data-insert="button"><span class="menu-icon">🔘</span> Button / link</button>
+        </div>
+      </div>
+      <button id="btnDuplicate" type="button" disabled title="Duplicate selected block">⧉ Duplicate</button>
+      <button id="btnEditLink" type="button" disabled title="Change where the selected link goes">🔗 Edit Link</button>
+      <button id="btnMoveUp" type="button" disabled title="Move selected block up">⬆ Move Up</button>
+      <button id="btnMoveDown" type="button" disabled title="Move selected block down">⬇ Move Down</button>
+      <button id="btnDelete" type="button" class="danger" disabled>🗑 Delete Block</button>
+      <button id="btnUndo" type="button" disabled>↩ Undo</button>
+      <button id="btnReset" type="button" disabled>⟲ Reset</button>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="view-toggle">
+      <button id="btnDesktop" type="button" class="is-active" disabled title="Preview at desktop width">🖥️ Desktop</button>
+      <button id="btnMobile" type="button" disabled title="Preview at mobile width">📱 Mobile</button>
+    </div>
+
+    <div class="sep"></div>
+
+    <button id="btnExport" class="primary" type="button" disabled>⬇ Export page</button>
+  </header>
+
+  <div class="status" id="status"><span class="dot"></span><span id="statusText">Open any page from this site — index.html (Home), services.html, about.html, or any other page — to start editing. Everything happens in this browser tab, nothing is sent anywhere.</span></div>
+
+  <div class="stage" id="stage">
+    <div class="stage-inner">
+      <iframe id="preview" class="hidden" title="Page preview"></iframe>
+    </div>
+    <div class="empty-state" id="emptyState">
+      <div class="empty-card">
+        <div class="icon">📝</div>
+        <h1>Edit any page on the site visually</h1>
+        <p>Open a page's HTML file (from this same folder) to start — <code>index.html</code> for Home, <code>services.html</code>, <code>about.html</code>, or any other page. Everything runs locally in your browser — no changes are ever posted to the website.</p>
+        <ul>
+          <li>Click any photo or illustration to replace it with your own image.</li>
+          <li>Click into any text on the page and type to edit it directly.</li>
+          <li>Use <b>Insert</b> to add a new section, text, photo, YouTube video or button anywhere on the page.</li>
+          <li>Click a block once to select it, then use <b>Duplicate</b>, <b>Move Up</b> / <b>Move Down</b>, or <b>Delete Block</b>.</li>
+          <li>Click any link to enable <b>Edit Link</b> and change where it points.</li>
+          <li>Your work autosaves in this browser as you go, so an accidental tab close isn't fatal — reopen the same file to be offered your draft back.</li>
+          <li>When you're happy, click <b>Export page</b> to download the finished file — under its original name, ready to upload to your website.</li>
+        </ul>
+        <button id="btnOpen2" type="button">📂 Open a page</button>
+        <div class="hint">Tip: keep this editor file in the same folder as your site's pages and the assets/ folder.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="fileImage" accept="image/*" hidden>
+
+<script>
+(function(){
+  "use strict";
+
+  var iframe = document.getElementById('preview');
+  var stage = document.getElementById('stage');
+  var emptyState = document.getElementById('emptyState');
+  var fileOpen = document.getElementById('fileOpen');
+  var fileImage = document.getElementById('fileImage');
+  var statusEl = document.getElementById('status');
+  var statusText = document.getElementById('statusText');
+  var fileBadge = document.getElementById('fileBadge');
+
+  var btnOpen = document.getElementById('btnOpen');
+  var btnOpen2 = document.getElementById('btnOpen2');
+  var btnInsert = document.getElementById('btnInsert');
+  var insertMenu = document.getElementById('insertMenu');
+  var btnDuplicate = document.getElementById('btnDuplicate');
+  var btnEditLink = document.getElementById('btnEditLink');
+  var btnMoveUp = document.getElementById('btnMoveUp');
+  var btnMoveDown = document.getElementById('btnMoveDown');
+  var btnDelete = document.getElementById('btnDelete');
+  var btnUndo = document.getElementById('btnUndo');
+  var btnReset = document.getElementById('btnReset');
+  var btnExport = document.getElementById('btnExport');
+  var btnDesktop = document.getElementById('btnDesktop');
+  var btnMobile = document.getElementById('btnMobile');
+
+  var originalHTML = '';
+  var loadedFileName = 'index.html';
+  var history = [];
+  var MAX_HISTORY = 25;
+  var currentSlotTarget = null;
+  var lastFocusTarget = null;
+  var lastAnchorEl = null;
+  var selectedBlockEl = null;
+  var hasEdits = false;
+  var loadedOnce = false;
+  var autosaveTimer = null;
+  var draftObserver = null;
+  var draftWarned = false;
+
+  var SLOT_SELECTOR = 'img, .hero-card-illus svg, .service-card-media svg, .split-media svg';
+  var TITLE_TEXT = 'Click to replace this photo — or drag an image file here';
+
+  var PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">' +
+    '<rect width="800" height="450" fill="#eaf1ff"/>' +
+    '<rect x="20" y="20" width="760" height="410" fill="none" stroke="#9db8e8" stroke-width="3" stroke-dasharray="10 8" rx="14"/>' +
+    '<text x="400" y="235" font-family="sans-serif" font-size="26" fill="#0b57d0" text-anchor="middle">Click here to choose a photo</text>' +
+    '</svg>'
+  );
+
+  var YT_RE = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  function extractYouTubeId(url){
+    var m = String(url || '').match(YT_RE);
+    return m ? m[1] : null;
+  }
+
+  function setStatus(msg, kind){
+    statusText.textContent = msg;
+    statusEl.className = 'status' + (kind ? ' ' + kind : '');
+  }
+
+  /* ---------------- Autosave draft (this browser only) ---------------- */
+
+  function draftKey(name){ return 'ae_draft::' + name; }
+
+  function saveDraft(){
+    try {
+      var doc = iframe.contentDocument;
+      if (!doc) return;
+      localStorage.setItem(draftKey(loadedFileName), JSON.stringify({
+        html: doc.documentElement.outerHTML,
+        savedAt: Date.now()
+      }));
+    } catch (e) {
+      if (!draftWarned) {
+        draftWarned = true;
+        setStatus('Note: this page is too large to autosave a draft in your browser — remember to Export often.', 'warn');
+      }
+    }
+  }
+
+  function scheduleAutosave(){
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(saveDraft, 1000);
+  }
+
+  function loadDraft(name){
+    try {
+      var raw = localStorage.getItem(draftKey(name));
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+
+  function clearDraft(name){
+    try { localStorage.removeItem(draftKey(name)); } catch (e) { /* ignore */ }
+  }
+
+  function setLoadedFileName(name){
+    loadedFileName = name || 'index.html';
+    btnExport.textContent = '⬇ Export ' + loadedFileName;
+    fileBadge.textContent = loadedFileName;
+    fileBadge.hidden = false;
+  }
+
+  function enableToolbar(on){
+    [btnInsert, btnReset, btnExport, btnDesktop, btnMobile].forEach(function(b){ b.disabled = !on; });
+    btnUndo.disabled = !on || history.length === 0;
+    btnDelete.disabled = true;
+    btnMoveUp.disabled = true;
+    btnMoveDown.disabled = true;
+    btnDuplicate.disabled = true;
+    btnEditLink.disabled = true;
+  }
+
+  /* ---------------- Load / Open ---------------- */
+
+  function loadHTML(htmlText, opts){
+    opts = opts || {};
+    if (!opts.keepOriginal) originalHTML = htmlText;
+    iframe.srcdoc = htmlText;
+    iframe.classList.remove('hidden');
+    emptyState.style.display = 'none';
+    setStatus('Loading page…', 'busy');
+    iframe.onload = function(){
+      try {
+        setupEditing();
+        loadedOnce = true;
+        enableToolbar(true);
+        setStatus(opts.message || 'Loaded. Click any photo to replace it, or click into text to edit it directly.', 'ok');
+      } catch (err) {
+        setStatus('Could not prepare the page for editing: ' + err.message, 'warn');
+      }
+    };
+  }
+
+  function openFile(file){
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      history = [];
+      hasEdits = false;
+      draftWarned = false;
+      setLoadedFileName(file.name);
+      var freshHTML = String(reader.result);
+
+      var draft = loadDraft(file.name);
+      if (draft && draft.html && draft.html !== freshHTML) {
+        var when = new Date(draft.savedAt).toLocaleString();
+        var restore = confirm(
+          'A saved draft of "' + file.name + '" exists from ' + when + ' (an editing session that wasn\'t exported).\n\n' +
+          'Click OK to restore it and continue where you left off.\n' +
+          'Click Cancel to start fresh from the file on disk instead.'
+        );
+        if (restore) {
+          originalHTML = freshHTML;
+          loadHTML(draft.html, { keepOriginal: true, message: 'Restored your unsaved draft of "' + file.name + '".' });
+          return;
+        }
+        clearDraft(file.name);
+      }
+
+      loadHTML(freshHTML, { message: 'Loaded "' + file.name + '". Click any photo to replace it, or click into text to edit it directly.' });
+    };
+    reader.onerror = function(){ setStatus('Could not read that file.', 'warn'); };
+    reader.readAsText(file);
+  }
+
+  btnOpen.addEventListener('click', function(){ fileOpen.click(); });
+  btnOpen2.addEventListener('click', function(){ fileOpen.click(); });
+  fileOpen.addEventListener('change', function(e){
+    openFile(e.target.files[0]);
+    fileOpen.value = '';
+  });
+
+  /* ---------------- Editing setup (runs on every load) ---------------- */
+
+  function bindSlot(el){
+    el.classList.add('ae-slot');
+    if (!el.hasAttribute('data-ae-had-title')) {
+      el.setAttribute('data-ae-had-title', el.hasAttribute('title') ? '1' : '0');
+      if (el.hasAttribute('title')) el.setAttribute('data-ae-orig-title', el.getAttribute('title'));
+    }
+    el.setAttribute('title', TITLE_TEXT);
+    el.removeEventListener('click', onSlotClick);
+    el.addEventListener('click', onSlotClick);
+    el.removeEventListener('dragover', onSlotDragOver);
+    el.addEventListener('dragover', onSlotDragOver);
+    el.removeEventListener('drop', onSlotDrop);
+    el.addEventListener('drop', onSlotDrop);
+  }
+
+  function onSlotClick(e){
+    e.preventDefault();
+    e.stopPropagation();
+    currentSlotTarget = e.currentTarget;
+    fileImage.click();
+  }
+  function onSlotDragOver(e){ e.preventDefault(); }
+  function onSlotDrop(e){
+    e.preventDefault();
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!f || f.type.indexOf('image/') !== 0) return;
+    var target = e.currentTarget;
+    readAsDataURL(f, function(dataUrl){
+      pushHistory();
+      replaceSlotImage(target, dataUrl, f.name);
+      hasEdits = true;
+      setStatus('Photo updated via drag & drop. Remember to Export when finished.', 'ok');
+    });
+  }
+
+  function setupEditing(){
+    var doc = iframe.contentDocument;
+    if (!doc || !doc.head) return;
+
+    var style = doc.getElementById('ae-style');
+    if (!style) {
+      style = doc.createElement('style');
+      style.id = 'ae-style';
+      doc.head.appendChild(style);
+    }
+    style.textContent =
+      '.ae-slot{cursor:pointer !important;}' +
+      '.ae-slot:hover{outline:3px dashed #0b57d0 !important;outline-offset:2px;}' +
+      'main[contenteditable="true"] :focus{outline:2px solid rgba(11,87,208,.35) !important;outline-offset:2px;border-radius:2px;}' +
+      'main[contenteditable="true"] *:hover{background-color:rgba(11,87,208,.05);}' +
+      '.ae-selected{outline:2px dashed rgba(11,87,208,.55) !important;outline-offset:-2px;}' +
+      '.ae-video-slot{cursor:pointer;}' +
+      '.ae-video-slot:hover{outline:3px dashed #0b57d0;outline-offset:2px;}' +
+      '.ae-video-slot iframe{pointer-events:none;}' +
+      '.ae-video-badge{position:absolute;top:10px;right:10px;background:rgba(11,87,208,.92);color:#fff;font:600 11px/1 -apple-system,sans-serif;padding:6px 9px;border-radius:6px;opacity:0;transition:opacity .15s;}' +
+      '.ae-video-slot:hover .ae-video-badge{opacity:1;}';
+
+    doc.querySelectorAll(SLOT_SELECTOR).forEach(bindSlot);
+    doc.querySelectorAll('.ae-video-slot').forEach(bindVideoSlot);
+
+    var main = doc.querySelector('main#main') || doc.querySelector('main') || doc.body;
+    main.setAttribute('contenteditable', 'true');
+    main.setAttribute('spellcheck', 'false');
+
+    selectedBlockEl = null;
+    lastAnchorEl = null;
+    btnDelete.disabled = true;
+    btnMoveUp.disabled = true;
+    btnMoveDown.disabled = true;
+    btnDuplicate.disabled = true;
+    btnEditLink.disabled = true;
+
+    doc.removeEventListener('click', trackFocus);
+    doc.addEventListener('click', trackFocus, true);
+
+    if (draftObserver) { draftObserver.disconnect(); draftObserver = null; }
+    draftObserver = new doc.defaultView.MutationObserver(scheduleAutosave);
+    draftObserver.observe(main, { childList: true, subtree: true, characterData: true, attributes: true });
+  }
+
+  function trackFocus(e){
+    lastFocusTarget = e.target;
+    var doc = iframe.contentDocument;
+    var main = doc.querySelector('main#main') || doc.querySelector('main') || doc.body;
+    var node = e.target.nodeType === 1 ? e.target : e.target.parentElement;
+    var block = null;
+    while (node && node !== main) {
+      if (node.parentElement === main) { block = node; break; }
+      node = node.parentElement;
+    }
+    selectBlock(block);
+
+    var anchorEl = e.target.nodeType === 1 ? e.target.closest('a[href]') : (e.target.parentElement && e.target.parentElement.closest('a[href]'));
+    lastAnchorEl = (anchorEl && main.contains(anchorEl)) ? anchorEl : null;
+    btnEditLink.disabled = !lastAnchorEl;
+  }
+
+  function selectBlock(block){
+    if (selectedBlockEl && selectedBlockEl !== block) {
+      selectedBlockEl.classList.remove('ae-selected');
+    }
+    selectedBlockEl = block || null;
+    if (selectedBlockEl) selectedBlockEl.classList.add('ae-selected');
+    btnDelete.disabled = !selectedBlockEl;
+    btnDuplicate.disabled = !selectedBlockEl;
+    btnMoveUp.disabled = !selectedBlockEl || !selectedBlockEl.previousElementSibling;
+    btnMoveDown.disabled = !selectedBlockEl || !selectedBlockEl.nextElementSibling;
+  }
+
+  function moveSelected(direction){
+    if (!selectedBlockEl) return;
+    var sibling = direction === 'up' ? selectedBlockEl.previousElementSibling : selectedBlockEl.nextElementSibling;
+    if (!sibling) return;
+    pushHistory();
+    if (direction === 'up') sibling.before(selectedBlockEl);
+    else sibling.after(selectedBlockEl);
+    hasEdits = true;
+    selectedBlockEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    selectBlock(selectedBlockEl);
+    setStatus('Block moved ' + direction + '. Remember to Export when finished.', 'ok');
+  }
+
+  btnMoveUp.addEventListener('click', function(){ moveSelected('up'); });
+  btnMoveDown.addEventListener('click', function(){ moveSelected('down'); });
+
+  btnDuplicate.addEventListener('click', function(){
+    if (!selectedBlockEl) return;
+    pushHistory();
+    var clone = selectedBlockEl.cloneNode(true);
+    selectedBlockEl.after(clone);
+    clone.querySelectorAll(SLOT_SELECTOR).forEach(bindSlot);
+    clone.querySelectorAll('.ae-video-slot').forEach(bindVideoSlot);
+    hasEdits = true;
+    clone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    selectBlock(clone);
+    setStatus('Block duplicated. Edit the copy as needed.', 'ok');
+  });
+
+  btnEditLink.addEventListener('click', function(){
+    if (!lastAnchorEl) return;
+    var current = lastAnchorEl.getAttribute('href') || '';
+    var label = lastAnchorEl.textContent.trim() || 'this link';
+    var url = prompt('Set the link destination for "' + label + '":', current);
+    if (url === null) return;
+    url = url.trim();
+    if (!url) { setStatus('Link destination cannot be empty — link left unchanged.', 'warn'); return; }
+    pushHistory();
+    lastAnchorEl.setAttribute('href', url);
+    hasEdits = true;
+    setStatus('Link updated to "' + url + '".', 'ok');
+  });
+
+  /* ---------------- Image replace / insert ---------------- */
+
+  function readAsDataURL(file, cb){
+    var reader = new FileReader();
+    reader.onload = function(){ cb(String(reader.result)); };
+    reader.readAsDataURL(file);
+  }
+
+  function niceAlt(filename){
+    return filename.replace(/\.[a-z0-9]+$/i, '').replace(/[-_]+/g, ' ').trim() || 'Photo';
+  }
+
+  function replaceSlotImage(target, dataUrl, filename){
+    var doc = iframe.contentDocument;
+    if (target.tagName.toLowerCase() === 'img') {
+      target.setAttribute('src', dataUrl);
+      if (!target.getAttribute('alt')) target.setAttribute('alt', niceAlt(filename));
+    } else {
+      var img = doc.createElement('img');
+      img.setAttribute('src', dataUrl);
+      img.setAttribute('alt', niceAlt(filename));
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'cover';
+      img.style.display = 'block';
+      target.replaceWith(img);
+      bindSlot(img);
+    }
+  }
+
+  fileImage.addEventListener('change', function(e){
+    var f = e.target.files[0];
+    fileImage.value = '';
+    if (!f || !currentSlotTarget) return;
+    readAsDataURL(f, function(dataUrl){
+      pushHistory();
+      replaceSlotImage(currentSlotTarget, dataUrl, f.name);
+      currentSlotTarget = null;
+      hasEdits = true;
+      setStatus('Photo updated. Remember to Export when you\'re finished.', 'ok');
+    });
+  });
+
+  /* ---------------- Insert menu ---------------- */
+
+  function insertBlockHTML(html){
+    var doc = iframe.contentDocument;
+    var main = doc.querySelector('main#main') || doc.querySelector('main') || doc.body;
+    pushHistory();
+
+    var wrapper = doc.createElement('div');
+    wrapper.innerHTML = html;
+    var node = wrapper.firstElementChild;
+
+    if (selectedBlockEl && selectedBlockEl.parentElement === main) {
+      selectedBlockEl.after(node);
+    } else if (lastFocusTarget && main.contains(lastFocusTarget)) {
+      var anchor = lastFocusTarget.nodeType === 1 ? lastFocusTarget : lastFocusTarget.parentElement;
+      var anchorSection = anchor ? anchor.closest('section') : null;
+      if (anchorSection && anchorSection.parentElement === main) anchorSection.after(node);
+      else main.appendChild(node);
+    } else {
+      main.appendChild(node);
+    }
+
+    hasEdits = true;
+    node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    selectBlock(node);
+    return node;
+  }
+
+  function insertSection(){
+    var node = insertBlockHTML(
+      '<section class="section ae-inserted-section"><div class="wrap"><div class="section-head">' +
+      '<span class="eyebrow">New section</span>' +
+      '<h2>Click to edit this heading</h2>' +
+      '<p>Click to edit this paragraph — write whatever you would like to say here.</p>' +
+      '</div></div></section>'
+    );
+    setStatus('New section added — click the heading or text to edit it.', 'ok');
+  }
+
+  function insertText(){
+    insertBlockHTML(
+      '<section class="section ae-inserted-section"><div class="wrap">' +
+      '<p style="max-width:760px;margin:0 auto;font-size:1.05rem;line-height:1.75;">' +
+      'Click here to edit this text. Type whatever you would like to add to the page.</p>' +
+      '</div></section>'
+    );
+    setStatus('New text block added — click it to start typing.', 'ok');
+  }
+
+  function insertButton(){
+    insertBlockHTML(
+      '<section class="section ae-inserted-section"><div class="wrap text-center">' +
+      '<div class="btn-row" style="justify-content:center;">' +
+      '<a class="btn btn--primary btn--lg" href="contact">Click to edit this button</a>' +
+      '</div></div></section>'
+    );
+    setStatus('New button added — click its text to edit the label. (Its link points to "contact" — ask your developer to change the URL if needed.)', 'ok');
+  }
+
+  function insertPhoto(){
+    var node = insertBlockHTML(
+      '<section class="section ae-inserted-section"><div class="wrap">' +
+      '<figure style="margin:0;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);">' +
+      '<img alt="New photo" style="width:100%;height:auto;display:block;" src="' + PLACEHOLDER + '">' +
+      '</figure></div></section>'
+    );
+    var img = node.querySelector('img');
+    bindSlot(img);
+    currentSlotTarget = img;
+    setStatus('New photo block added. Choose an image file to fill it in.', 'ok');
+    fileImage.click();
+  }
+
+  function insertVideo(){
+    var url = prompt('Paste the YouTube video link (e.g. https://www.youtube.com/watch?v=... or https://youtu.be/...):', '');
+    if (url === null) return;
+    var id = extractYouTubeId(url.trim());
+    if (!id) { setStatus('That didn\'t look like a valid YouTube link — no video was added.', 'warn'); return; }
+
+    var node = insertBlockHTML(
+      '<section class="section ae-inserted-section"><div class="wrap">' +
+      '<div class="ae-video-slot" data-yt-id="' + id + '" ' +
+      'style="position:relative;max-width:900px;margin:0 auto;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);background:#000;">' +
+      '<iframe src="https://www.youtube.com/embed/' + id + '" title="YouTube video" ' +
+      'style="position:absolute;inset:0;width:100%;height:100%;border:0;" ' +
+      'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>' +
+      '<span class="ae-video-badge">Click to change video</span>' +
+      '</div></div></section>'
+    );
+    bindVideoSlot(node.querySelector('.ae-video-slot'));
+    setStatus('YouTube video added. Click it any time to swap in a different video.', 'ok');
+  }
+
+  function bindVideoSlot(el){
+    if (!el) return;
+    el.setAttribute('title', 'Click to change this video');
+    el.removeEventListener('click', onVideoSlotClick);
+    el.addEventListener('click', onVideoSlotClick);
+  }
+
+  function onVideoSlotClick(e){
+    e.preventDefault();
+    e.stopPropagation();
+    var el = e.currentTarget;
+    var current = el.getAttribute('data-yt-id');
+    var url = prompt('Paste a new YouTube video link:', current ? ('https://www.youtube.com/watch?v=' + current) : '');
+    if (url === null) return;
+    var id = extractYouTubeId(url.trim());
+    if (!id) { setStatus('That didn\'t look like a valid YouTube link.', 'warn'); return; }
+    pushHistory();
+    el.setAttribute('data-yt-id', id);
+    var ifr = el.querySelector('iframe');
+    if (ifr) ifr.src = 'https://www.youtube.com/embed/' + id;
+    hasEdits = true;
+    setStatus('Video updated. Remember to Export when finished.', 'ok');
+  }
+
+  var INSERT_HANDLERS = {
+    section: insertSection,
+    text: insertText,
+    photo: insertPhoto,
+    video: insertVideo,
+    button: insertButton
+  };
+
+  btnInsert.addEventListener('click', function(e){
+    e.stopPropagation();
+    insertMenu.hidden = !insertMenu.hidden;
+  });
+  insertMenu.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){ insertMenu.hidden = true; });
+  Array.prototype.forEach.call(insertMenu.querySelectorAll('button[data-insert]'), function(btn){
+    btn.addEventListener('click', function(){
+      insertMenu.hidden = true;
+      var fn = INSERT_HANDLERS[btn.getAttribute('data-insert')];
+      if (fn) fn();
+    });
+  });
+
+  /* ---------------- Delete block ---------------- */
+
+  btnDelete.addEventListener('click', function(){
+    if (!selectedBlockEl) return;
+    if (!confirm('Delete this block? You can bring it back with Undo.')) return;
+    pushHistory();
+    var toRemove = selectedBlockEl;
+    var removedAnchor = lastAnchorEl && toRemove.contains(lastAnchorEl);
+    selectedBlockEl = null;
+    btnDelete.disabled = true;
+    btnMoveUp.disabled = true;
+    btnMoveDown.disabled = true;
+    btnDuplicate.disabled = true;
+    if (removedAnchor) { lastAnchorEl = null; btnEditLink.disabled = true; }
+    toRemove.remove();
+    hasEdits = true;
+    setStatus('Block deleted. Click Undo if that was a mistake.', 'ok');
+  });
+
+  /* ---------------- Undo / Reset ---------------- */
+
+  function pushHistory(){
+    var doc = iframe.contentDocument;
+    if (!doc) return;
+    history.push(doc.documentElement.outerHTML);
+    if (history.length > MAX_HISTORY) history.shift();
+    btnUndo.disabled = false;
+  }
+
+  btnUndo.addEventListener('click', function(){
+    if (!history.length) return;
+    var snapshot = history.pop();
+    loadHTML(snapshot, { keepOriginal: true, message: 'Undid last change.' });
+    if (!history.length) btnUndo.disabled = true;
+  });
+
+  btnReset.addEventListener('click', function(){
+    if (!originalHTML) return;
+    if (!confirm('Discard all changes and reload the original file?')) return;
+    history = [];
+    hasEdits = false;
+    clearDraft(loadedFileName);
+    loadHTML(originalHTML, { keepOriginal: true, message: 'Reset to the original file.' });
+  });
+
+  /* ---------------- Desktop / Mobile preview toggle ---------------- */
+
+  btnDesktop.addEventListener('click', function(){
+    stage.classList.remove('w-mobile');
+    btnDesktop.classList.add('is-active');
+    btnMobile.classList.remove('is-active');
+  });
+  btnMobile.addEventListener('click', function(){
+    stage.classList.add('w-mobile');
+    btnMobile.classList.add('is-active');
+    btnDesktop.classList.remove('is-active');
+  });
+
+  /* ---------------- Export ---------------- */
+
+  btnExport.addEventListener('click', function(){
+    var doc = iframe.contentDocument;
+    if (!doc || !doc.documentElement) return;
+
+    var clone = doc.documentElement.cloneNode(true);
+
+    var style = clone.querySelector('#ae-style');
+    if (style) style.remove();
+
+    clone.querySelectorAll('[contenteditable]').forEach(function(el){ el.removeAttribute('contenteditable'); });
+    clone.querySelectorAll('[spellcheck]').forEach(function(el){ el.removeAttribute('spellcheck'); });
+
+    clone.querySelectorAll('.ae-slot').forEach(function(el){
+      el.classList.remove('ae-slot');
+      if (!el.getAttribute('class')) el.removeAttribute('class');
+      if (el.getAttribute('data-ae-had-title') === '1') {
+        el.setAttribute('title', el.getAttribute('data-ae-orig-title') || '');
+      } else {
+        el.removeAttribute('title');
+      }
+      el.removeAttribute('data-ae-had-title');
+      el.removeAttribute('data-ae-orig-title');
+    });
+
+    clone.querySelectorAll('.ae-inserted-section').forEach(function(el){
+      el.classList.remove('ae-inserted-section');
+      if (!el.getAttribute('class')) el.removeAttribute('class');
+    });
+
+    clone.querySelectorAll('.ae-selected').forEach(function(el){
+      el.classList.remove('ae-selected');
+      if (!el.getAttribute('class')) el.removeAttribute('class');
+    });
+
+    clone.querySelectorAll('.ae-video-badge').forEach(function(el){ el.remove(); });
+
+    clone.querySelectorAll('.ae-video-slot').forEach(function(el){
+      el.classList.remove('ae-video-slot');
+      if (!el.getAttribute('class')) el.removeAttribute('class');
+      el.removeAttribute('title');
+      el.removeAttribute('data-yt-id');
+    });
+
+    var finalHTML = '<!DOCTYPE html>\n' + clone.outerHTML + '\n';
+    var blob = new Blob([finalHTML], { type: 'text/html' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = loadedFileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    clearDraft(loadedFileName);
+
+    setStatus('Exported ' + loadedFileName + ' to your downloads folder. Upload it to replace the current page on your site.', 'ok');
+  });
+
+  /* ---------------- Warn on close if there are unsaved edits ---------------- */
+
+  window.addEventListener('beforeunload', function(e){
+    if (loadedOnce && (hasEdits || history.length)) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+})();
+</script>
+</body>
+</html>
