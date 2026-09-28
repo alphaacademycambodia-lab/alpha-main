@@ -723,3 +723,34 @@ a.tl-card:hover{transform:translateY(-3px);border-color:var(--brand-300);box-sha
   .cd-unit.is-secs.is-tick b{animation:none}
   .cd-bar .fill{transition:none}
 }
+
+/* ------------------------------------------------------ 5c. the timer
+   A phone-style timer: set days, hours, minutes and seconds, then start,
+   pause, resume or reset. It drives the same stage as the date countdown. */
+.cd-spin{display:flex;align-items:flex-start;justify-content:center;gap:.3rem}
+.cd-spin-col{display:grid;justify-items:center;gap:.3rem;flex:1;min-width:0}
+.cd-spin-col input{
+  width:100%;max-width:74px;text-align:center;font:inherit;
+  font-family:var(--font-display);font-weight:800;font-size:clamp(1.5rem,5vw,1.9rem);
+  font-variant-numeric:tabular-nums;color:var(--ink-900);
+  padding:.35rem .15rem;border:1.5px solid var(--ink-200);border-radius:var(--r-sm);
+  background:var(--surface);-moz-appearance:textfield;appearance:textfield;
+}
+.cd-spin-col input::-webkit-outer-spin-button,
+.cd-spin-col input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.cd-spin-col input:focus{outline:none;border-color:var(--brand-500);box-shadow:0 0 0 3px rgba(18,115,230,.15)}
+.cd-spin-col input:disabled{opacity:.6}
+.cd-spin-col span{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-400)}
+:root[lang="km"] .cd-spin-col span{text-transform:none;letter-spacing:0}
+.cd-step{
+  width:100%;max-width:74px;height:30px;font:inherit;font-size:1.1rem;font-weight:800;line-height:1;cursor:pointer;
+  border-radius:var(--r-sm);background:var(--brand-50);border:1.5px solid var(--brand-100);color:var(--brand-700);
+}
+.cd-step:hover{background:var(--brand-100)}
+.cd-step:disabled{opacity:.4;cursor:default}
+.cd-colon{font-family:var(--font-display);font-size:1.6rem;color:var(--ink-300);padding-top:2.35rem}
+.cd-presets{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0 .2rem}
+.cd-tbtns{display:flex;gap:.5rem;margin-top:1rem}
+.cd-tbtns .btn{flex:1;justify-content:center}
+.cd-timer.is-running .cd-presets{opacity:.5;pointer-events:none}
+@media (prefers-reduced-motion:reduce){ .cd-step{transition:none} }
