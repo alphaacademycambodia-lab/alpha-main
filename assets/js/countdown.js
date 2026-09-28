@@ -110,6 +110,19 @@
     grpKHs:   { en: 'the next one of each, from the holiday calendar',
                 km: 'លើកបន្ទាប់នៃនីមួយៗ ពីប្រតិទិនថ្ងៃឈប់សម្រាក' },
     grpWorld: { en: 'Dates people count to', km: 'កាលបរិច្ឆេទដែលគេរាប់ថយក្រោយ' },
+    timer:    { en: 'Timer', km: 'កម្មវិធីកំណត់ម៉ោង' },
+    tPaused:  { en: 'Timer paused', km: 'បានផ្អាកកម្មវិធីកំណត់ម៉ោង' },
+    tUp:      { en: 'Time is up — over by', km: 'អស់ពេលហើយ — លើសពេល' },
+    tUpName:  { en: 'Time is up!', km: 'អស់ពេលហើយ!' },
+    tEnds:    { en: 'Ends at {t}', km: 'បញ្ចប់នៅម៉ោង {t}' },
+    tEnded:   { en: 'Ended at {t}', km: 'បានបញ្ចប់នៅម៉ោង {t}' },
+    tPausedL: { en: 'Paused — press Resume to carry on', km: 'បានផ្អាក — ចុច បន្ត ដើម្បីរាប់ទៀត' },
+    tLen:     { en: 'Timer length <b>{n}</b>', km: 'រយៈពេល <b>{n}</b>' },
+    tBar:     { en: '{p}% of the time used', km: 'បានប្រើអស់ {p}% នៃពេលវេលា' },
+    start:    { en: 'Start',  km: 'ចាប់ផ្តើម' },
+    pause:    { en: 'Pause',  km: 'ផ្អាក' },
+    resume:   { en: 'Resume', km: 'បន្ត' },
+    reset:    { en: 'Reset',  km: 'កំណត់ឡើងវិញ' },
     pendH:    { en: 'Set each year by sub-decree', km: 'កំណត់ជារៀងរាល់ឆ្នាំដោយអនុក្រឹត្យ' },
     pendP:    { en: 'These four follow the Khmer lunar calendar, so the Gregorian date moves every year and is fixed by the annual sub-decree. They are named here rather than counted down to, because a countdown to a guessed date is worse than none.',
                 km: 'បួននេះដើរតាមប្រតិទិនចន្ទគតិខ្មែរ ដូច្នេះកាលបរិច្ឆេទសុរិយគតិផ្លាស់ប្តូររាល់ឆ្នាំ ហើយត្រូវកំណត់ដោយអនុក្រឹត្យប្រចាំឆ្នាំ។ យើងដាក់ឈ្មោះវានៅទីនេះ ជាជាងរាប់ថយក្រោយ ព្រោះការរាប់ថយក្រោយទៅកាន់កាលបរិច្ឆេទដែលទាយ គឺអាក្រក់ជាងគ្មានទៅទៀត។' }
@@ -147,6 +160,18 @@
     }
     return DOW[o][dt.getDay()] + ', ' + n(dt.getDate()) + ' ' +
            MONTHS[o][dt.getMonth()] + ' ' + n(dt.getFullYear());
+  }
+  function fmtTimeS(dt) {
+    return pad2(dt.getHours()) + ':' + pad2(dt.getMinutes()) + ':' + pad2(dt.getSeconds());
+  }
+  /* "1 d 02:05:00" style, like a phone timer. */
+  function fmtDur(ms) {
+    var sec = Math.round(ms / 1000);
+    var d = Math.floor(sec / 86400), h = Math.floor(sec % 86400 / 3600),
+        m = Math.floor(sec % 3600 / 60), s = sec % 60;
+    var hms = pad2(h) + ':' + pad2(m) + ':' + pad2(s);
+    var dw = lang() === 'km' ? 'ថ្ងៃ' : (d === 1 ? 'day' : 'days');
+    return d ? num(d) + ' ' + dw + ' ' + hms : hms;
   }
   function startOfDay(dt) { return at(dt.getFullYear(), dt.getMonth(), dt.getDate(), 0, 0); }
   function wholeDaysBetween(a, b) {
@@ -312,7 +337,8 @@
     key: null,       /* which preset is selected, if any */
     done: false,     /* has the celebration already fired for this target? */
     sound: true,
-    lastSec: null
+    lastSec: null,
+    timer: null      /* {dur, rem} — rem is set only while paused */
   };
 
   var EVENTS = buildEvents(new Date());
@@ -373,6 +399,15 @@
     window.setTimeout(function () { el.confetti.innerHTML = ''; }, 7000);
   }
 
+  chime.unlock = function () {
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { return; }
+      if (!actx) { actx = new AC(); }
+      if (actx.state === 'suspended' && actx.resume) { actx.resume(); }
+    } catch (e) {}
+  };
+
   function celebrate() {
     el.stage.classList.add('is-done');
     confetti();
@@ -383,6 +418,7 @@
   function setTarget(dt, opts) {
     opts = opts || {};
     state.target = dt;
+    if (!opts.timer) { state.timer = null; }
     state.prev = opts.prev || null;
     state.name = opts.name || null;
     state.allDay = opts.allDay !== false;
@@ -412,12 +448,14 @@
   function tick() {
     if (!state.target) {
       idle(window.innerWidth > 1040 ? t(T.idle) : t(T.idleNarrow));
+      paintTimerUI();
       return;
     }
     el.stage.classList.remove('is-idle');
 
     var now = Date.now();
-    var left = state.target.getTime() - now;
+    var tm = state.timer;
+    var left = (tm && tm.rem != null) ? tm.rem : state.target.getTime() - now;
     var past = left <= 0;
 
     /* The celebration fires when the moment arrives while the page is open,
@@ -435,19 +473,32 @@
     var m = Math.floor(abs % 3600000 / 60000);
     var s = Math.floor(abs % 60000 / 1000);
 
-    el.eyebrow.textContent = past ? t(T.since) : t(T.counting);
-    el.name.textContent = currentName();
+    if (tm) {
+      el.eyebrow.textContent = past ? t(T.tUp) : (tm.rem != null ? t(T.tPaused) : t(T.timer));
+      el.name.textContent = past ? t(T.tUpName) : fmtDur(tm.dur);
+    } else {
+      el.eyebrow.textContent = past ? t(T.since) : t(T.counting);
+      el.name.textContent = currentName();
+    }
 
     /* The one thing on the page that is announced. It is written only when
        it changes, so a screen reader hears the celebration once rather than
        being read a clock sixty times a minute — which is also why nothing
        else here is a live region. */
-    var say = past ? currentName() + ' — ' + t(T.hooray) : '';
+    var say = past ? (tm ? t(T.tUpName) : currentName() + ' — ' + t(T.hooray)) : '';
     if (el.hoorayText.textContent !== say) { el.hoorayText.textContent = say; }
 
-    var line = fmtDate(state.target);
-    if (!state.allDay) { line += ' · ' + fill(t(T.atTime), { t: fmtTime(state.target) }); }
-    el.when.innerHTML = esc(line) + '<em>' + esc(fmtOther(state.target)) + '</em>';
+    if (tm && tm.rem != null) {
+      el.when.innerHTML = esc(t(T.tPausedL));
+    } else if (tm) {
+      var endLine = fill(t(past ? T.tEnded : T.tEnds), { t: fmtTimeS(state.target) });
+      if (wholeDaysBetween(new Date(now), state.target) !== 0) { endLine += ' · ' + fmtDate(state.target); }
+      el.when.innerHTML = esc(endLine);
+    } else {
+      var line = fmtDate(state.target);
+      if (!state.allDay) { line += ' · ' + fill(t(T.atTime), { t: fmtTime(state.target) }); }
+      el.when.innerHTML = esc(line) + '<em>' + esc(fmtOther(state.target)) + '</em>';
+    }
 
     units.d.textContent = num(d);
     units.h.textContent = pad2(h);
@@ -463,7 +514,9 @@
 
     /* ---- the chips ---- */
     var chips = [];
-    if (past) {
+    if (tm) {
+      chips.push({ html: fill(t(T.tLen), { n: esc(fmtDur(tm.dur)) }), key: true });
+    } else if (past) {
       /* "0 days ago" is a worse answer than "2 hours ago", so the biggest
          unit that is actually non-zero does the talking. */
       chips.push({
@@ -481,13 +534,20 @@
         chips.push({ text: fill(t(T.weeks), { w: num(Math.floor(d / 7)), d: num(d % 7) }) });
       }
     }
-    chips.push({ text: fill(t(past ? T.wasA : T.lands), { d: DOW[lang()][state.target.getDay()] }) });
+    if (!tm) {
+      chips.push({ text: fill(t(past ? T.wasA : T.lands), { d: DOW[lang()][state.target.getDay()] }) });
+    }
     el.facts.innerHTML = chips.map(function (c) {
       return '<li' + (c.key ? ' class="is-key"' : '') + '>' + (c.html || esc(c.text)) + '</li>';
     }).join('');
 
     /* ---- the progress bar ---- */
-    if (state.prev && !past) {
+    if (tm && !past) {
+      var tp = Math.max(0, Math.min(100, (tm.dur - left) / tm.dur * 100));
+      el.barFill.style.width = tp.toFixed(2) + '%';
+      el.barText.textContent = fill(t(T.tBar), { p: num(Math.floor(tp)) });
+      el.bar.hidden = false;
+    } else if (state.prev && !past) {
       var span = state.target.getTime() - state.prev.getTime();
       var gone = now - state.prev.getTime();
       var pct = Math.max(0, Math.min(100, gone / span * 100));
@@ -499,6 +559,7 @@
     }
 
     el.again.hidden = !past;
+    paintTimerUI();
     rollDay();
   }
 
@@ -576,6 +637,16 @@
      midnight where the reader is. */
   var writingHash = false;
   function writeHash() {
+    if (state.timer) {
+      var tp = state.timer.rem != null
+        ? 'dur=' + state.timer.dur + '&rem=' + state.timer.rem
+        : 'dur=' + state.timer.dur + '&end=' + state.target.getTime();
+      writingHash = true;
+      try { history.replaceState(null, '', location.pathname + location.search + '#' + tp); }
+      catch (e) { location.hash = tp; }
+      writingHash = false;
+      return;
+    }
     if (!state.target) { return; }
     var d = state.target;
     var stamp = isoDate(d) + (state.allDay ? '' : 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes()));
@@ -601,6 +672,18 @@
       try { q[pair.slice(0, i)] = decodeURIComponent(pair.slice(i + 1)); } catch (e) {}
     });
 
+    if (q.dur && /^\d+$/.test(q.dur)) {
+      var dur = Math.min(+q.dur, TMAX);
+      if (dur > 0) {
+        setFields(dur);
+        if (q.end && /^\d+$/.test(q.end)) { startTimer(dur, +q.end); return true; }
+        if (q.rem && /^\d+$/.test(q.rem)) {
+          startTimer(dur, Date.now() + Math.min(+q.rem, dur));
+          pauseTimer();
+          return true;
+        }
+      }
+    }
     if (q.e) {
       var ev = findEvent(q.e);
       if (ev) { pickEvent(ev); return true; }
@@ -691,6 +774,106 @@
     ta.remove();
   });
 
+  /* ================================================================ timer
+     Like the timer on a phone: dial in days, hours, minutes and seconds,
+     then Start / Pause / Resume / Reset. The running timer is just an end
+     moment, so it is read from the system clock like everything else here
+     and stays exact in a background tab. Pausing freezes the remainder. */
+  var TMAX = 365 * 86400000 + 23 * 3600000 + 59 * 60000 + 59000;
+  var tf = {
+    d: document.getElementById('cdTd'), h: document.getElementById('cdTh'),
+    m: document.getElementById('cdTm'), s: document.getElementById('cdTs')
+  };
+  var TLIM = { d: 365, h: 23, m: 59, s: 59 };
+  var tBox = document.getElementById('cdTimer');
+  var tStart = document.getElementById('cdTStart');
+  var tReset = document.getElementById('cdTReset');
+
+  function clampField(k) {
+    var v = parseInt(tf[k].value, 10);
+    if (isNaN(v) || v < 0) { v = 0; }
+    if (v > TLIM[k]) { v = TLIM[k]; }
+    tf[k].value = String(v);
+    return v;
+  }
+  function fieldsMs() {
+    return ((clampField('d') * 24 + clampField('h')) * 60 + clampField('m')) * 60000 + clampField('s') * 1000;
+  }
+  function setFields(ms) {
+    var sec = Math.round(ms / 1000);
+    tf.d.value = Math.floor(sec / 86400);
+    tf.h.value = Math.floor(sec % 86400 / 3600);
+    tf.m.value = Math.floor(sec % 3600 / 60);
+    tf.s.value = sec % 60;
+  }
+  function startTimer(dur, end) {
+    el.date.value = ''; el.time.value = ''; el.label.value = '';
+    state.timer = { dur: dur, rem: null };
+    setTarget(new Date(end), { timer: true, allDay: false, key: null });
+  }
+  function pauseTimer() {
+    if (!state.timer || state.timer.rem != null) { return; }
+    state.timer.rem = Math.max(0, state.target.getTime() - Date.now());
+    writeHash(); tick();
+  }
+  function resumeTimer() {
+    if (!state.timer || state.timer.rem == null) { return; }
+    state.target = new Date(Date.now() + state.timer.rem);
+    state.timer.rem = null;
+    writeHash(); tick();
+  }
+  function resetTimer() {
+    if (state.timer) { setFields(state.timer.dur); }
+    state.timer = null;
+    state.target = null;
+    state.done = false;
+    el.stage.classList.remove('is-done');
+    el.confetti.innerHTML = '';
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    tick();
+  }
+  function paintTimerUI() {
+    var tm = state.timer;
+    var running = !!(tm && tm.rem == null && state.target && state.target.getTime() > Date.now());
+    var paused = !!(tm && tm.rem != null);
+    var label = running ? T.pause : paused ? T.resume : T.start;
+    if (tStart.getAttribute('data-l') !== label.en) {
+      tStart.setAttribute('data-l', label.en);
+      tStart.textContent = t(label);
+    }
+    tBox.classList.toggle('is-running', running || paused);
+    var lock = running || paused;
+    Object.keys(tf).forEach(function (k) { tf[k].disabled = lock; });
+    tBox.querySelectorAll('.cd-step').forEach(function (b) { b.disabled = lock; });
+  }
+
+  tStart.addEventListener('click', function () {
+    chime.unlock();
+    var tm = state.timer;
+    if (tm && tm.rem != null) { resumeTimer(); return; }
+    if (tm && state.target && state.target.getTime() > Date.now()) { pauseTimer(); return; }
+    var dur = fieldsMs();
+    if (dur <= 0) { tf.m.focus(); return; }
+    startTimer(dur, Date.now() + dur);
+  });
+  tReset.addEventListener('click', resetTimer);
+  tBox.addEventListener('click', function (e) {
+    var b = e.target.closest('.cd-step');
+    if (b && !b.disabled) {
+      var k = b.getAttribute('data-f'), dir = +b.getAttribute('data-dir');
+      var v = clampField(k) + dir;
+      if (v < 0) { v = TLIM[k]; } else if (v > TLIM[k]) { v = 0; }   /* wraps like a phone dial */
+      tf[k].value = String(v);
+      return;
+    }
+    var p = e.target.closest('[data-sec]');
+    if (p) { setFields(+p.getAttribute('data-sec') * 1000); }
+  });
+  Object.keys(tf).forEach(function (k) {
+    tf[k].addEventListener('change', function () { clampField(k); });
+    tf[k].addEventListener('focus', function () { tf[k].select(); });
+  });
+
   window.addEventListener('hashchange', function () {
     if (!writingHash) { readHash(); }
   });
@@ -701,6 +884,8 @@
     el.soundT.textContent = t(state.sound ? T.soundOn : T.soundOff);
     el.copyT.textContent = t(T.copy);
     el.again.textContent = t(T.again);
+    tReset.textContent = t(T.reset);
+    tStart.removeAttribute('data-l');
     lastListDay = null;
     drawList();
     markSelected();
@@ -721,6 +906,7 @@
   el.soundT.textContent = t(T.soundOn);
   el.copyT.textContent = t(T.copy);
   el.again.textContent = t(T.again);
+  tReset.textContent = t(T.reset);
   drawList();
 
   /* Landing with no target at all is a blank page, so the nearest Cambodian
