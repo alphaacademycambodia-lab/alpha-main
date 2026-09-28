@@ -232,6 +232,56 @@
       <!-- ------------------------------------------------------ the picker -->
       <div class="cd-side">
 
+        <div class="cd-card cd-timer" id="cdTimer">
+          <h2 data-i18n="cd.timerH">Timer — set hours, minutes and seconds</h2>
+
+          <div class="cd-spin" role="group" aria-labelledby="cdTimerLbl">
+            <span class="cd-lbl" id="cdTimerLbl" hidden data-i18n="cd.timerLbl">Timer length</span>
+            <div class="cd-spin-col">
+              <button type="button" class="cd-step" data-f="d" data-dir="1" aria-label="More days">+</button>
+              <input type="number" id="cdTd" inputmode="numeric" min="0" max="365" value="0" aria-labelledby="cdTdL">
+              <button type="button" class="cd-step" data-f="d" data-dir="-1" aria-label="Fewer days">&#8722;</button>
+              <span id="cdTdL" data-i18n="cd.days">Days</span>
+            </div>
+            <b class="cd-colon" aria-hidden="true">:</b>
+            <div class="cd-spin-col">
+              <button type="button" class="cd-step" data-f="h" data-dir="1" aria-label="More hours">+</button>
+              <input type="number" id="cdTh" inputmode="numeric" min="0" max="23" value="0" aria-labelledby="cdThL">
+              <button type="button" class="cd-step" data-f="h" data-dir="-1" aria-label="Fewer hours">&#8722;</button>
+              <span id="cdThL" data-i18n="cd.hours">Hours</span>
+            </div>
+            <b class="cd-colon" aria-hidden="true">:</b>
+            <div class="cd-spin-col">
+              <button type="button" class="cd-step" data-f="m" data-dir="1" aria-label="More minutes">+</button>
+              <input type="number" id="cdTm" inputmode="numeric" min="0" max="59" value="5" aria-labelledby="cdTmL">
+              <button type="button" class="cd-step" data-f="m" data-dir="-1" aria-label="Fewer minutes">&#8722;</button>
+              <span id="cdTmL" data-i18n="cd.mins">Minutes</span>
+            </div>
+            <b class="cd-colon" aria-hidden="true">:</b>
+            <div class="cd-spin-col">
+              <button type="button" class="cd-step" data-f="s" data-dir="1" aria-label="More seconds">+</button>
+              <input type="number" id="cdTs" inputmode="numeric" min="0" max="59" value="0" aria-labelledby="cdTsL">
+              <button type="button" class="cd-step" data-f="s" data-dir="-1" aria-label="Fewer seconds">&#8722;</button>
+              <span id="cdTsL" data-i18n="cd.secs">Seconds</span>
+            </div>
+          </div>
+
+          <div class="cd-presets" id="cdPresets">
+            <button type="button" class="cd-mini" data-sec="60">1 min</button>
+            <button type="button" class="cd-mini" data-sec="300">5 min</button>
+            <button type="button" class="cd-mini" data-sec="600">10 min</button>
+            <button type="button" class="cd-mini" data-sec="900">15 min</button>
+            <button type="button" class="cd-mini" data-sec="1800">30 min</button>
+            <button type="button" class="cd-mini" data-sec="3600">1 h</button>
+          </div>
+
+          <div class="cd-tbtns">
+            <button type="button" class="btn btn--primary" id="cdTStart">Start</button>
+            <button type="button" class="btn btn--ghost" id="cdTReset">Reset</button>
+          </div>
+          <p class="cd-under" data-i18n="cd.timerNote">Up to 365 days. Keeps running if you switch tabs.</p>
+        </div>
+
         <div class="cd-card">
           <h2 data-i18n="cd.formH">Count down to your own date</h2>
 
