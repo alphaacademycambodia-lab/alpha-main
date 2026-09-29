@@ -73,6 +73,8 @@
     noSrc:    { en: 'The sub-decree for this year has not been entered, so only the fixed-date holidays are shown on the grid.',
                 km: 'អនុក្រឹត្យសម្រាប់ឆ្នាំនេះមិនទាន់បានបញ្ចូលទេ ដូច្នេះមានតែថ្ងៃឈប់សម្រាកកាលបរិច្ឆេទថេរប៉ុណ្ណោះដែលបង្ហាញលើតារាង។' },
     today:    { en: 'Today', km: 'ថ្ងៃនេះ' },
+    noList:   { en: 'No holiday list has been found for this year, so no public holidays are marked. The lunar dates, holy days and other days are still shown.',
+                km: 'រកមិនឃើញបញ្ជីថ្ងៃឈប់សម្រាកសម្រាប់ឆ្នាំនេះទេ ដូច្នេះមិនបានសម្គាល់ថ្ងៃឈប់សម្រាកទេ។ ថ្ងៃចន្ទគតិ ថ្ងៃសីល និងថ្ងៃផ្សេងៗនៅតែបង្ហាញ។' },
     obsH:     { en: 'Other days in {y}', km: 'ថ្ងៃផ្សេងៗឆ្នាំ {y}' },
     obsHM:    { en: 'Other days in {m} {y}', km: 'ថ្ងៃផ្សេងៗ ខែ{m} ឆ្នាំ {y}' },
     obsNone:  { en: 'Nothing else falls in this month.', km: 'គ្មានថ្ងៃផ្សេងទៀតក្នុងខែនេះទេ។' },
@@ -83,7 +85,19 @@
     kor:      { en: 'Shaving day', km: 'ថ្ងៃកោរ' }
   };
   var OBS = window.KH_OBSERVANCES || null;
-  function obsFor(y) { return OBS ? OBS.forYear(y) : { days: {}, list: [] }; }
+  function obsFor(y) {
+    if (!OBS) { return { days: {}, list: [] }; }
+    var raw = OBS.forYear(y), pubKeys = {};
+    DATA.forYear(y).list.forEach(function (h) { pubKeys[h.key] = true; });
+    function keep(e) { return !(e.pub && pubKeys[e.pub]); }
+    var days = {};
+    for (var k in raw.days) {
+      if (!Object.prototype.hasOwnProperty.call(raw.days, k)) { continue; }
+      var d = raw.days[k];
+      days[k] = { sila: d.sila, kor: d.kor, ev: d.ev.filter(keep) };
+    }
+    return { days: days, list: raw.list.filter(keep) };
+  }
   function ordEn(n) {
     var s = ['th', 'st', 'nd', 'rd'], v = n % 100;
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
@@ -92,7 +106,7 @@
   /* ---------------------------------------------------------------- state */
   var TODAY = new Date();
   var TODAY_KEY = stamp(TODAY.getFullYear(), TODAY.getMonth() + 1, TODAY.getDate());
-  var MIN_YEAR = 2020, MAX_YEAR = 2035;
+  var MIN_YEAR = 1975, MAX_YEAR = 2035;
   var year = TODAY.getFullYear();
   if (year < MIN_YEAR) { year = MIN_YEAR; }
   if (year > MAX_YEAR) { year = MAX_YEAR; }
@@ -174,7 +188,10 @@
     }
 
     /* where the dates came from */
-    if (info.source) {
+    if (info.noList) {
+      el.src.textContent = t(T.noList);
+      el.src.className = 'cal-src is-warn';
+    } else if (info.source) {
       el.src.textContent = t(T.src) + t(info.source);
       el.src.className = info.provisional ? 'cal-src is-warn' : 'cal-src';
     } else {

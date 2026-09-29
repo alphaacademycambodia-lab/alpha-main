@@ -72,7 +72,16 @@
     { key:'labour',  m:5,  d:1,  len:1,
       en:'International Labour Day',
       km:'ទិវាពលកម្មអន្តរជាតិ' },
-    { key:'kingbd',  m:5,  d:14, len:1,
+    { key:'kingbd',  m:5,  d:13, len:3, to:2019,   /* three days until 2019 */
+      en:'Birthday of His Majesty King Norodom Sihamoni',
+      km:'ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្ម ព្រះករុណា ព្រះបាទសម្តេចព្រះបរមនាថ នរោត្តម សីហមុនី' },
+    { key:'remembrance', m:5, d:20, len:1, from:2018, to:2019,
+      en:'National Day of Remembrance',
+      km:'ទិវាជាតិនៃការចងចាំ' },
+    { key:'children', m:6, d:1, len:1, to:2019,
+      en:"International Children's Day",
+      km:'ទិវាកុមារអន្តរជាតិ' },
+    { key:'kingbd',  m:5,  d:14, len:1, from:2020,
       en:'Birthday of His Majesty King Norodom Sihamoni',
       km:'ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្ម ព្រះករុណា ព្រះបាទសម្តេចព្រះបរមនាថ នរោត្តម សីហមុនី' },
     { key:'queenbd', m:6,  d:18, len:1,
@@ -84,12 +93,18 @@
     { key:'kingfather', m:10, d:15, len:1,
       en:'Commemoration Day of King Father Norodom Sihanouk',
       km:'ទិវាប្រារព្ធពិធីរំលឹកព្រះវិញ្ញាណក្ខន្ធ ព្រះករុណា ព្រះបាទសម្តេចព្រះនរោត្តម សីហនុ' },
+    { key:'paris', m:10, d:23, len:1, to:2019,
+      en:'Paris Peace Agreements Day',
+      km:'ទិវារំលឹកកិច្ចព្រមព្រៀងសន្តិភាពទីក្រុងប៉ារីស' },
     { key:'coronation', m:10, d:29, len:1,
       en:'Coronation Day of His Majesty King Norodom Sihamoni',
       km:'ព្រះរាជពិធីគ្រងព្រះបរមរាជសម្បត្តិ' },
     { key:'independence', m:11, d:9, len:1, since:1953,
       en:'Independence Day',
       km:'ទិវាបុណ្យឯករាជ្យជាតិ' },
+    { key:'humanrights', m:12, d:10, len:1, to:2019,
+      en:'International Human Rights Day',
+      km:'ទិវាសិទ្ធិមនុស្សអន្តរជាតិ' },
     { key:'peace', m:12, d:29, len:1, from:2024,   /* first a public holiday in 2024 */
       en:'Peace Day in Cambodia',
       km:'ទិវាសន្តិភាពនៅកម្ពុជា' }
@@ -99,6 +114,11 @@
      The rule is for a reader's orientation only. The date must come from the
      sub-decree — see the header of this file. */
   var MOVABLE = [
+    { key:'meak', len:1, to:2019,           /* a public holiday until 2019 */
+      en:'Meak Bochea Day',
+      km:'ពិធីបុណ្យមាឃបូជា',
+      rule:{ en:'Full moon of the lunar month of Meak — January or February.',
+             km:'ថ្ងៃពេញបូណ៌មី ខែមាឃ — ខែមករា ឬកុម្ភៈ។' } },
     { key:'visak', len:1,
       en:'Visak Bochea Day',
       km:'ពិធីបុណ្យវិសាខបូជា',
@@ -131,7 +151,52 @@
      `newYear` overrides Khmer New Year when the sub-decree does not give the
      usual 14–16 April: in 2024 (and 2028) Moha Sangkran falls late on the
      13th, so the holiday runs 13–16 April, four days. */
+  var OH = { en: 'Office Holidays yearly list (official sub-decree not found); movable dates checked against the Khmer lunar calendar',
+             km: 'បញ្ជីប្រចាំឆ្នាំរបស់ Office Holidays (រកមិនឃើញអនុក្រឹត្យ); ថ្ងៃចន្ទគតិបានផ្ទៀងផ្ទាត់ជាមួយប្រតិទិនចន្ទគតិខ្មែរ' };
+
   var YEARS = {
+    2015: {
+      source: OH,
+      dates: { meak: '2015-02-03', visak: '2015-05-02', ploughing: '2015-05-06', pchumben: '2015-10-11', water: '2015-11-24' },
+      extra: [ { key: 'mourning', date: '2015-06-19', en: 'National day of mourning for Samdech Chea Sim',
+                 km: 'ទិវាកាន់ទុក្ខ សម្តេច ជា ស៊ីម' } ]
+    },
+    2016: {
+      source: OH,
+      newYear: { d: 13, len: 4 },
+      dates: { meak: '2016-02-22', visak: '2016-05-20', ploughing: '2016-05-24', pchumben: '2016-09-30', water: '2016-11-13' }
+    },
+    2017: {
+      source: OH,
+      dates: { meak: '2017-02-11', visak: '2017-05-10', ploughing: '2017-05-14', pchumben: '2017-09-19', water: '2017-11-02' }
+    },
+    2018: {
+      source: OH,
+      dates: { meak: '2018-01-31', visak: '2018-04-29', ploughing: '2018-05-03', pchumben: '2018-10-08', water: '2018-11-21' }
+    },
+    2019: {
+      source: { en: 'Prakas No. 478 of the Ministry of Labour and Vocational Training, October 2018',
+                km: 'ប្រកាសលេខ ៤៧៨ របស់ក្រសួងការងារ និងបណ្តុះបណ្តាលវិជ្ជាជីវៈ ខែតុលា ឆ្នាំ ២០១៨' },
+      dates: { meak: '2019-02-19', visak: '2019-05-18', ploughing: '2019-05-22', pchumben: '2019-09-27', water: '2019-11-10' }
+    },
+    2020: {
+      source: { en: 'Sub-decree No. 112 (2019); Khmer New Year moved to 17–21 August by Sub-decree No. 101 (COVID-19)',
+                km: 'អនុក្រឹត្យលេខ ១១២ (២០១៩); បុណ្យចូលឆ្នាំខ្មែរ ប្តូរទៅថ្ងៃទី ១៧–២១ សីហា ដោយអនុក្រឹត្យលេខ ១០១ (កូវីដ-១៩)' },
+      newYear: { skip: true },
+      dates: { visak: '2020-05-06', ploughing: '2020-05-10', pchumben: '2020-09-16', water: '2020-10-30' },
+      extra: [ { key: 'khmernew', date: '2020-08-17', len: 5,
+                 en: 'Khmer New Year (moved from April)', km: 'បុណ្យចូលឆ្នាំថ្មីប្រពៃណីជាតិ (ប្តូរពីខែមេសា)' } ]
+    },
+    2021: {
+      source: { en: 'Sub-decree No. 131 ANKr.BK of 26 August 2020',
+                km: 'អនុក្រឹត្យលេខ ១៣១ អនក្រ.បក ចុះថ្ងៃទី ២៦ ខែសីហា ឆ្នាំ ២០២០' },
+      dates: { visak: '2021-04-26', ploughing: '2021-04-30', pchumben: '2021-10-05', water: '2021-11-18' }
+    },
+    2022: {
+      source: { en: 'Sub-decree No. 145 ANKr.BK of 19 August 2021',
+                km: 'អនុក្រឹត្យលេខ ១៤៥ អនក្រ.បក ចុះថ្ងៃទី ១៩ ខែសីហា ឆ្នាំ ២០២១' },
+      dates: { visak: '2022-05-15', ploughing: '2022-05-19', pchumben: '2022-09-24', water: '2022-11-07' }
+    },
     2023: {
       source: { en: 'Royal Government sub-decree on the 2023 holiday calendar',
                 km: 'អនុក្រឹត្យស្តីពីប្រតិទិនឈប់សម្រាកឆ្នាំ ២០២៣' },
@@ -183,7 +248,10 @@
     }
   };
 
+  var FIRST_YEAR = 2015;
+
   global.KH_HOLIDAYS = {
+    firstYear: FIRST_YEAR,
     fixed: FIXED,
     movable: MOVABLE,
     years: YEARS,
@@ -194,6 +262,14 @@
     forYear: function (year) {
       var days = {}, list = [], pending = [];
       var y = YEARS[year] || null;
+
+      /* Before the first year entered here there is no list to show. The
+         holidays of those years were not today's ones, so printing today's
+         set would be wrong — the page shows the calendar without them. */
+      if (!y && year < FIRST_YEAR) {
+        return { days: {}, list: [], pending: [], source: null, provisional: false, noList: true };
+      }
+      function inYear(e) { return !(e.from && year < e.from) && !(e.to && year > e.to); }
 
       function pad(n) { return (n < 10 ? '0' : '') + n; }
       function stamp(yy, mm, dd) { return yy + '-' + pad(mm) + '-' + pad(dd); }
@@ -224,7 +300,8 @@
       }
 
       FIXED.forEach(function (f) {
-        if (f.from && year < f.from) { return; }
+        if (!inYear(f)) { return; }
+        if (f.key === 'khmernew' && y && y.newYear && y.newYear.skip) { return; }
         if (f.key === 'khmernew' && y && y.newYear) {
           var ny = {}; for (var k in f) { ny[k] = f[k]; }
           ny.len = y.newYear.len;
@@ -234,6 +311,7 @@
       });
 
       MOVABLE.forEach(function (mv) {
+        if (!inYear(mv)) { return; }
         var iso = y && y.dates && y.dates[mv.key];
         if (!iso) { pending.push(mv); return; }
         var bits = String(iso).split('-');
@@ -250,7 +328,7 @@
       list.sort(function (a, b) { return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; });
 
       return { days: days, list: list, pending: pending, source: (y && y.source) || null,
-               provisional: !!(y && y.provisional) };
+               provisional: !!(y && y.provisional), noList: false };
     }
   };
 })(window);
