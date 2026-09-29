@@ -169,7 +169,7 @@
         <span data-i18n="cal.crumb">Holiday Calendar</span>
       </nav>
       <h1 data-i18n="cal.h1">Cambodia Holiday Calendar 🇰🇭</h1>
-      <p data-i18n="cal.lede">A whole year at a glance with the Cambodian public holidays marked, and the list of them underneath with the weekday each one falls on. The holidays are those set by the Royal Government's annual sub-decree — the fixed dates are shown on the grid, and the four that follow the lunar calendar are listed separately until that year's sub-decree has been entered.</p>
+      <p data-i18n="cal.lede">A whole year at a glance with the Cambodian public holidays marked, and the list of them underneath with the weekday each one falls on. The month view adds everything a Khmer wall calendar carries — the lunar date, the Buddhist holy days and shaving days, the Kan Ben days, and the international, national and cultural days that are not days off.</p>
       <div class="chips">
         <span class="chip" data-i18n="cal.chip1">Twelve months on one screen</span>
         <span class="chip" data-i18n="cal.chip2">Public holidays marked</span>
@@ -219,12 +219,18 @@
 
     <div class="cal-legend">
       <span><i class="k-hol"></i><span data-i18n="cal.kHol">Public holiday</span></span>
+      <span><i class="k-obs"></i><span data-i18n="cal.kObs">Observance, festival or Ben day</span></span>
+      <span><b class="k-sila">☸</b><span data-i18n="cal.kSila">Buddhist holy day (ថ្ងៃសីល)</span></span>
+      <span><b class="k-kor">ថ្ងៃកោរ</b><span data-i18n="cal.kKor">Shaving day, the eve of a holy day</span></span>
       <span><i class="k-today"></i><span data-i18n="cal.kToday">Today</span></span>
     </div>
 
     <div class="cal-listwrap">
       <h3 id="calListH"></h3>
       <ul class="cal-list" id="calList"></ul>
+
+      <h3 id="calObsH" class="cal-obsh"></h3>
+      <ul class="cal-list" id="calObs"></ul>
 
       <div class="cal-pending" id="calPending" hidden>
         <h4 data-i18n="cal.pendH">Dates set each year by sub-decree</h4>
@@ -254,7 +260,7 @@
       </article>
       <article>
         <h4 data-i18n="cal.n2t">Four holidays move every year</h4>
-        <p data-i18n="cal.n2p">Visak Bochea, the Royal Ploughing Ceremony, Pchum Ben and the Water Festival follow the Khmer lunar calendar. Their Gregorian dates cannot be worked out by simple arithmetic and are published in the sub-decree, so this page lists them by name rather than printing a guess.</p>
+        <p data-i18n="cal.n2p">Visak Bochea, the Royal Ploughing Ceremony, Pchum Ben and the Water Festival follow the Khmer lunar calendar. 2026 is entered from its sub-decree; 2027 is shown from the lunar reckoning and marked provisional until its sub-decree is published. Other years list the four by name rather than printing a guess.</p>
       </article>
       <article>
         <h4 data-i18n="cal.n3t">Check before you close the office</h4>
@@ -364,6 +370,8 @@
 <script src="assets/js/main.js"></script>
 <script src="assets/js/kh-lunar.js"></script>
 <script src="assets/js/kh-holidays.js"></script>
+<script src="assets/js/kh-observances.js"></script>
 <script src="assets/js/holiday-calendar.js"></script>
 </body>
 </html>
+

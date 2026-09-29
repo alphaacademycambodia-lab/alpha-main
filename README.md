@@ -125,6 +125,11 @@ assets/js/kh-holidays.js
                        touching a date — these are set by sub-decree
 assets/js/holiday-calendar.js
                        Draws the year grid and the holiday list from that file
+assets/js/kh-observances.js
+                       The other days on the calendar — international and
+                       national days, Meak Bochea, Chinese New Year, Mid-Autumn,
+                       Kan Ben, the Buddhist holy days (ថ្ងៃសីល) and shaving
+                       days (ថ្ងៃកោរ) — matching khmer-lunar-calendar.com
 assets/css/style.css   Full design system — tokens, light/dark themes, components, responsive rules
 assets/js/boot.js      Render-blocking: stamps the saved theme + language on <html> before first paint
 assets/js/i18n.js      Khmer dictionary and the English ⇄ ខ្មែរ swap

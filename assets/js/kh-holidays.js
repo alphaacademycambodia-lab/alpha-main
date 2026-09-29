@@ -58,6 +58,9 @@
     { key:'newyear', m:1,  d:1,  len:1,
       en:'International New Year Day',
       km:'ទិវាចូលឆ្នាំសាកល' },
+    { key:'victory', m:1,  d:7,  len:1, since:1979,
+      en:'Victory over Genocide Day',
+      km:'ទិវាជ័យជម្នះលើរបបប្រល័យពូជសាសន៍' },
     { key:'women',   m:3,  d:8,  len:1,
       en:"International Women's Day",
       km:'ទិវានារីអន្តរជាតិ' },
@@ -75,7 +78,7 @@
     { key:'queenbd', m:6,  d:18, len:1,
       en:'Birthday of Her Majesty the Queen Mother Norodom Monineath Sihanouk',
       km:'ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្ម សម្តេចព្រះមហាក្សត្រី នរោត្តម មុនិនាថ សីហនុ' },
-    { key:'constitution', m:9, d:24, len:1,
+    { key:'constitution', m:9, d:24, len:1, since:1993,
       en:'Constitution Day',
       km:'ទិវាប្រកាសរដ្ឋធម្មនុញ្ញ' },
     { key:'kingfather', m:10, d:15, len:1,
@@ -84,9 +87,12 @@
     { key:'coronation', m:10, d:29, len:1,
       en:'Coronation Day of His Majesty King Norodom Sihamoni',
       km:'ព្រះរាជពិធីគ្រងព្រះបរមរាជសម្បត្តិ' },
-    { key:'independence', m:11, d:9, len:1,
+    { key:'independence', m:11, d:9, len:1, since:1953,
       en:'Independence Day',
-      km:'ទិវាបុណ្យឯករាជ្យជាតិ' }
+      km:'ទិវាបុណ្យឯករាជ្យជាតិ' },
+    { key:'peace', m:12, d:29, len:1,
+      en:'Peace Day in Cambodia',
+      km:'ទិវាសន្តិភាពនៅកម្ពុជា' }
   ];
 
   /* ------------------------------------------------------------ movable
@@ -106,8 +112,8 @@
     { key:'pchumben', len:3,
       en:'Pchum Ben Festival',
       km:'ពិធីបុណ្យភ្ជុំបិណ្ឌ',
-      rule:{ en:'The last three days of the lunar month of Phutrobot — September or October.',
-             km:'បីថ្ងៃចុងក្រោយនៃខែភទ្របទ — ខែកញ្ញា ឬតុលា។' } },
+      rule:{ en:'14 and 15 waning of the lunar month of Phutrobot and the day after — September or October.',
+             km:'ថ្ងៃ ១៤ និង ១៥ រោច ខែភទ្របទ និងថ្ងៃបន្ទាប់ — ខែកញ្ញា ឬតុលា។' } },
     { key:'water', len:3,
       en:'Water Festival, Boat Racing and the Salutation to the Moon',
       km:'ពិធីបុណ្យអុំទូក បណ្តែតប្រទីប សំពះព្រះខែ អកអំបុក',
@@ -119,7 +125,32 @@
      Empty on purpose. Add a year here from its sub-decree, in the shape shown
      in the header above, and its movable holidays stop showing as pending.  */
   var YEARS = {
-    /* 2027: { source: {...}, dates: { visak:'2027-05-20', ... } }, */
+    2026: {
+      source: { en: 'Sub-decree No. 167 ANKr.BK of 18 September 2025',
+                km: 'អនុក្រឹត្យលេខ ១៦៧ អនក្រ.បក ចុះថ្ងៃទី ១៨ ខែកញ្ញា ឆ្នាំ ២០២៥' },
+      dates: {
+        visak:     '2026-05-01',   /* same day as Labour Day this year */
+        ploughing: '2026-05-05',
+        pchumben:  '2026-10-10',
+        water:     '2026-11-23'
+      }
+    },
+    /* 2027's sub-decree had not been published when this was entered, so the
+       four dates below are the lunar reckoning (the same dates the
+       khmer-lunar-calendar.com app shows), flagged `provisional`. The page
+       says so beside them. Replace `source` and drop `provisional` once the
+       sub-decree is out — and correct any date it moves. */
+    2027: {
+      provisional: true,
+      source: { en: 'Khmer lunar calendar — provisional until the 2027 sub-decree is published',
+                km: 'ប្រតិទិនចន្ទគតិខ្មែរ — បណ្តោះអាសន្ន រហូតដល់អនុក្រឹត្យឆ្នាំ ២០២៧ ត្រូវបានចេញផ្សាយ' },
+      dates: {
+        visak:     '2027-05-20',
+        ploughing: '2027-05-24',
+        pchumben:  '2027-09-29',
+        water:     '2027-11-12'
+      }
+    }
   };
 
   global.KH_HOLIDAYS = {
@@ -144,12 +175,21 @@
         var first = stamp(dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
         for (var i = 0; i < entry.len; i++) {
           var k = stamp(dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
-          days[k] = { key: entry.key, en: entry.en, km: entry.km, part: i + 1, of: entry.len };
+          var here = { key: entry.key, en: entry.en, km: entry.km, part: i + 1, of: entry.len };
+          /* Two holidays can share a day (1 May 2026 is Labour Day and Visak
+             Bochea). The day stays one day off; its label carries both. */
+          if (days[k]) {
+            var was = days[k];
+            here = { key: was.key, part: was.part, of: was.of,
+                     en: was.en + ' · ' + entry.en, km: was.km + ' · ' + entry.km };
+          }
+          days[k] = here;
           dt.setDate(dt.getDate() + 1);
         }
         list.push({
           key: entry.key, en: entry.en, km: entry.km, len: entry.len,
-          start: first, note: entry.note || null, movable: !!entry.movable
+          start: first, note: entry.note || null, movable: !!entry.movable,
+          nth: entry.since ? year - entry.since : 0
         });
       }
 
@@ -171,7 +211,8 @@
 
       list.sort(function (a, b) { return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; });
 
-      return { days: days, list: list, pending: pending, source: (y && y.source) || null };
+      return { days: days, list: list, pending: pending, source: (y && y.source) || null,
+               provisional: !!(y && y.provisional) };
     }
   };
 })(window);

@@ -72,8 +72,22 @@
     src:      { en: 'Source: ', km: 'ប្រភព៖ ' },
     noSrc:    { en: 'The sub-decree for this year has not been entered, so only the fixed-date holidays are shown on the grid.',
                 km: 'អនុក្រឹត្យសម្រាប់ឆ្នាំនេះមិនទាន់បានបញ្ចូលទេ ដូច្នេះមានតែថ្ងៃឈប់សម្រាកកាលបរិច្ឆេទថេរប៉ុណ្ណោះដែលបង្ហាញលើតារាង។' },
-    today:    { en: 'Today', km: 'ថ្ងៃនេះ' }
+    today:    { en: 'Today', km: 'ថ្ងៃនេះ' },
+    obsH:     { en: 'Other days in {y}', km: 'ថ្ងៃផ្សេងៗឆ្នាំ {y}' },
+    obsHM:    { en: 'Other days in {m} {y}', km: 'ថ្ងៃផ្សេងៗ ខែ{m} ឆ្នាំ {y}' },
+    obsNone:  { en: 'Nothing else falls in this month.', km: 'គ្មានថ្ងៃផ្សេងទៀតក្នុងខែនេះទេ។' },
+    kanBen:   { en: 'Kan Ben — Ben 1 to Ben {n}, the days leading up to Pchum Ben',
+                km: 'កាន់បិណ្ឌ — បិណ្ឌ ១ ដល់បិណ្ឌ {n} មុនថ្ងៃភ្ជុំបិណ្ឌ' },
+    nth:      { en: '{n} anniversary', km: 'ខួបលើកទី{n}' },
+    sila:     { en: 'Buddhist holy day', km: 'ថ្ងៃសីល' },
+    kor:      { en: 'Shaving day', km: 'ថ្ងៃកោរ' }
   };
+  var OBS = window.KH_OBSERVANCES || null;
+  function obsFor(y) { return OBS ? OBS.forYear(y) : { days: {}, list: [] }; }
+  function ordEn(n) {
+    var s = ['th', 'st', 'nd', 'rd'], v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
 
   /* ---------------------------------------------------------------- state */
   var TODAY = new Date();
@@ -99,6 +113,8 @@
     listH: document.getElementById('calListH'),
     list:  document.getElementById('calList'),
     pend:  document.getElementById('calPending'),
+    obsH:  document.getElementById('calObsH'),
+    obs:   document.getElementById('calObs'),
     pendL: document.getElementById('calPendingList'),
     print: document.getElementById('calPrint')
   };
@@ -127,6 +143,7 @@
   /* -------------------------------------------------------------- drawing */
   function render() {
     var info = DATA.forYear(year);
+    var ob = obsFor(year);
     el.pick.value = String(year);
     paintMonthPicker();
 
@@ -141,14 +158,16 @@
     var shown;                       /* the holidays the current view covers */
     if (mode === 'year') {
       var html = '';
-      for (var m = 1; m <= 12; m++) { html += miniMonth(m, info.days); }
+      for (var m = 1; m <= 12; m++) { html += miniMonth(m, info.days, ob.days); }
       el.grid.innerHTML = html;
       shown = info.list;
       el.count.textContent = countLabel(info.days, null);
       el.listH.textContent = fill(t(T.listH), { y: num(year) });
+      paintObs(ob.list, null);
     } else {
       el.mpick.value = String(month);
       el.big.innerHTML = bigMonth(month, info.days);
+      paintObs(ob.list, month);
       shown = info.list.filter(function (h) { return touchesMonth(h, year, month); });
       el.count.textContent = countLabel(info.days, month);
       el.listH.textContent = fill(t(T.listHM), { m: MONTHS[lang()][month - 1], y: num(year) });
@@ -157,7 +176,7 @@
     /* where the dates came from */
     if (info.source) {
       el.src.textContent = t(T.src) + t(info.source);
-      el.src.className = 'cal-src';
+      el.src.className = info.provisional ? 'cal-src is-warn' : 'cal-src';
     } else {
       el.src.textContent = t(T.noSrc);
       el.src.className = 'cal-src is-warn';
@@ -180,6 +199,33 @@
       el.pend.hidden = true;
       el.pendL.innerHTML = '';
     }
+  }
+
+  /* The days that are not days off: international and national days, the
+     lunar festivals and Kan Ben. On the year view the fifteen Ben days fold
+     into one line; on the month view each one is listed, as the site does. */
+  function paintObs(all, onlyMonth) {
+    if (!el.obs) { return; }
+    var rows = [], ben = [];
+    all.forEach(function (o) {
+      if (onlyMonth && +o.start.split('-')[1] !== onlyMonth) { return; }
+      if (o.kind === 'ben' && !onlyMonth) { ben.push(o); return; }
+      rows.push(o);
+    });
+    if (ben.length) {
+      rows.push({ start: ben[0].start, kind: 'ben', len: ben.length,
+                  en: fill(T.kanBen.en, { n: ben.length }),
+                  km: fill(T.kanBen.km, { n: num(ben.length) }) });
+      rows.sort(function (a, b) { return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; });
+    }
+    el.obsH.textContent = onlyMonth
+      ? fill(t(T.obsHM), { m: MONTHS[lang()][onlyMonth - 1], y: num(year) })
+      : fill(t(T.obsH), { y: num(year) });
+    el.obs.innerHTML = rows.length
+      ? rows.map(function (o) {
+          return row({ start: o.start, len: o.len || 1, en: o.en, km: o.km, kind: o.kind });
+        }).join('')
+      : '<li class="cal-none">' + esc(t(T.obsNone)) + '</li>';
   }
 
   /* How many holiday days, for the whole year or for one month. */
@@ -207,7 +253,8 @@
     return false;
   }
 
-  function miniMonth(m, days) {
+  function miniMonth(m, days, odays) {
+    odays = odays || {};
     var first = new Date(year, m - 1, 1).getDay();      /* 0 = Sunday */
     var len = daysInMonth(year, m);
 
@@ -227,9 +274,15 @@
       var cls = ['cal-d'];
       if (dow === 0 || dow === 6) { cls.push('is-we'); }
       if (hol) { cls.push('is-hol'); }
+      var od = odays[key], names = [];
+      if (hol) { names.push(t(hol)); }
+      if (od && od.ev.length) {
+        if (!hol) { cls.push('is-obs'); }
+        od.ev.forEach(function (e) { names.push(t(e)); });
+      }
       if (key === TODAY_KEY) { cls.push('is-today'); }
       out += '<span class="' + cls.join(' ') + '" id="c-' + key + '"' +
-             (hol ? ' title="' + esc(t(hol)) + '"' : '') + '>' + num(d) + '</span>';
+             (names.length ? ' title="' + esc(names.join(' · ')) + '"' : '') + '>' + num(d) + '</span>';
     }
     return out + '</div></section>';
   }
@@ -264,6 +317,11 @@
     var prevLen = daysInMonth(m === 1 ? year - 1 : year, m === 1 ? 12 : m - 1);
 
     var sub = lunarHeading(m);
+    var obsCache = {};
+    function odayOf(cy, key) {
+      if (!obsCache[cy]) { obsCache[cy] = obsFor(cy).days; }
+      return obsCache[cy][key] || null;
+    }
     var out = '<div class="cal-bighead">' +
                 '<h3>' + esc(MONTHS[lang()][m - 1]) + ' ' + num(year) + '</h3>' +
                 (sub ? '<p class="cal-bigsub">' + esc(sub) + '</p>' : '') +
@@ -301,14 +359,26 @@
         ? (lun.day === 1 ? LUN.dayMonth(lun) : LUN.shortLabel(lun))
         : '';
 
+      var od = odayOf(cy, key);
+      if (od && od.sila) { cls.push('is-sila'); }
+      var chips = (od && od.ev.length && !out_of)
+        ? od.ev.map(function (e) {
+            return '<span class="ob k-' + e.kind + '">' + esc(t(e)) + '</span>';
+          }).join('')
+        : '';
+
       out += '<div class="' + cls.join(' ') + '" id="c-' + key + '">' +
-               '<span class="n">' + num(d) + '</span>' +
-               (lunText ? '<span class="lun">' + esc(lunText) + '</span>' : '') +
+               '<span class="n">' + num(d) +
+                 (od && od.sila ? '<i class="sila" title="' + esc(t(T.sila)) + '" aria-label="' + esc(t(T.sila)) + '">☸</i>' : '') +
+               '</span>' +
+               (lunText ? '<span class="lun">' + esc(lunText) +
+                 (od && od.kor ? '<b class="kor">ថ្ងៃកោរ</b>' : '') + '</span>' : '') +
                (hol && !out_of
                  ? '<span class="ev">' + esc(t(hol)) +
                    (hol.of > 1 ? '<em>' + fill(t(T.partOf), { a: num(hol.part), b: num(hol.of) }) + '</em>' : '') +
                    '</span>'
                  : '') +
+               chips +
              '</div>';
     }
     return out + '</div>';
@@ -334,10 +404,11 @@
       when += ' – ' + num(endDate.getDate()) + ' ' + MONTHS[lang()][endDate.getMonth()];
     }
 
-    return '<li class="cal-row' + (h.movable ? ' is-movable' : '') + '" data-jump="' + esc(h.start) + '">' +
+    var nth = h.nth > 0 ? (lang() === 'km' ? fill(T.nth.km, { n: num(h.nth) }) : fill(T.nth.en, { n: ordEn(h.nth) })) : '';
+    return '<li class="cal-row' + (h.movable ? ' is-movable' : '') + (h.kind ? ' is-' + h.kind : '') + '" data-jump="' + esc(h.start) + '">' +
              '<span class="when"><b>' + esc(when) + '</b><small>' + esc(dow) +
                (h.len > 1 ? ' · ' + fill(t(T.days), { n: num(h.len) }) : '') + '</small></span>' +
-             '<span class="what">' + esc(t(h)) +
+             '<span class="what">' + esc(t(h)) + (nth ? ' <span class="nth">' + esc(nth) + '</span>' : '') +
                (h.note ? '<small>' + esc(t(h.note)) + '</small>' : '') + '</span>' +
            '</li>';
   }
@@ -379,7 +450,8 @@
   /* Clicking a holiday in the list finds it on the grid. On a phone the list
      is a long way from the month it belongs to, which makes this the only
      practical way to connect the two. */
-  el.list.addEventListener('click', function (e) {
+  el.list.addEventListener('click', jumpFrom);
+  function jumpFrom(e) {
     var li = e.target.closest('[data-jump]');
     if (!li) { return; }
     var iso = li.getAttribute('data-jump');
@@ -395,7 +467,9 @@
     cell.classList.add('is-flash');
     cell.scrollIntoView({ behavior: 'smooth', block: 'center' });
     setTimeout(function () { cell.classList.remove('is-flash'); }, 2600);
-  });
+  }
+
+  if (el.obs) { el.obs.addEventListener('click', jumpFrom); }
 
   document.addEventListener('aa:langchange', render);
 

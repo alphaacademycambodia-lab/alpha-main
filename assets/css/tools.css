@@ -410,11 +410,32 @@ a.tl-card:hover{transform:translateY(-3px);border-color:var(--brand-300);box-sha
 :root[data-theme="dark"] .cal-b.is-hol .n,
 :root[data-theme="dark"] .cal-b.is-hol .ev{color:#0a1120}
 .cal-b.is-flash{animation:cal-flash 2.4s var(--ease)}
+/* the other days: quieter chips under the day, never the full highlight
+   a day off gets, because none of them closes anything */
+.cal-b .sila{font-style:normal;font-size:.78em;margin-left:.3em;color:#c77a0a;vertical-align:1px}
+.cal-b.is-hol .sila{color:#ffd88a}
+.cal-b .kor{display:block;font-weight:600;color:var(--ink-500)}
+.cal-b.is-hol .kor{color:rgba(255,255,255,.82)}
+.cal-b .ob{
+  display:block;font-family:"Kantumruy Pro",var(--font-sans);
+  font-size:.64rem;font-weight:600;line-height:1.4;padding:.05rem .3rem;border-radius:4px;
+  background:rgba(18,115,230,.1);color:var(--brand-700);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.cal-b .ob.k-ben{background:rgba(199,122,10,.12);color:#9a5d05}
+.cal-b.is-hol .ob{background:rgba(255,255,255,.2);color:#fff}
+:root[data-theme="dark"] .cal-b .ob{background:rgba(120,170,255,.16);color:var(--brand-300,#9cc3ff)}
+:root[data-theme="dark"] .cal-b .ob.k-ben{background:rgba(240,170,60,.16);color:#f0b458}
+.cal-d.is-obs{box-shadow:inset 0 -2px 0 var(--brand-300,#8ab8f5)}
+.cal-obsh{margin-top:2rem !important}
+.cal-row.is-obs .when b,.cal-row.is-cul .when b{color:var(--brand-600)}
+.cal-row.is-ben .when b{color:#9a5d05}
+.cal-row .nth{font-weight:500;color:var(--ink-400);font-size:.86em}
 
 /* On a phone seven columns cannot carry a name, so the day keeps its
    highlight and the list underneath does the naming. */
 @media (max-width:640px){
-  .cal-b .ev,.cal-b .lun{display:none}
+  .cal-b .ev,.cal-b .lun,.cal-b .ob{display:none}
   .cal-b{min-height:44px;justify-content:center;align-items:center}
   .cal-b .n{font-size:.9rem}
   .cal-bdow i{display:none}
@@ -478,6 +499,9 @@ a.tl-card:hover{transform:translateY(-3px);border-color:var(--brand-300);box-sha
 .cal-legend i{width:15px;height:15px;border-radius:5px;flex:none;border:1.5px solid transparent;display:block}
 .cal-legend i.k-hol{background:var(--brand-600);border-color:var(--brand-600)}
 .cal-legend i.k-today{border-color:var(--ink-400);border-style:dashed;background:var(--surface-2)}
+.cal-legend i.k-obs{background:rgba(18,115,230,.1);border-color:var(--brand-300,#8ab8f5)}
+.cal-legend b.k-sila{color:#c77a0a;font-weight:400}
+.cal-legend b.k-kor{font-family:"Kantumruy Pro",var(--font-sans);font-size:.72rem;color:var(--ink-500);font-weight:600}
 .cal-legend i.k-we{background:var(--surface-2);border-color:var(--ink-200)}
 
 /* ======================================================= 5. the countdown
