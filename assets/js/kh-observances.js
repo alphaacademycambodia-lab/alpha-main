@@ -34,6 +34,9 @@
     { m:2,  d:24, en:'National Mine Awareness Day', km:'ទិវាជាតិយល់ដឹងពីមីន' },
     { m:3,  d:22, en:'World Water Day', km:'ទិវាទឹកពិភពលោក' },
     { m:4,  d:7,  en:'World Health Day', km:'ទិវាសុខភាពពិភពលោក' },
+    { m:5,  d:3,  en:'World Press Freedom Day', km:'ទិវាសេរីភាពសារព័ត៌មានពិភពលោក' },
+    { m:5,  d:8,  en:'World Red Cross and Red Crescent Day', km:'ទិវាពិភពលោកកាកបាទក្រហម អឌ្ឍចន្ទក្រហម' },
+    { m:5,  d:15, en:'International Day of Families', km:'ទិវាអន្តរជាតិនៃគ្រួសារ' },
     { m:4,  d:22, en:'Earth Day', km:'ទិវាផែនដី' },
     { m:5,  d:20, en:'National Day of Remembrance', km:'ទិវាជាតិនៃការចងចាំ' },
     { m:5,  d:31, en:'World No Tobacco Day', km:'ទិវាពិភពលោកគ្មានថ្នាំជក់' },
@@ -53,6 +56,7 @@
     { m:10, d:23, since:1991, en:'Paris Peace Agreements Day', km:'ទិវារំលឹកកិច្ចព្រមព្រៀងសន្តិភាពទីក្រុងប៉ារីស' },
     { m:12, d:1,  en:'World AIDS Day', km:'ទិវាអេដស៍ពិភពលោក' },
     { m:12, d:3,  en:'International Day of Persons with Disabilities', km:'ទិវាជនពិការអន្តរជាតិ' },
+    { m:12, d:9,  en:'International Anti-Corruption Day', km:'ទិវាប្រយុទ្ធប្រឆាំងអំពើពុករលួយ' },
     { m:12, d:10, en:'Human Rights Day', km:'ទិវាសិទ្ធិមនុស្សអន្តរជាតិ' },
     { m:12, d:14, since:1992, en:'Angkor inscribed on the UNESCO World Heritage List', km:'តំបន់អង្គរ ត្រូវបានចុះក្នុងបញ្ជីបេតិកភណ្ឌពិភពលោករបស់អង្គការយូណេស្កូ' },
     { m:12, d:25, en:'Christmas Day', km:'បុណ្យណូអែល' }

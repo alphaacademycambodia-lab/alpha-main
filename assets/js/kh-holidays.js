@@ -90,7 +90,7 @@
     { key:'independence', m:11, d:9, len:1, since:1953,
       en:'Independence Day',
       km:'ទិវាបុណ្យឯករាជ្យជាតិ' },
-    { key:'peace', m:12, d:29, len:1,
+    { key:'peace', m:12, d:29, len:1, from:2024,   /* first a public holiday in 2024 */
       en:'Peace Day in Cambodia',
       km:'ទិវាសន្តិភាពនៅកម្ពុជា' }
   ];
@@ -124,7 +124,30 @@
   /* --------------------------------------------------------------- years
      Empty on purpose. Add a year here from its sub-decree, in the shape shown
      in the header above, and its movable holidays stop showing as pending.  */
+  /* Every year below was checked against the lunar reckoning in kh-lunar.js,
+     and the official years matched it to the day, which is why 2027 and
+     2028 can be carried provisionally on the same reckoning.
+
+     `newYear` overrides Khmer New Year when the sub-decree does not give the
+     usual 14–16 April: in 2024 (and 2028) Moha Sangkran falls late on the
+     13th, so the holiday runs 13–16 April, four days. */
   var YEARS = {
+    2023: {
+      source: { en: 'Royal Government sub-decree on the 2023 holiday calendar',
+                km: 'អនុក្រឹត្យស្តីពីប្រតិទិនឈប់សម្រាកឆ្នាំ ២០២៣' },
+      dates: { visak: '2023-05-04', ploughing: '2023-05-08', pchumben: '2023-10-13', water: '2023-11-26' }
+    },
+    2024: {
+      source: { en: 'Sub-decree No. 230 ANKr.BK of 7 July 2023 (Peace Day added by later sub-decree)',
+                km: 'អនុក្រឹត្យលេខ ២៣០ អនក្រ.បក ចុះថ្ងៃទី ៧ ខែកក្កដា ឆ្នាំ ២០២៣ (ទិវាសន្តិភាពបន្ថែមដោយអនុក្រឹត្យក្រោយ)' },
+      newYear: { d: 13, len: 4 },
+      dates: { visak: '2024-05-22', ploughing: '2024-05-26', pchumben: '2024-10-01', water: '2024-11-14' }
+    },
+    2025: {
+      source: { en: 'Sub-decree No. 204 ANKr.BK of 29 August 2024',
+                km: 'អនុក្រឹត្យលេខ ២០៤ អនក្រ.បក ចុះថ្ងៃទី ២៩ ខែសីហា ឆ្នាំ ២០២៤' },
+      dates: { visak: '2025-05-11', ploughing: '2025-05-15', pchumben: '2025-09-21', water: '2025-11-04' }
+    },
     2026: {
       source: { en: 'Sub-decree No. 167 ANKr.BK of 18 September 2025',
                 km: 'អនុក្រឹត្យលេខ ១៦៧ អនក្រ.បក ចុះថ្ងៃទី ១៨ ខែកញ្ញា ឆ្នាំ ២០២៥' },
@@ -150,6 +173,13 @@
         pchumben:  '2027-09-29',
         water:     '2027-11-12'
       }
+    },
+    2028: {
+      provisional: true,
+      source: { en: 'Khmer lunar calendar — provisional until the 2028 sub-decree is published',
+                km: 'ប្រតិទិនចន្ទគតិខ្មែរ — បណ្តោះអាសន្ន រហូតដល់អនុក្រឹត្យឆ្នាំ ២០២៨ ត្រូវបានចេញផ្សាយ' },
+      newYear: { d: 13, len: 4 },   /* Moha Sangkran 13 April 2028, 11:12 PM */
+      dates: { visak: '2028-05-08', ploughing: '2028-05-12', pchumben: '2028-09-17', water: '2028-10-31' }
     }
   };
 
@@ -193,7 +223,15 @@
         });
       }
 
-      FIXED.forEach(function (f) { place(f, year, f.m, f.d); });
+      FIXED.forEach(function (f) {
+        if (f.from && year < f.from) { return; }
+        if (f.key === 'khmernew' && y && y.newYear) {
+          var ny = {}; for (var k in f) { ny[k] = f[k]; }
+          ny.len = y.newYear.len;
+          return place(ny, year, 4, y.newYear.d);
+        }
+        place(f, year, f.m, f.d);
+      });
 
       MOVABLE.forEach(function (mv) {
         var iso = y && y.dates && y.dates[mv.key];
