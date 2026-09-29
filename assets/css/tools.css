@@ -26,6 +26,9 @@
    is why the result is a live region beside the inputs rather than behind a
    Calculate button, and why the calendar is there at all.                    */
 
+/* keep the inactive view (year grid or month) off screen */
+#calRoot [hidden]{display:none !important}
+
 /* ==================================================================== 1. hub */
 .tl-grid{
   display:grid;gap:1.25rem;margin-top:2rem;
