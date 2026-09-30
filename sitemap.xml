@@ -125,6 +125,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.alphaacademycambodia.com/unit-converter.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.alphaacademycambodia.com/khmer-kindergarten.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

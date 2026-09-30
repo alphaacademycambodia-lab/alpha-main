@@ -66,6 +66,9 @@ date-calculator.html
 countdown.html    Countdown — days, hours, minutes and seconds to any date and
                   time, or to one of the Cambodian public holidays and the
                   other dates people count to, with a celebration at zero
+unit-converter.html
+                  Unit Converter — length, weight (with the Cambodian gold
+                  weights chi and damlung) and temperature, both directions
 contact.html      Contact — details, enquiry form, opening hours, map, quick FAQ
 404.html          Not-found page
 robots.txt        Crawler rules
