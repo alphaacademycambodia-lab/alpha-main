@@ -69,6 +69,10 @@ countdown.html    Countdown — days, hours, minutes and seconds to any date and
 unit-converter.html
                   Unit Converter — length, weight (with the Cambodian gold
                   weights chi and damlung) and temperature, both directions
+scientific-calculator.html
+                  Scientific Calculator — trig in degrees or radians, log, ln,
+                  powers and roots, n!, nCr/nPr, ×10ˣ and Ans, with keyboard
+                  shortcuts and a history of answers for the open tab
 contact.html      Contact — details, enquiry form, opening hours, map, quick FAQ
 404.html          Not-found page
 robots.txt        Crawler rules
@@ -119,6 +123,8 @@ assets/css/tools.css   The Tools tab — the hub grid, the date calculator, the
                        countdown with its confetti
 assets/js/countdown.js The countdown — the clock, the event list built from
                        kh-holidays.js, the celebration and the confetti
+assets/js/sci-calc.js  The scientific calculator — tokens, a parser (no eval),
+                       exact degree trigonometry, the keypad and the history
 assets/js/date-calculator.js
                        The date calculator — the arithmetic, the result panel
                        and the calendar. No dependencies, nothing stored
@@ -636,6 +642,35 @@ announced element is the celebration line, and it is written only when it
 changes. The badge beside each event uses the same whole-days-of-elapsed-time
 measure the clock does rather than counting calendar days, because "in 33
 days" beside a clock reading 32 looks like one of them is broken.
+
+### Scientific Calculator
+
+`scientific-calculator.html` + `assets/js/sci-calc.js`, styles in section 7
+of `tools.css`. The calculator a Grade 12 student is allowed in the exam
+room. Four things are worth knowing before editing it.
+
+**There is no `eval()`.** Each key press pushes one token (`sin` shows as
+`sin(`), and a small recursive-descent parser turns the list into a number.
+That is why ⌫ removes a whole function in one press, why an impossible answer
+can say exactly what is wrong (divide by zero, log of a negative, tan 90°,
+n! of a fraction), and why a pasted link can never run code.
+
+**It follows the Casio order**, because that is what students already trust:
+brackets and functions, then x² x³ x⁻¹ ! %, then ^ ˣ√ ᴇ (right to left),
+then a leading minus, then nCr nPr, then multiplication with no sign, then
+× ÷, then + −. So −3² = −9, 2^3^2 = 512 and 1÷2π = 1÷(2π). Missing closing
+brackets at the end are added; an extra one is an error.
+
+**Degree trigonometry is exact at the angles students use.** The angle is
+reduced first and multiples of 30°, 45° and 90° are answered exactly, so
+sin 180° is 0 rather than 1.2×10⁻¹⁶, and tan 90° is refused rather than
+printed as a sixteen-digit number. Results are kept to 15 significant digits
+(so 0.1 + 0.2 = 0.3) and shown to 10.
+
+**The address bar is the only memory.** After `=` the calculation goes in
+the hash (`#x=sin(,3,0&a=rad`), so a working can be sent to a classmate. The
+history panel lives only as long as the tab. `window.AASciCalc.evaluate(tokens,
+mode)` exposes the parser for testing without the page.
 
 ## The four kindergarten pages
 
