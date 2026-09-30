@@ -6,6 +6,8 @@
      dc-*   the Date Calculator
      cal-*  the Holiday Calendar
      cd-*   the Countdown
+     uc-*   the Unit Converter (it also borrows the dc-* card, result,
+            note, chips and copy button, so it matches the calculator)
 
    Namespaced rather than reusing .res / .card / .field, because the shared
    stylesheet already owns those and a tool is not a lesson. The one thing
@@ -781,3 +783,62 @@ a.tl-card:hover{transform:translateY(-3px);border-color:var(--brand-300);box-sha
 .cd-tbtns .btn{flex:1;justify-content:center}
 .cd-timer.is-running .cd-presets{opacity:.5;pointer-events:none}
 @media (prefers-reduced-motion:reduce){ .cd-step{transition:none} }
+
+/* ================================================= 6. the unit converter
+   Borrows the dc-* card, result panel, quick chips, note and copy button;
+   only what is new is here: the three-way category switch, the value+unit
+   pair, the swap button and the every-unit list. */
+.uc-cats{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.3rem;
+  background:var(--surface-2);border:1px solid var(--ink-100);border-radius:var(--r-sm);padding:.3rem;
+}
+.uc-cats button{
+  font:inherit;font-size:.9rem;font-weight:700;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:.35rem;flex-wrap:wrap;
+  padding:.6rem .3rem;border:0;border-radius:calc(var(--r-sm) - 2px);
+  background:transparent;color:var(--ink-500);
+  transition:background-color .18s var(--ease),color .18s var(--ease),box-shadow .18s var(--ease);
+}
+.uc-cats button:hover{color:var(--ink-900)}
+.uc-cats button[aria-pressed="true"]{background:var(--surface);color:var(--brand-700);box-shadow:var(--shadow-xs)}
+
+.uc-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:.5rem}
+.uc-pair input,.uc-pair select{
+  min-width:0;width:100%;font:inherit;color:var(--ink-900);
+  padding:.72rem .85rem;border:1.5px solid var(--ink-200);border-radius:var(--r-sm);
+  background:var(--surface);
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease);
+}
+.uc-pair input{font-size:1.2rem;font-weight:700;font-variant-numeric:tabular-nums}
+.uc-pair select{font-size:.93rem;font-weight:600;cursor:pointer}
+.uc-pair input:focus,.uc-pair select:focus{outline:none;border-color:var(--brand-500);box-shadow:0 0 0 3px rgba(18,115,230,.15)}
+@media (max-width:420px){ .uc-pair{grid-template-columns:minmax(0,1fr)} }
+
+.uc-swapline{display:flex;justify-content:center;margin:-.35rem 0 .45rem}
+.uc-swap{
+  width:40px;height:40px;display:grid;place-items:center;cursor:pointer;
+  border-radius:50%;background:var(--brand-50);border:1.5px solid var(--brand-100);color:var(--brand-700);
+  transition:background-color .18s var(--ease),transform .25s var(--ease);
+}
+.uc-swap:hover{background:var(--brand-100);transform:rotate(180deg)}
+.uc-swap svg{width:19px;height:19px}
+
+.uc-bad .dc-big{color:var(--ink-400);font-size:clamp(1.1rem,3vw,1.35rem);font-weight:700}
+.uc-bad .dc-copy,.uc-bad .dc-alt{display:none}
+
+.uc-list{list-style:none;margin:.6rem 0 0;padding:0;display:grid;gap:.35rem}
+.uc-list button{
+  width:100%;font:inherit;cursor:pointer;text-align:left;
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding:.6rem .85rem;border-radius:var(--r-sm);
+  background:var(--surface-2);border:1px solid var(--ink-100);color:var(--ink-700);
+  transition:border-color .18s var(--ease),background-color .18s var(--ease);
+}
+.uc-list button:hover{border-color:var(--brand-300);background:var(--brand-50)}
+.uc-list button.is-on{border-color:var(--brand-500);background:var(--brand-50)}
+.uc-list .nm{font-size:.9rem;font-weight:600;color:var(--ink-500)}
+.uc-list .vl{font-weight:800;color:var(--ink-900);text-align:right;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){
+  .uc-cats button,.uc-swap,.uc-list button{transition:none}
+  .uc-swap:hover{transform:none}
+}
