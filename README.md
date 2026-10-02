@@ -56,6 +56,12 @@ hsk1-test.html    HSK 1 chapter tests — 15 tests following HSK Standard
 chinese-beginner.html
                   Chinese for Beginners — pinyin, sound, writing, numbers,
                   words and conversation, with audio on every line
+khmer-conversational-mastery.html
+                  Khmer Conversational Mastery by Ngorn Kakteka — 100 real-life
+                  situations for foreigners and children learning to speak
+                  Khmer. Each lesson: an illustrated scene that acts out the
+                  conversation, Khmer script + romanization + English, key
+                  phrases, tips, flashcards, a quiz and role-play
 tools.html        Tools hub — the fourth top-level tab, listing the free tools
 calendar.html     Cambodia Holiday Calendar — a whole year with the public
                   holidays marked, the list underneath, and a print layout
@@ -975,6 +981,45 @@ each character.
 `i18n.js`). Word meanings and dialogue translations come from the `km` field on
 each entry in the bank and swap over with the language toggle; the grammar
 explanations are English, as on the other lesson pages.
+
+## Khmer Conversational Mastery
+
+`khmer-conversational-mastery.html` is a self-study speaking course: 100
+situations in 10 chapters, written by **Ngorn Kakteka**. It replaced the old
+218-page book/slide-deck page — the lesson content is the same, now arranged as
+lessons to practise rather than pages to read.
+
+| file | what it holds |
+|---|---|
+| `assets/js/kcm-bank.js` | the 100 lessons — title, scene, dialogue, say-it-right note, key phrases, tips |
+| `assets/js/kcm-scenes.js` | the illustrated scene for every lesson, drawn as inline SVG |
+| `assets/js/kcm.js` | the page: lesson list, rail, Learn / Flashcards / Quiz / Role-play |
+| `assets/css/kcm.css` | styles, all namespaced `kcm-*` |
+
+**Links.** `#s-12` opens lesson 12; `#s-12/cards`, `#s-12/quiz` and
+`#s-12/role` open its practice tabs; `#pronunciation` opens the romanization
+key. With no hash the page shows every lesson as a picture card, with search.
+
+**Pictures.** There are no image files. Each scene is a setting (café, street,
+market, clinic, temple …), the object the talk is about, and two people — the
+learner ("You", always the same character, on the left) and the other speaker.
+The `SPEC` table at the top of `kcm-scenes.js` picks those for each lesson in
+one short line, e.g. `11:'street tuktuk cap m'`. Press **Play the
+conversation** and the speaker's mouth moves while a speech bubble shows the
+line; tapping any line does the same for that line.
+
+**Editing a lesson.** Change the entry in `kcm-bank.js`. In `ro` (romanization)
+wrap the stressed syllable in `<b>`. A dialogue turn whose `who` is `"You"` is
+the learner's line — role-play hides exactly those. Quizzes are generated from
+the lesson's phrases and dialogue every time, so they need no separate bank.
+
+**Progress** (best quiz score per lesson, last lesson, the Romanization /
+English switches) is saved under `aa-kcm-v1` in the visitor's own browser. A
+lesson counts as complete at 70% in its quiz.
+
+**Audio** uses the browser's Khmer (`km`) speech voice when the device has one;
+when it does not, the speaker buttons hide and the toolbar says so — the
+romanization carries the pronunciation instead.
 
 ## The formula book
 
