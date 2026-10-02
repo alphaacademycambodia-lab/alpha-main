@@ -114,7 +114,7 @@
     keyH:       { en: 'How to read the romanization', km: 'របៀបអានអក្សរឡាតាំង' },
     keyP:       { en: 'Every Khmer line has a romanized reading under it. Letters in bold are the stressed syllable — say them a little louder and longer. These are the sounds that differ from English.', km: 'ប្រយោគខ្មែរនីមួយៗមានការអានជាអក្សរឡាតាំងនៅខាងក្រោម។ អក្សរដិតគឺព្យាង្គដែលត្រូវសង្កត់ — និយាយឱ្យខ្លាំង និងវែងបន្តិច។ ខាងក្រោមនេះជាសំឡេងដែលខុសពីភាសាអង់គ្លេស។' },
     keyGo:      { en: 'Start with lesson 1', km: 'ចាប់ផ្តើមជាមួយមេរៀនទី ១' },
-    by:         { en: 'Lessons by Ngorn Kakteka', km: 'មេរៀនដោយ ង៉ោន កក្កដា' },
+    by:         { en: 'Lessons by Ngorn Kakteka', km: 'មេរៀនដោយ ងន កតិកា' },
     done:       { en: 'Complete', km: 'បានបញ្ចប់' }
   };
   function lang() { return (window.AAi18n && window.AAi18n.get && window.AAi18n.get() === 'km') ? 'km' : 'en'; }
