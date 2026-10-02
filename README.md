@@ -79,6 +79,24 @@ scientific-calculator.html
                   Scientific Calculator — trig in degrees or radians, log, ln,
                   powers and roots, n!, nCr/nPr, ×10ˣ and Ans, with keyboard
                   shortcuts and a history of answers for the open tab
+graph-plotter.html
+                  Graph Plotter — up to four functions of x, pan, pinch and
+                  zoom, trace, and the roots, turning points, y-intercept and
+                  intersections found in the visible window
+equation-solver.html
+                  Equation Solver — linear, quadratic (Δ and Δ′, complex
+                  roots), cubic and 2×2 / 3×3 systems, exact, with working
+fraction-calculator.html
+                  Fractions & Percent — fraction arithmetic with steps and
+                  recurring decimals; X% of Y, what percent, % change, ± %
+study-timer.html  Study Timer — Pomodoro focus timer with a chime that rings
+                  on time in a background tab
+age-calculator.html
+                  Age & Khmer Zodiac — exact age, next birthday, the Khmer
+                  animal year, sak and lunar birth date
+number-to-khmer-words.html
+                  Number to Khmer Words — Khmer words (ម៉ឺន/សែន or thousands),
+                  Khmer numerals and English, with riel or dollar endings
 contact.html      Contact — details, enquiry form, opening hours, map, quick FAQ
 404.html          Not-found page
 robots.txt        Crawler rules
@@ -131,6 +149,23 @@ assets/js/countdown.js The countdown — the clock, the event list built from
                        kh-holidays.js, the celebration and the confetti
 assets/js/sci-calc.js  The scientific calculator — tokens, a parser (no eval),
                        exact degree trigonometry, the keypad and the history
+assets/js/tools-core.js
+                       Shared by the six newer tools: language, Khmer digits,
+                       number parsing and formatting, the hash, copy button
+assets/js/graph-plotter.js
+                       The plotter — formula parser (no eval), canvas drawing,
+                       pan/zoom/trace and the search for points
+assets/js/equation-solver.js
+                       Exact BigInt fractions, the solvers and their working
+assets/js/fraction-calculator.js
+                       Fractions (BigInt, recurring decimals) and the four
+                       percentage panels
+assets/js/study-timer.js
+                       The focus timer, the cycle, the chime
+assets/js/age-calculator.js
+                       Age arithmetic and the Khmer year (uses kh-lunar.js)
+assets/js/number-words.js
+                       Numbers → Khmer words, Khmer numerals, English words
 assets/js/date-calculator.js
                        The date calculator — the arithmetic, the result panel
                        and the calendar. No dependencies, nothing stored
@@ -677,6 +712,115 @@ printed as a sixteen-digit number. Results are kept to 15 significant digits
 the hash (`#x=sin(,3,0&a=rad`), so a working can be sent to a classmate. The
 history panel lives only as long as the tab. `window.AASciCalc.evaluate(tokens,
 mode)` exposes the parser for testing without the page.
+
+### The six newer tools — shared ground
+
+The graph plotter, equation solver, fraction calculator, study timer, age
+calculator and number-to-words page keep the same three rules as the rest of
+the tab (one job, no network, nothing stored), and they share
+`assets/js/tools-core.js` instead of each carrying its own copy of the
+language, Khmer-digit, number-parsing, hash and copy-button helpers. Their
+styles are sections 8–14 of `tools.css`, namespaced `gp-` `es-` `fr-` `st-`
+`ag-` `nw-`. The hub now groups the cards into **For study** and **Everyday**.
+
+Page furniture is translated through `data-i18n` keys (`gp.*`, `es.*`, `fr.*`,
+`st.*`, `ag.*`, `nw.*` in `i18n.js`); everything a script writes carries its
+own `{en, km}` pairs, the first pattern in the table above.
+
+### Graph Plotter
+
+`graph-plotter.html` + `assets/js/graph-plotter.js`. Up to four functions,
+equal scale on both axes, drag to pan, wheel or pinch to zoom (keeping the
+point under the finger still), arrow keys and +/− on the focused canvas.
+
+**No `eval()`.** A tokeniser and recursive-descent parser build a tree of
+closures. It reads what students write: `2x²`, `3(x+1)`, `(x−1)(x+2)`,
+`sin 2x` (= sin(2x)), `sin(x)^2` (= (sin x)²), `−x²` (= −(x²)), `√x`,
+`|x−2|`, `ln x`, `e^x`, `π`, and a leading `y =` or `f(x) =`. Trig is in
+radians. `x^(1/3)` is real for negative x. `window.AAGraph.compile(src)`
+returns the function, for testing.
+
+**Asymptotes are not joined, and not reported as roots.** Curves are sampled
+twice per pixel; a jump of more than 1.5 screens between samples breaks the
+line. A sign change is only listed as a root if bisection lands on a value
+that is actually near zero.
+
+**Points are searched in the visible window**, re-run 160 ms after panning
+stops: roots, minima/maxima (golden-section refinement; a touching root like
+x² at 0 is caught from the minimum), the y-intercept and pairwise
+intersections. Up to 24 are listed; clicking one centres the graph on it.
+
+State: `#f=x^2-4|!sin(x)&v=cx,cy,scale` — a leading `!` is a hidden row.
+
+### Equation Solver
+
+`equation-solver.html` + `assets/js/equation-solver.js`. Linear `ax + b = c`,
+quadratic, cubic, and 2×2 / 3×3 systems.
+
+**Exact arithmetic with BigInt fractions.** `0.5` is read as 1/2; roots print
+as `3/4` or `1 ± 2√3` (surds simplified), with decimals only as an
+approximation underneath.
+
+**The working is the textbook's.** Quadratics show Δ, and Δ′ = b′² − ac
+when b is an even whole number. Δ < 0 gives the complex roots p ± qi. Cubics
+try the ±p/q candidates, show the synthetic division (Horner) table and
+solve the quadratic that is left; with no rational root they fall back to
+Cardano / the trigonometric form, numerically. Systems use Cramer's rule with
+each determinant drawn. a = 0 is handled by dropping to the lower degree,
+and the page says so.
+
+State: `#m=quad&c=1|-3|2` (`|` separates coefficients because a comma can be
+a decimal mark).
+
+### Fraction & Percentage Calculator
+
+`fraction-calculator.html` + `assets/js/fraction-calculator.js`. Two panes
+behind a switch. Fractions: `3/4`, `1 2/3`, `−5/8`, `0.25` and whole numbers;
+the steps show the improper fraction, the lowest common denominator or the
+reciprocal, and the gcd that simplifies. The decimal is found by long
+division and a recurring block is marked with an overline (1/7 =
+0.142857‾). Percent: X% of Y, X as a percent of Y, change from A to B
+(always divided by A), and Y ± X%.
+
+### Study Timer
+
+`study-timer.html` + `assets/js/study-timer.js`. Pomodoro 25/5/15, long
+break every 4th session, all adjustable. The clock is read from `Date.now()`
+each tick, and the end gets its own single `setTimeout` set when Start is
+pressed — so the chime (Web Audio, opened on the first Start press) is on
+time even in a throttled background tab. Lengths live in the hash
+(`#f=25&s=5&l=15&n=4`); the session log lives only as long as the tab.
+Space starts and pauses.
+
+### Age & Khmer Zodiac
+
+`age-calculator.html` + `assets/js/age-calculator.js`, loads `kh-lunar.js`.
+Age is whole years, then months, then days, from integer dates (as on the date
+calculator). A 29 February birthday is counted on 28 February in common
+years, and the page says so.
+
+**The Khmer year turns at Khmer New Year (14 April here), not 1 January.** A
+February birth gets the previous animal, and the page explains why when that
+happens; births on 13–16 April carry a note that the family's own reckoning
+wins. Animal and sak use the same anchored cycle as `kh-lunar.js` (2024 =
+ឆ្នាំរោង ឆស័ក) and work for any year. **The lunar birth date is only shown
+from 1970**, because the Suriyeatr arithmetic in `kh-lunar.js` counts forward
+from there and returns nonsense before it.
+
+### Number to Khmer Words
+
+`number-to-khmer-words.html` + `assets/js/number-words.js`. Up to
+999,999,999,999 and six decimals. Two styles: traditional ម៉ឺន/សែន
+(250,000 = ពីរសែនប្រាំម៉ឺន) or counting in thousands (ពីររយហាសិបពាន់); the
+count of millions is said in thousands either way (ម្ភៃប្រាំពាន់លាន).
+Written without spaces, decimal comma read ក្បៀស with digits one by one; riel
+drops decimals, dollars read cents as a number (ដប់ពីរដុល្លារ ហាសិបសេន).
+Input accepts 1,250,000 / 1.250.000 / Khmer digits. `window.AANumWords`
+exposes the converters.
+
+**Have a Khmer teacher read the words over** before the page is used for
+anything official — the rules are standard, but this was written for the
+site, not taken from a reference book.
 
 ## The four kindergarten pages
 

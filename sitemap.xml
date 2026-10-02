@@ -135,6 +135,36 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.alphaacademycambodia.com/graph-plotter.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/equation-solver.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/fraction-calculator.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/study-timer.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/age-calculator.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/number-to-khmer-words.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.alphaacademycambodia.com/khmer-kindergarten.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
