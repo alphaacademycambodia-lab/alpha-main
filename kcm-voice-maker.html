@@ -566,6 +566,16 @@ $('go').onclick = async function () {
       var quota = e.status === 429 || /quota|rate|exhaust/i.test(e.message);
       log(l[0] + '  ✗  ' + e.message, 'err');
       if (e.status === 400 || e.status === 401 || e.status === 403) { if (/key|permission|auth/i.test(e.message)) { log('Check the API key and model, then press Start again.', 'err'); break; } }
+      var m = /retry in\s*(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:([\d.]+)s)?/i.exec(e.message);
+      var hint = m && (m[1] || m[2] || m[3]) ? ((+m[1] || 0) * 3600 + (+m[2] || 0) * 60 + (+m[3] || 0)) * 1000 : 0;
+      if (quota && hint) {
+        fails = 0;
+        var until = Date.now() + hint + 60000;
+        log('Google limit reached. Waiting until ' + new Date(until).toLocaleString() + ', then continuing automatically. Keep this tab open.');
+        while (Date.now() < until && !stopFlag) { $('stat').textContent = 'Waiting for Google’s limit to reset — continues at ' + new Date(until).toLocaleTimeString(); await sleep(30000); }
+        if (stopFlag) break;
+        i--; continue;
+      }
       if (++fails >= 8) { log('Too many errors in a row — paused. Press Start to try again later.', 'err'); break; }
       log('Waiting ' + Math.round(wait / 1000) + ' s, then retrying…'); await sleep(wait);
       if (quota) wait = Math.min(wait * 2, 600000);
