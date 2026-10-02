@@ -15,9 +15,13 @@
            lesson opened, and the display toggles. Only in this browser; the
            page works the same if storage is blocked.
 
-   Audio is the browser's own speech synthesis with a Khmer (km) voice. Many
-   desktops have none, so every speaker button hides itself when no voice is
-   found and the romanization does the job instead.                        */
+   Audio: recorded MP3s first, the browser's Khmer (km) speech voice second.
+   Recordings live in assets/audio/kcm/ and are named after where a line
+   first appears in the bank: 001-d03.mp3 = situation 1, dialogue line 3;
+   001-p02.mp3 = situation 1, phrase 2 (both counted from 1). The same Khmer
+   text used again later reuses that first file, so each line is recorded
+   once. A missing file falls back to the speech voice; if the device has
+   none either, the romanization does the job.                             */
 (function () {
   'use strict';
 
@@ -56,7 +60,7 @@
     normal:     { en: 'Normal', km: 'ធម្មតា' },
     show:       { en: 'Show', km: 'បង្ហាញ' },
     voiceOk:    { en: 'Khmer voice: ', km: 'សំឡេងខ្មែរ៖ ' },
-    voiceNo:    { en: 'No Khmer voice on this device — read the romanization instead.', km: 'ឧបករណ៍នេះគ្មានសំឡេងខ្មែរ — សូមអានអក្សរឡាតាំងជំនួស។' },
+    voiceNo:    { en: 'Recorded audio plays where available — otherwise read the romanization.', km: 'សំឡេងថតនឹងចាក់នៅកន្លែងដែលមាន — បើមិនទាន់មាន សូមអានអក្សរឡាតាំង។' },
     listen:     { en: 'Listen', km: 'ស្តាប់' },
     // flashcards
     dirEnKm:    { en: 'English → Khmer', km: 'អង់គ្លេស → ខ្មែរ' },
@@ -159,6 +163,13 @@
   }
 
   /* --------------------------------------------------------------- audio */
+  var AUDIO_DIR = 'assets/audio/kcm/', AUDIO_ID = {}, noFile = {}, cur = null;
+  function pad3(n) { return ('00' + n).slice(-3); }
+  function pad2(n) { return ('0' + n).slice(-2); }
+  SITS.forEach(function (s) {
+    s.dialogue.forEach(function (d, i) { if (d.kh && !AUDIO_ID[d.kh]) AUDIO_ID[d.kh] = pad3(s.n) + '-d' + pad2(i + 1); });
+    (s.phrases || []).forEach(function (p, i) { if (p.kh && !AUDIO_ID[p.kh]) AUDIO_ID[p.kh] = pad3(s.n) + '-p' + pad2(i + 1); });
+  });
   var voice = null, synth = window.speechSynthesis;
   function findVoice() {
     if (!synth) return null;
@@ -168,7 +179,6 @@
   }
   function refreshVoice() {
     voice = findVoice();
-    document.documentElement.classList.toggle('kcm-novoice', !voice);
     var el = $('#kcmVoice');
     if (el) {
       el.textContent = voice ? t('voiceOk') + voice.name : t('voiceNo');
@@ -176,6 +186,28 @@
     }
   }
   function speak(text, onEnd) {
+    stopAudio();
+    var id = AUDIO_ID[text];
+    if (id && !noFile[id] && window.Audio) {
+      var a = new Audio(AUDIO_DIR + id + '.mp3'), done = false;
+      var fin = function () { if (done) return; done = true; if (cur && cur.a === a) cur = null; if (onEnd) onEnd(); };
+      cur = { a: a, fin: fin };
+      a.preservesPitch = true;
+      a.playbackRate = (store.rate || 0.8) / 0.8;
+      a.onended = fin;
+      a.onerror = function () {
+        noFile[id] = 1;
+        if (done || !cur || cur.a !== a) return;
+        done = true; cur = null;
+        if (!tts(text, onEnd) && onEnd) setTimeout(onEnd, 0);
+      };
+      var pr = a.play();
+      if (pr && pr.catch) pr.catch(function (e) { if (e && e.name === 'NotAllowedError') fin(); });
+      return true;
+    }
+    return tts(text, onEnd);
+  }
+  function tts(text, onEnd) {
     if (!voice || !synth) { if (onEnd) setTimeout(onEnd, 0); return false; }
     synth.cancel();
     var u = new SpeechSynthesisUtterance(text);
@@ -184,7 +216,10 @@
     synth.speak(u);
     return true;
   }
-  function stopAudio() { if (synth) synth.cancel(); }
+  function stopAudio() {
+    if (cur) { var c = cur; cur = null; try { c.a.pause(); } catch (e) {} c.fin(); }
+    if (synth) synth.cancel();
+  }
   function sayBtn(text, cls) {
     return '<button type="button" class="kcm-say ' + (cls || '') + '" data-say="' + esc(text) + '" aria-label="' + esc(t('listen')) + '">' + ICON.say + '</button>';
   }
