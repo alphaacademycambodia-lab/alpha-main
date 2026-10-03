@@ -90,6 +90,10 @@ inequality-solver.html
                   Inequality Solver — every type from linear to log and
                   trig, systems, and regions in x and y, with tables of
                   signs, number lines and exact answers
+chart-builder.html
+                  Chart Builder — Cambridge Stage 7 Unit 7: tally, bar,
+                  dual bar, pie, waffle, pictogram, frequency diagram, line,
+                  scatter, two-way, Venn and Carroll, with working + practice
 fraction-calculator.html
                   Fractions & Percent — fraction arithmetic with steps and
                   recurring decimals; X% of Y, what percent, % change, ± %
@@ -164,6 +168,10 @@ assets/js/equation-solver.js
 assets/js/inequality-solver.js
                        The inequality engine (exact fractions, factorising,
                        sign tables, sets) and the page that drives it
+assets/js/chart-builder.js
+                       Chart Builder — SVG charts, working, practice mode
+assets/css/chart-builder.css
+                       Chart Builder styles, all scoped under .cb
 assets/js/fraction-calculator.js
                        Fractions (BigInt, recurring decimals) and the four
                        percentage panels
@@ -824,6 +832,23 @@ the default follows the language and the switch overrides it.
 `window.AAInequality` exposes the engine (`solveText`, `solveTwo`, `fmtSet`).
 It was checked against a brute-force sign test on about 1,500 inequalities of
 every type, random and hand-written. State: `#q=…&m=2&n=fr&z=…`.
+
+
+### Chart Builder
+
+`chart-builder.html` + `assets/js/chart-builder.js` + `assets/css/chart-builder.css`.
+Covers Unit 7 of Cambridge Lower Secondary Mathematics Stage 7 (Organising and
+presenting data) and is linked from that unit in `cambridge-lower-secondary-maths-7.html`.
+Twelve representations — tally/frequency table, bar, dual bar, pie, waffle
+(10 × 10), pictogram, frequency diagram (touching bars on a number line), line
+graph, scatter graph, two-way table, Venn and Carroll diagrams — all drawn as
+SVG or tables from one editable data table. Pie angles and waffle squares are
+worked out in a table (squares use largest-remainder rounding so they total
+100). Practice mode hides the chart and checks the student's angles, squares,
+symbols or totals. Eleven example data sets, including the 180-teenagers fruit
+and vegetable exercise. The data is kept in localStorage (`u7cb`). Tool UI is
+English; the page chrome is translated through `i18n.js` (`cb.*`, `nav.cb*`,
+`tools.cb*`).
 
 ### Fraction & Percentage Calculator
 

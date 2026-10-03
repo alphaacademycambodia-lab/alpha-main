@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Equation Solver with Steps — Quadratic, Cubic, Systems | Alpha Academy Cambodia</title>
-<meta name="description" content="Free equation solver with full working in Khmer or English. Linear, quadratic (with Δ and Δ′, real and complex roots), cubic, and systems of two or three equations by Cramer's rule. Exact fractions and surds.">
-<link rel="canonical" href="https://www.alphaacademycambodia.com/equation-solver">
+<title>Chart Builder — Pie Charts, Bar Charts, Waffle Diagrams &amp; More | Alpha Academy Cambodia</title>
+<meta name="description" content="Free chart builder for Cambridge Lower Secondary Stage 7 Maths, Unit 7: tally charts, bar and dual bar charts, pie charts with angles, waffle diagrams, pictograms, frequency diagrams, line and scatter graphs, two-way tables, Venn and Carroll diagrams — with the working and a practice mode.">
+<link rel="canonical" href="https://www.alphaacademycambodia.com/chart-builder">
 <meta name="theme-color" content="#0b57d0">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Equation Solver with Steps — Alpha Academy Cambodia">
-<meta property="og:description" content="Solve quadratic, cubic and simultaneous equations and see every step — Δ, the rational-root test, Cramer's rule. Khmer and English.">
-<meta property="og:url" content="https://www.alphaacademycambodia.com/equation-solver.html">
+<meta property="og:title" content="Chart Builder — Alpha Academy Cambodia">
+<meta property="og:description" content="Type your data and see the pie chart, bar chart, waffle diagram or Venn diagram drawn to scale, with every angle and percentage worked out.">
+<meta property="og:url" content="https://www.alphaacademycambodia.com/chart-builder.html">
 <meta property="og:image" content="https://www.alphaacademycambodia.com/assets/img/logo.png">
 
 <link rel="icon" href="assets/img/logo.png" type="image/png">
@@ -19,6 +19,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&family=Kantumruy+Pro:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/tools.css">
+<link rel="stylesheet" href="assets/css/chart-builder.css">
 <script src="assets/js/boot.js"></script>
 </head>
 <body>
@@ -131,9 +132,9 @@
               <li><a href="unit-converter"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7.5" width="19" height="9" rx="1.8"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5"/></svg></i><span><span data-i18n="nav.unit">Unit Converter</span><small data-i18n="nav.unitSub">Length, weight, temperature</small></span></a></li>
               <li><a href="scientific-calculator"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><path d="M7.5 6h9v3.5h-9z"/><path d="M8 13.5h.01M12 13.5h.01M16 13.5h.01M8 17.5h.01M12 17.5h.01M16 17.5h.01"/></svg></i><span><span data-i18n="nav.sci">Scientific Calculator</span><small data-i18n="nav.sciSub">sin, log, powers, nCr</small></span></a></li>
               <li><a href="graph-plotter"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M6 16c3-9 6-9 8-4s4 3 6-6"/></svg></i><span><span data-i18n="nav.gp">Graph Plotter</span><small data-i18n="nav.gpSub">Roots, turning points, intersections</small></span></a></li>
-              <li><a href="equation-solver" aria-current="page"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h6M4 16h6M14 7l6 10M20 7l-6 10"/></svg></i><span><span data-i18n="nav.es">Equation Solver</span><small data-i18n="nav.esSub">Quadratic, cubic, systems — with steps</small></span></a></li>
+              <li><a href="equation-solver"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h6M4 16h6M14 7l6 10M20 7l-6 10"/></svg></i><span><span data-i18n="nav.es">Equation Solver</span><small data-i18n="nav.esSub">Quadratic, cubic, systems — with steps</small></span></a></li>
               <li><a href="inequality-solver"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6L4 10l6 4"/><path d="M4 18h6"/><path d="M14 10h6M14 14h6"/></svg></i><span><span data-i18n="nav.iq">Inequality Solver</span><small data-i18n="nav.iqSub">Every type — sign tables, number lines</small></span></a></li>
-              <li><a href="chart-builder"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9v9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></svg></i><span><span data-i18n="nav.cb">Chart Builder</span><small data-i18n="nav.cbSub">Pie, bar, waffle, Venn — Stage 7 Unit 7</small></span></a></li>
+              <li><a href="chart-builder" aria-current="page"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9v9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></svg></i><span><span data-i18n="nav.cb">Chart Builder</span><small data-i18n="nav.cbSub">Pie, bar, waffle, Venn — Stage 7 Unit 7</small></span></a></li>
               <li><a href="fraction-calculator"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><circle cx="12" cy="6" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="18" r="1.6" fill="currentColor" stroke="none"/></svg></i><span><span data-i18n="nav.fr">Fractions &amp; Percent</span><small data-i18n="nav.frSub">Fractions with working, % change</small></span></a></li>
               <li><a href="study-timer"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4"/></svg></i><span><span data-i18n="nav.st">Study Timer</span><small data-i18n="nav.stSub">Focus sessions and breaks</small></span></a></li>
               <li><a href="age-calculator"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7"/><path d="M4 16c2 1.5 4 1.5 5.3 0 1.4 1.5 4 1.5 5.4 0 1.3 1.5 3.3 1.5 5.3 0"/><path d="M12 12V8M12 5.5v-.01"/></svg></i><span><span data-i18n="nav.ag">Age &amp; Khmer Zodiac</span><small data-i18n="nav.agSub">Exact age, animal year, sak</small></span></a></li>
@@ -176,14 +177,14 @@
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="./" data-i18n="nav.home">Home</a> <span>/</span>
         <a href="tools" data-i18n="nav.tools">Tools</a> <span>/</span>
-        <span data-i18n="es.crumb">Equation Solver</span>
+        <span data-i18n="cb.crumb">Chart Builder</span>
       </nav>
-      <h1 data-i18n="es.h1">Equation Solver 🧮</h1>
-      <p data-i18n="es.lede">Type the coefficients and the answer appears with the working underneath — exact fractions and square roots, not long decimals. Quadratics with Δ < 0 get their complex roots, as in Grade 12.</p>
+      <h1 data-i18n="cb.h1">Chart Builder 📊</h1>
+      <p data-i18n="cb.lede">Type your data, pick a chart, and see it drawn to scale with the full working — every angle of a pie chart, every square of a waffle diagram. Switch on practice mode to work it out yourself first. Follows Unit 7 of Cambridge Lower Secondary Mathematics Stage 7: Organising and presenting data.</p>
       <div class="chips">
-        <span class="chip" data-i18n="es.chip1">Step-by-step working</span>
-        <span class="chip" data-i18n="es.chip2">Exact fractions &amp; surds</span>
-        <span class="chip" data-i18n="es.chip3">Complex roots</span>
+        <span class="chip" data-i18n="cb.chip1">12 charts and diagrams</span>
+        <span class="chip" data-i18n="cb.chip2">Working shown step by step</span>
+        <span class="chip" data-i18n="cb.chip3">Practice mode with checking</span>
         <span class="chip" data-i18n="dc.chip4">Nothing leaves your device</span>
       </div>
     </div>
@@ -195,80 +196,71 @@
 </svg>
 
 <section class="section" style="padding-top:clamp(2rem,5vw,3.5rem)">
-  <div class="wrap" id="esRoot">
-    <div class="dc-layout es-layout">
-      <form class="dc-card" novalidate autocomplete="off" onsubmit="return false">
-        <h2 data-i18n="es.formH">Your equation</h2>
-        <div class="dc-field">
-          <span class="dc-lbl" id="esModesL" data-i18n="es.typeL">Type of equation</span>
-          <div class="es-modes" id="esModes" role="group" aria-labelledby="esModesL">
-            <button type="button" data-m="lin" aria-pressed="false" data-i18n="es.mLin">Linear</button>
-            <button type="button" data-m="quad" aria-pressed="true" data-i18n="es.mQuad">Quadratic</button>
-            <button type="button" data-m="cub" aria-pressed="false" data-i18n="es.mCub">Cubic</button>
-            <button type="button" data-m="s2" aria-pressed="false" data-i18n="es.mS2">2 unknowns</button>
-            <button type="button" data-m="s3" aria-pressed="false" data-i18n="es.mS3">3 unknowns</button>
-          </div>
-        </div>
-        <div class="dc-field">
-          <span class="dc-lbl" data-i18n="es.coefL">Coefficients</span>
-          <div id="esInputs" class="es-inputs"></div>
-          <p class="dc-under" data-i18n="es.coefHint">Whole numbers, decimals or fractions such as 3/4. An empty box counts as 0.</p>
-        </div>
-        <div class="dc-field">
-          <span class="dc-lbl" id="esExL" data-i18n="es.exL">Examples</span>
-          <div class="dc-quick es-ex" id="esEx" role="group" aria-labelledby="esExL"></div>
-        </div>
-        <div class="dc-actions">
-          <button type="button" class="dc-mini" id="esReset" data-i18n="es.clear">Clear</button>
-        </div>
-      </form>
+  <div class="wrap">
+<div class="cb" id="cbRoot">
+  
 
-      <div class="dc-side">
-        <div class="dc-card dc-result" id="esResult" role="status" aria-live="polite">
-          <span class="dc-eyebrow" data-i18n="es.solL">Solution</span>
-          <div class="dc-big es-big" id="esBig"></div>
-          <div class="dc-alt" id="esAlt"></div>
-          <button type="button" class="dc-copy" id="esCopy">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-            <span data-copy-label>Copy</span>
-          </button>
+  <nav class="types" id="types" aria-label="Chart type"></nav>
+
+  <div class="main">
+    <aside class="stack">
+      <section class="panel" id="dataPanel">
+        <h2>Your data <span class="total-chip" id="totalChip"></span></h2>
+        <div class="stack" style="gap:10px">
+          <div class="cb-field"><label for="preset">Start from an example</label><select id="preset"></select></div>
+          <div class="cb-field"><label for="title">Chart title</label><input type="text" id="title"></div>
+          <div class="row2" id="axisRow">
+            <div class="cb-field"><label for="xLabel" id="xLabelLab">Horizontal axis label</label><input type="text" id="xLabel"></div>
+            <div class="cb-field"><label for="yLabel" id="yLabelLab">Vertical axis label</label><input type="text" id="yLabel"></div>
+          </div>
+          <div id="editor"></div>
         </div>
-        <div class="dc-card" id="esStepsCard">
-          <h2 data-i18n="es.stepsH">Working</h2>
-          <ol class="es-steps" id="esSteps"></ol>
+      </section>
+      <section class="panel" id="tipsPanel">
+        <h2 id="tipsTitle">About this chart</h2>
+        <p class="use" id="useWhen"></p>
+        <ul class="tips" id="tipList"></ul>
+      </section>
+      <section class="panel chooser">
+        <h2>Which chart should I use?</h2>
+        <div class="row2">
+          <div class="cb-field"><label for="chData">My data is…</label>
+            <select id="chData">
+              <option value="cat">Categorical (colours, sports…)</option>
+              <option value="disc">Discrete numbers (counts)</option>
+              <option value="cont">Continuous (times, heights)</option>
+              <option value="two">Two measurements per person</option>
+              <option value="sets">Items sorted by properties</option>
+            </select></div>
+          <div class="cb-field"><label for="chGoal">I want to show…</label>
+            <select id="chGoal">
+              <option value="compare">Compare amounts</option>
+              <option value="share">Shares of a whole</option>
+              <option value="groups">Compare two groups</option>
+              <option value="time">Change over time</option>
+              <option value="record">Record while collecting</option>
+              <option value="rel">A relationship</option>
+            </select></div>
+        </div>
+        <div class="rec" id="rec"></div>
+      </section>
+    </aside>
+
+    <section class="panel" id="stagePanel">
+      <div class="stage-head">
+        <h2 id="stageTitle" style="margin:0">Chart</h2>
+        <div class="toggles">
+          <button class="tog" id="tWork" aria-pressed="true">Show working</button>
+          <button class="tog" id="tPractice" aria-pressed="false">Practice mode</button>
         </div>
       </div>
-    </div>
-
-    <noscript>
-      <p style="text-align:center;padding:2rem 1rem;font-size:1.05rem;line-height:1.8">
-        This tool works in your browser, so it needs JavaScript switched on.
-      </p>
-    </noscript>
+      <div class="paper" id="paper"></div>
+      <div class="work" id="work"></div>
+    </section>
   </div>
-</section>
 
-<section class="section" style="padding-top:0">
-  <div class="wrap">
-    <h2 data-i18n="es.hiwH">How the solver works</h2>
-    <div class="dc-notes">
-      <article>
-        <h4 data-i18n="es.n1t">Exact answers</h4>
-        <p data-i18n="es.n1p">Every coefficient is kept as a fraction, so the roots come out as 3/4 or 1 ± 2√3 rather than 0.75 or 4.4641016. A decimal approximation is printed beside an irrational answer for checking, never instead of it.</p>
-      </article>
-      <article>
-        <h4 data-i18n="es.n2t">Δ and Δ′</h4>
-        <p data-i18n="es.n2p">A quadratic is solved with the discriminant Δ = b² − 4ac. When b is even the page also shows the reduced discriminant Δ′ = b′² − ac with b′ = b/2, the shortcut the Khmer syllabus teaches. When Δ < 0 it says there is no real root and gives the two complex roots.</p>
-      </article>
-      <article>
-        <h4 data-i18n="es.n3t">Cubics and systems</h4>
-        <p data-i18n="es.n3p">A cubic is solved by finding a rational root with the ±p/q test, dividing it out by synthetic division (Horner), and solving the quadratic that is left. If there is no rational root the roots are found numerically. Systems use Cramer's rule, with each determinant shown.</p>
-      </article>
-      <article>
-        <h4 data-i18n="dc.n4t">Nothing leaves your device</h4>
-        <p data-i18n="es.n4p">The solving happens in your browser. Nothing you type is sent or saved. The address bar keeps the equation, so you can send the link to a classmate and they will see the same working.</p>
-      </article>
-    </div>
+  
+</div>
   </div>
 </section>
 
@@ -293,8 +285,8 @@
   <div class="wrap">
     <div class="cta-band">
       <div>
-        <h2 data-i18n="es.ctaH2">The solver shows the steps. A tutor shows why.</h2>
-        <p data-i18n="es.ctaP">Our tutors prepare Grade 12 students for the national examination — equations, complex numbers, functions and more, step by step, at home or online.</p>
+        <h2 data-i18n="cb.ctaH2">Want help with data handling?</h2>
+        <p data-i18n="cb.ctaP">Our tutors take Cambridge Lower Secondary students through every unit of Stage 7 Maths — data, algebra, geometry and number — at home or online.</p>
       </div>
       <div class="btn-row">
         <a class="btn btn--white btn--lg" href="contact" data-i18n="learn.ctaBtn">Book free consultation</a>
@@ -383,7 +375,6 @@
 
 <script src="assets/js/i18n.js"></script>
 <script src="assets/js/main.js"></script>
-<script src="assets/js/tools-core.js"></script>
-<script src="assets/js/equation-solver.js"></script>
+<script src="assets/js/chart-builder.js"></script>
 </body>
 </html>
