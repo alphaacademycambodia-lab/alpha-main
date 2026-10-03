@@ -86,6 +86,10 @@ graph-plotter.html
 equation-solver.html
                   Equation Solver — linear, quadratic (Δ and Δ′, complex
                   roots), cubic and 2×2 / 3×3 systems, exact, with working
+inequality-solver.html
+                  Inequality Solver — every type from linear to log and
+                  trig, systems, and regions in x and y, with tables of
+                  signs, number lines and exact answers
 fraction-calculator.html
                   Fractions & Percent — fraction arithmetic with steps and
                   recurring decimals; X% of Y, what percent, % change, ± %
@@ -157,6 +161,9 @@ assets/js/graph-plotter.js
                        pan/zoom/trace and the search for points
 assets/js/equation-solver.js
                        Exact BigInt fractions, the solvers and their working
+assets/js/inequality-solver.js
+                       The inequality engine (exact fractions, factorising,
+                       sign tables, sets) and the page that drives it
 assets/js/fraction-calculator.js
                        Fractions (BigInt, recurring decimals) and the four
                        percentage panels
@@ -771,6 +778,52 @@ and the page says so.
 
 State: `#m=quad&c=1|-3|2` (`|` separates coefficients because a comma can be
 a decimal mark).
+
+### Inequality Solver
+
+`inequality-solver.html` + `assets/js/inequality-solver.js`. One box takes any
+inequality the syllabus has, as a student would write it — `3(x − 2) ≤ 5x + 4`,
+`−3 < 2x + 1 ≤ 7`, `(2x + 1)/(x − 3) < 1`, `|x − 1| + |x + 2| < 5`,
+`√(x + 3) > x + 1`, `4^x − 3·2^x + 2 < 0`, `log_2(x − 1) < 3`, `ln²x − 3ln x + 2 > 0`,
+`2sin(x − π/3) + 1 < 0`. One per line (or `;`) makes a system. A second mode
+takes linear inequalities in x and y and draws the region.
+
+**One method underneath.** Linear, quadratic, polynomial and rational
+inequalities all end in `ratSolve`: everything on one side, one fraction,
+factorised exactly (rational roots, then Δ for what is left, then a
+numerical root finder only for a factor of degree ≥ 3 with no rational root),
+and the answer read off a table of signs. The steps before that are written
+per type — clearing fractions, "dividing by a negative reverses the sign",
+Δ and the sign of a.
+
+**Everything else is reduced, and each reduction is a step.** `|u| < v` →
+`−v < u < v`; `|u| > v` → `u > v` or `u < −v`; `|u| op |w|` → square both
+sides; anything else with `|…|` → cases. `√u < v` → `u ≥ 0, v > 0, u < v²`
+(and the two-case form for `>`). Exponentials go to one base (`4 = 2²`,
+`1/2 = 2⁻¹`) and compare exponents, or substitute `t = 2^x`; two bases that
+are not powers of one number are compared by taking ln. Logarithms: domain
+first, then combine (`log a + log b = log ab`) and compare, or substitute
+`t = log x`. Bases between 0 and 1 reverse the sign, and the page says so.
+Trigonometric: `sin/cos/tan(ax + qπ) op c`, general solution with `k ∈ ℤ`
+(exact angles for the standard values) plus the solutions in `[0, 2π]`.
+
+**When there is no method, it says so.** `2^x > x²` has no textbook method;
+the sign of L − R is followed numerically along the whole line and the
+answer is marked numerical. Decimals are snapped back to `7/4`, `√2/2` or
+`(1 + √5)/2` when they are exactly that to 10 digits.
+
+**Two variables.** Each inequality is a half-plane; the region is found by
+clipping a huge square (floating point, only to draw it and to tell bounded
+from unbounded), and its corners exactly, by intersecting the boundary lines
+two at a time with fractions. An optional objective `z = 3x + 2y` is
+evaluated at the corners, with "no maximum" when the region lets it grow.
+
+**Intervals** print as `(a, b)` or as `]a ; b[`, the notation in Khmer books;
+the default follows the language and the switch overrides it.
+
+`window.AAInequality` exposes the engine (`solveText`, `solveTwo`, `fmtSet`).
+It was checked against a brute-force sign test on about 1,500 inequalities of
+every type, random and hand-written. State: `#q=…&m=2&n=fr&z=…`.
 
 ### Fraction & Percentage Calculator
 
