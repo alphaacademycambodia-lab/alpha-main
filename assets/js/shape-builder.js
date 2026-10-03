@@ -343,15 +343,25 @@ function facts2D(){
   const eqG={};L.forEach((l,i)=>{const k=fmt(l,4);(eqG[k]=eqG[k]||[]).push(side(i))});const eq=Object.values(eqG).filter(g=>g.length>1).map(g=>g.join(" = "));
   let diag="";if(n===4){const d1=dist(V[0],V[2]),d2=dist(V[1],V[3]),perp=Math.abs(dot(sub(V[2],V[0]),sub(V[3],V[1])))<1e-6;const m1=mul(add(V[0],V[2]),.5),m2=mul(add(V[1],V[3]),.5),bis=dist(m1,m2)<1e-6;
     diag=`AC = ${fmt(d1,1)} cm, BD = ${fmt(d2,1)} cm · ${near(d1,d2,1e-6)?"equal":"not equal"} · ${perp?"meet at 90°":"not perpendicular"} · ${bis?"bisect each other":"do not bisect each other"}`}
+  const hi=heightInfo(V,c),F=x=>`<span style="font-size:12px;color:var(--fg2);font-style:italic">${x}</span>`;
+  const perF=`${F((c.regular?`P = ${n} × side`:`P = sum of all sides`))}<br>${L.map((_,i)=>side(i)).join(" + ")} = ${L.map(l=>fmt(l,2)).join(" + ")} ${L.some(l=>!near(l,Math.round(l*100)/100,1e-9))?"≈":"="} <b>${fmt(per,2)} cm</b>`;
+  let areaF;
+  if(c.name==="Square"||c.name==="Rectangle")areaF=`${F("A = length × width")}<br>${fmt(L[0],2)} × ${fmt(L[1],2)} = <b>${fmt(ar,2)} cm²</b>`;
+  else if(n===3&&hi)areaF=`${F("A = ½ × base × height")}<br>½ × ${fmt(hi.b,2)} × ${fmt(hi.h,2)} = <b>${fmt(ar,2)} cm²</b>`;
+  else if(hi&&/Parallelogram|Rhombus/.test(c.name))areaF=`${F("A = base × height")}<br>${fmt(hi.b,2)} × ${fmt(hi.h,2)} = <b>${fmt(ar,2)} cm²</b>`;
+  else if(hi&&/rapezium/.test(c.name)){const o=hi.base[0]===0?L[2]:L[3];areaF=`${F("A = ½ × (a + b) × h")}<br>½ × (${fmt(hi.b,2)} + ${fmt(o,2)}) × ${fmt(hi.h,2)} = <b>${fmt(ar,2)} cm²</b>`}
+  else if(c.name==="Kite"){const d1=dist(V[0],V[2]),d2=dist(V[1],V[3]);areaF=`${F("A = ½ × diagonal₁ × diagonal₂")}<br>½ × ${fmt(d1,2)} × ${fmt(d2,2)} = <b>${fmt(ar,2)} cm²</b>`}
+  else if(!selfIntersects(V)){const T=triangulate(V),parts=T.map(t=>({name:t.map(i=>LET[i]).join(""),a:Math.abs(sArea(t.map(i=>V[i])))}));
+    areaF=`${F(`A = ${parts.map(p=>"area "+p.name).join(" + ")}`)}<br>${parts.map(p=>fmt(p.a,2)).join(" + ")} = <b>${fmt(ar,2)} cm²</b>`}
+  else areaF=`<b>${fmt(ar,2)} cm²</b>`;
   const table=row("Sides / vertices",`${n} / ${n}`)+row("Side lengths",L.map((l,i)=>`${side(i)} = ${fmt(l,1)}`).join(", ")+" cm")+row("Angles",A.map((a,i)=>`∠${LET[i]} = ${fmt(a,1)}°`).join(", "))+
     row("Angle sum",`${fmt(A.reduce((a,b)=>a+b,0),1)}°`)+(eq.length?row("Equal sides",eq.join("; ")):"")+(n>3?row("Parallel sides",par.length?par.join("; "):"none"):"")+(diag?row("Diagonals",diag):n>4?row("Diagonals",`${n*(n-3)/2}`):"")+
-    row("Lines of symmetry",String(sy.lines.length))+row("Rotational symmetry",`order ${sy.order}`)+row("Perimeter",`${fmt(per,2)} cm`)+row("Area",`${fmt(ar,2)} cm²`);
+    row("Lines of symmetry",String(sy.lines.length))+row("Rotational symmetry",`order ${sy.order}`)+row("Perimeter",perF)+row("Area",areaF);
   const chips=[c.fam,c.concave?"concave":"convex",c.regular?"regular":"irregular"];
   // working
   const work=[];let k=1;
   work.push(`<b>Perimeter</b> = ${L.map(l=>fmt(l,1)).join(" + ")} = <b>${fmt(per,1)} cm</b>${L.some(l=>!near(l,Math.round(l),1e-6))?" (lengths rounded to 1 d.p.)":""}`);
   work.push(`<b>Angle sum</b>: a ${n}-sided polygon splits into ${n-2} triangle${n-2>1?"s":""} from one vertex, so the angles add up to (${n} − 2) × 180° = <b>${(n-2)*180}°</b>.${c.regular?` Each angle of the regular polygon = ${(n-2)*180} ÷ ${n} = ${fmt((n-2)*180/n,2)}°.`:""}`);
-  const hi=heightInfo(V,c);
   if(c.name==="Square"||c.name==="Rectangle")work.push(`<b>Area</b> = length × width = ${fmt(L[0],2)} × ${fmt(L[1],2)} = <b>${fmt(ar,2)} cm²</b>`);
   else if(n===3&&hi)work.push(`<b>Area</b> = ½ × base × perpendicular height = ½ × ${fmt(hi.b,2)} × ${fmt(hi.h,2)} = <b>${fmt(ar,2)} cm²</b>${hi.t<0||hi.t>1?" — the height falls outside the triangle, so the base line is extended.":""}`);
   else if(hi&&/Parallelogram|Rhombus/.test(c.name))work.push(`<b>Area</b> = base × perpendicular height = ${fmt(hi.b,2)} × ${fmt(hi.h,2)} = <b>${fmt(ar,2)} cm²</b>`);
