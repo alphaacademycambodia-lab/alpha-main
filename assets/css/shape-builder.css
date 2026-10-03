@@ -1,0 +1,30 @@
+/* Shape Builder — extra styles on top of chart-builder.css (.cb). Scoped to .sb. */
+.cb.sb .sb-modes{display:inline-flex;margin-bottom:16px}
+.cb .sb-seg{display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--line2);padding:4px;border-radius:999px}
+.cb .sb-seg button{border:0;background:transparent;border-radius:999px;padding:7px 16px;font-weight:600;font-size:14px;cursor:pointer;color:var(--fg2)}
+.cb .sb-seg button[aria-pressed="true"]{background:var(--panel);color:var(--brand);box-shadow:0 1px 3px rgba(11,18,32,.15)}
+.cb.sb .sb-modes button{font-size:15px;padding:9px 22px}
+.cb .sb-types{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));margin-bottom:0}
+.cb .sb-types .type{align-items:center;text-align:center;padding:8px 6px}
+.cb .sb-types .type svg{width:30px;height:26px}
+.cb .sb-types .type span{font-size:12px}
+.cb .sb-chks{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px}
+.cb .sb-chk{display:flex;align-items:center;gap:7px;font-size:13.5px;cursor:pointer}
+.cb .sb-chk input{width:16px;height:16px;accent-color:var(--brand);margin:0}
+.cb .sb-val{font-size:13px;color:var(--fg2);font-variant-numeric:tabular-nums}
+.cb input[type=range]{width:100%;accent-color:var(--brand);padding:0;border:0;background:transparent;box-shadow:none}
+.cb .sb-range{display:grid;grid-template-columns:minmax(0,1fr) 80px;gap:8px;align-items:center}
+.cb .sb-name{font-size:20px;font-weight:800;margin:0}
+.cb .sb-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.cb .sb-chips span{font-size:12px;font-weight:600;background:var(--brand-faint);color:var(--brand);border-radius:999px;padding:2px 9px}
+.cb .sb-ext{font-size:11px;font-weight:600;background:var(--accent-soft);color:var(--fg2);border-radius:999px;padding:1px 7px;margin-left:4px;white-space:nowrap}
+.cb.sb .paper{min-height:300px}
+.cb.sb .paper svg{max-width:820px}
+.cb .sb-h:focus-visible{outline:none;stroke:var(--accent);stroke-width:4}
+.cb .sb-facts th{width:34%;background:var(--line2);font-weight:600;vertical-align:top}
+.cb .sb-facts td{line-height:1.45}
+.cb #sbFacts{margin-top:14px}
+.cb.sb .work{margin-top:14px}
+.cb .cb-btn[disabled]{opacity:.45;cursor:not-allowed}
+@media (max-width:520px){.cb .sb-chks{grid-template-columns:1fr}}
+@media (max-width:960px){.cb.sb #sbStagePanel{order:-1}}
