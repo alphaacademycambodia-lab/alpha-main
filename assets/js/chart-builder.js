@@ -24,9 +24,9 @@ const TYPES={
   pie:{name:"Pie chart",sub:"shares of a whole",mode:"single",
     use:"Use to show how a whole is shared out between categories.",
     tips:["Angle = frequency ÷ total × 360°.","Work out 360 ÷ total first: that is the angle for one item.","All the angles must add up to 360°.","Draw from a vertical start line and measure each angle with a protractor, going clockwise.","Pie charts show proportions well but exact values poorly."]},
-  waffle:{name:"Waffle diagram",sub:"10 × 10 squares",mode:"single",
-    use:"Use to show shares of a whole as percentages: each of the 100 squares is 1%.",
-    tips:["Percentage = frequency ÷ total × 100.","One square = 1% of the total.","Round so the squares add up to exactly 100.","Shade each category in its own colour, filling row by row, and add a key."]},
+  waffle:{name:"Waffle diagram",sub:"grid of squares",mode:"single",
+    use:"Use to show shares of a whole on a grid of squares. On a 10 × 10 grid each square is 1%; or choose a grid that fits the total, e.g. 180 on a 10 × 9 grid makes each square 2.",
+    tips:["Count the squares in the grid: 10 × 9 = 90, 10 × 10 = 100.","One square = total ÷ number of squares.","Squares for a category = frequency ÷ (value of one square).","If the answer is not a whole number, shade part of a square (2.5 squares = 2 whole squares and a half).","Shade each category in its own colour, filling row by row, and add a key."]},
   picto:{name:"Pictogram",sub:"symbols with a key",mode:"single",
     use:"Use for simple, eye-catching comparisons. One symbol stands for a fixed number of items.",
     tips:["A pictogram always needs a key, e.g. ● = 4 books.","Number of symbols = frequency ÷ key value.","Use part of a symbol for a remainder (half a symbol = half the key value).","Line the symbols up neatly so rows can be compared."]},
@@ -67,7 +67,7 @@ const ICONS={
 /* ---------- examples ---------- */
 const PRESETS=[
   {id:"portions",name:"Fruit & vegetable portions (180 teenagers)",type:"pie",title:"Portions of fruit and vegetables eaten in a day",xLabel:"Number of portions",yLabel:"Frequency",s1:"Frequency",s2:"",
-    rows:[["0",5],["1",10],["2",20],["3",35],["4",10],["5",60],["6",30],["7",10]]},
+    rows:[["0",5],["1",10],["2",20],["3",35],["4",10],["5",60],["6",30],["7",10]],waffle:[10,9]},
   {id:"buttons",name:"Chocolate buttons per packet (25 packets)",type:"tally",title:"Chocolate buttons per packet",xLabel:"Number of buttons",yLabel:"Frequency",s1:"Frequency",
     rows:[["34",3],["35",4],["36",10],["37",5],["38",3]]},
   {id:"subject",name:"Favourite subject (30 students)",type:"bar",title:"Favourite subject of Class 7A",xLabel:"Subject",yLabel:"Number of students",s1:"Frequency",
@@ -96,10 +96,11 @@ function fromPreset(p){
   return {preset:p.id,type:p.type,title:p.title,xLabel:p.xLabel,yLabel:p.yLabel,s1:p.s1||"Frequency",s2:p.s2||"",
     rows:p.rows.map(r=>({l:r[0],a:r[1]??"",b:r[2]??""})),
     sets:JSON.parse(JSON.stringify(p.sets||{list:"1-30",a:{k:"even",n:2},b:{k:"mult",n:3}})),
-    picto:{sym:"circle",key:0},showWork:true,practice:false};
+    picto:{sym:"circle",key:0},waffle:{cols:(p.waffle||[10,10])[0],rows:(p.waffle||[10,10])[1]},showWork:true,practice:false};
 }
 try{const saved=JSON.parse(localStorage.getItem("u7cb")||"null");if(saved&&saved.rows&&TYPES[saved.type])S=saved}catch(e){}
 if(!S)S=fromPreset(PRESETS[0]);
+if(!S.waffle)S.waffle={cols:10,rows:10};
 const save=()=>{try{localStorage.setItem("u7cb",JSON.stringify(S))}catch(e){}};
 
 /* ---------- maths helpers ---------- */
@@ -245,14 +246,24 @@ function renderPie(){
   if(S.xLabel)s+=`<text x="${lx}" y="${ly-26}" class="cb-t" font-size="13" font-weight="600">${esc(S.xLabel)}</text>`;
   return s+"</svg>";
 }
+const wf=()=>{const w=S.waffle||{};const c=Math.max(1,Math.min(20,Math.round(num(w.cols))||10)),r=Math.max(1,Math.min(20,Math.round(num(w.rows))||10));return{c,r,N:c*r}};
+const WF_GRIDS=[[10,10],[10,9],[10,8],[10,6],[10,5],[10,4],[12,10],[10,12],[9,9],[8,8],[6,6],[5,5],[10,3],[10,2],[9,8],[8,6],[6,5]];
+function waffleFits(T){return T>0?WF_GRIDS.filter(([c,r])=>Number.isInteger(T/(c*r))||Number.isInteger((c*r)/T)&&c*r/T<=4).slice(0,8):[]}
+function wfFitsHtml(T){const fits=waffleFits(T),fr=single().map(r=>r.v).filter(v=>v>0),allWhole=(c,r)=>fr.every(v=>Number.isInteger(Math.round(v/(T/(c*r))*1e6)/1e6));return fits.length?`<div class="rec" style="margin-top:8px"><span class="cb-hint" style="margin:0">Grids that divide ${fmt(T)} (✓ = no part squares):</span>${fits.map(([c,r])=>`<button type="button" data-wf="${c}x${r}">${c} × ${r} · 1 square = ${fmt(T/(c*r),3)}${allWhole(c,r)?" ✓":""}</button>`).join("")}</div>`:""}
+const sqWord=v=>`${fmt(v,3)} ${v===1?"item":"items"}`;
 function renderWaffle(){
   const d=single().filter(r=>r.v>0);if(!d.length)return emptyMsg("Add categories with frequencies above zero.");
-  const sq=largestRemainder(d.map(r=>r.v),100),H=Math.max(400,90+d.length*24),size=30,g=3,ox=40,oy=56;
-  let s=svgOpen(H,S.title)+titleText(),k=0;const owner=[];sq.forEach((n,i)=>{for(let j=0;j<n;j++)owner.push(i)});
-  for(let r=0;r<10;r++)for(let c=0;c<10;c++){const i=owner[k++];s+=`<rect x="${ox+c*(size+g)}" y="${oy+r*(size+g)}" width="${size}" height="${size}" rx="3" fill="${i==null?"var(--line2)":col(i)}"/>`}
-  const lx=ox+10*(size+g)+34,ly=oy+20;
-  s+=`<text x="${lx}" y="${ly-24}" class="cb-t" font-size="13" font-weight="600">Key (1 square = 1%)</text>`;
-  s+=legendSvg(d.map((r,i)=>({t:`${r.l} — ${sq[i]} squares`,c:col(i)})),lx,ly);
+  const {c:C,r:R,N}=wf(),T=d.reduce((a,r)=>a+r.v,0),u=T/N,ex=d.map(r=>r.v/u);
+  const g=3,size=Math.max(10,Math.min(30,Math.floor(330/Math.max(C,R))-g)),ox=40,oy=56;
+  const H=Math.max(oy+R*(size+g)+40,90+d.length*24);
+  let s=svgOpen(H,S.title)+titleText();const cum=[0];ex.forEach(e=>cum.push(cum[cum.length-1]+e));
+  for(let k=0;k<N;k++){const x=ox+(k%C)*(size+g),y=oy+Math.floor(k/C)*(size+g),id="wq"+k;
+    s+=`<clipPath id="${id}"><rect x="${x}" y="${y}" width="${size}" height="${size}" rx="${size>16?3:2}"/></clipPath><g clip-path="url(#${id})"><rect x="${x}" y="${y}" width="${size}" height="${size}" fill="var(--line2)"/>`;
+    ex.forEach((e,i)=>{const a=Math.max(k,cum[i]),b=Math.min(k+1,cum[i+1]);if(b-a>1e-9)s+=`<rect x="${x+(a-k)*size}" y="${y}" width="${(b-a)*size}" height="${size}" fill="${col(i)}"/>`});
+    s+="</g>";}
+  const lx=ox+C*(size+g)+34,ly=oy+20;
+  s+=`<text x="${lx}" y="${ly-24}" class="cb-t" font-size="13" font-weight="600">Key (1 square = ${N===100?"1%":fmt(u,3)})</text>`;
+  s+=legendSvg(d.map((r,i)=>({t:`${r.l} — ${fmt(ex[i],2)} squares`,c:col(i)})),lx,ly);
   return s+"</svg>";
 }
 function symbolPath(sym,x,y,s,fill){
@@ -363,13 +374,14 @@ function working(){
       ${d.map((r,i)=>`<tr><td class="l">${esc(r.l)}</td><td>${fmt(r.v)}</td><td class="calc">${fmt(r.v)} ÷ ${fmt(T)} × 360</td><td><b>${fmt(ang[i],1)}°</b></td></tr>`).join("")}
       <tr class="tot"><td class="l">Total</td><td>${fmt(T)}</td><td></td><td>${fmt(ang.reduce((a,b)=>a+b,0),1)}°</td></tr></tbody></table></div>
       ${step(4,"Draw a circle and a vertical radius. Measure the first angle clockwise from it with a protractor, draw the next radius, and carry on from there.")}`}
-    if(t==="waffle"){const sq=largestRemainder(d.map(r=>r.v),100);
-      return `<h3>Working: squares for the waffle diagram</h3>${step(1,`Total = <b>${fmt(T)}</b>. The grid has 100 squares, so 1 square = 1% = ${fmt(T/100,3)} ${T/100===1?"item":"items"}.`)}
-      ${step(2,`Percentage <span class="formula">= frequency ÷ ${fmt(T)} × 100</span>`)}
-      <div class="tbl-wrap"><table class="cb-k"><thead><tr><th class="l">${esc(S.xLabel||"Category")}</th><th>Frequency</th><th>Calculation</th><th>Percentage</th><th>Squares</th></tr></thead><tbody>
-      ${d.map((r,i)=>`<tr><td class="l">${esc(r.l)}</td><td>${fmt(r.v)}</td><td class="calc">${fmt(r.v)} ÷ ${fmt(T)} × 100</td><td>${fmt(T?r.v/T*100:0,1)}%</td><td><b>${sq[i]}</b></td></tr>`).join("")}
-      <tr class="tot"><td class="l">Total</td><td>${fmt(T)}</td><td></td><td>100%</td><td>100</td></tr></tbody></table></div>
-      ${step(3,"Round each percentage to a whole number of squares. If the rounded numbers do not add to 100, give the extra square to the category whose percentage was closest to rounding up.")}`}
+    if(t==="waffle"){const {c:C,r:R,N}=wf(),u=T/N,ex=d.map(r=>r.v/u),whole=ex.every(e=>Math.abs(e-Math.round(e))<1e-9);
+      return `<h3>Working: squares for the waffle diagram</h3>${step(1,`Total = <b>${fmt(T)}</b>. The grid is ${C} × ${R} = <b>${N}</b> squares.`)}
+      ${step(2,`One square is worth <span class="formula">${fmt(T)} ÷ ${N} = ${fmt(u,3)}</span>${N===100?" = 1% of the total":""}.`)}
+      ${step(3,`Squares for each category <span class="formula">= frequency ÷ ${fmt(u,3)}</span>`)}
+      <div class="tbl-wrap"><table class="cb-k"><thead><tr><th class="l">${esc(S.xLabel||"Category")}</th><th>Frequency</th><th>Calculation</th>${N===100?"<th>Percentage</th>":""}<th>Squares</th></tr></thead><tbody>
+      ${d.map((r,i)=>`<tr><td class="l">${esc(r.l)}</td><td>${fmt(r.v)}</td><td class="calc">${fmt(r.v)} ÷ ${fmt(u,3)}</td>${N===100?`<td>${fmt(T?r.v/T*100:0,1)}%</td>`:""}<td><b>${fmt(ex[i],2)}</b></td></tr>`).join("")}
+      <tr class="tot"><td class="l">Total</td><td>${fmt(T)}</td><td></td>${N===100?"<td>100%</td>":""}<td>${N}</td></tr></tbody></table></div>
+      ${whole?step(4,"Every answer is a whole number, so each category fills whole squares."):step(4,`Some answers are not whole numbers. Shade part of a square for the remainder: ${(()=>{const e=ex.find(v=>Math.abs(v-Math.round(v))>1e-9);return `${fmt(e,2)} squares = ${Math.floor(e)} whole ${Math.floor(e)===1?"square":"squares"} and ${({"0.5":"half","0.25":"a quarter","0.75":"three quarters"})[fmt(e-Math.floor(e),2)]||fmt(e-Math.floor(e),2)} of a square`})()}. Fill the squares in order, row by row.`)}`}
     if(t==="picto"){const k=pictoKey(d);
       return `<h3>Working: symbols in the pictogram</h3>${step(1,`Key: one symbol = <b>${fmt(k)}</b>. Number of symbols <span class="formula">= frequency ÷ ${fmt(k)}</span>`)}
       <div class="tbl-wrap"><table class="cb-k"><thead><tr><th class="l">${esc(S.xLabel||"Category")}</th><th>Frequency</th><th>Calculation</th><th>Symbols</th></tr></thead><tbody>
@@ -418,9 +430,9 @@ function practice(){
   if(t==="pie"){const d=single().filter(r=>r.v>0),ang=pieAngles(d),T=d.reduce((a,r)=>a+r.v,0);
     intro=`Total = ${fmt(T)}. Work out the angle for each category (to the nearest degree), then check.`;
     qs=qRow(`Angle for one item (360 ÷ ${fmt(T)})`,Math.round(360/T*1000)/1000,"sym")+d.map((r,i)=>qRow(`Angle for <b>${esc(r.l)}</b> (frequency ${fmt(r.v)})`,ang[i],"ang")).join("")}
-  else if(t==="waffle"){const d=single().filter(r=>r.v>0),sq=largestRemainder(d.map(r=>r.v),100),T=d.reduce((a,r)=>a+r.v,0);
-    intro=`Total = ${fmt(T)}. How many of the 100 squares should each category get?`;
-    qs=d.map((r,i)=>qRow(`Squares for <b>${esc(r.l)}</b> (frequency ${fmt(r.v)})`,sq[i],"ang")).join("")}
+  else if(t==="waffle"){const d=single().filter(r=>r.v>0),{c:C,r:R,N}=wf(),T=d.reduce((a,r)=>a+r.v,0),u=T/N;
+    intro=`Total = ${fmt(T)}, on a ${C} × ${R} grid. Answers can be part squares, e.g. 2.5. How many of the ${N} squares should each category get?`;
+    qs=qRow(`What is one square worth? (${fmt(T)} ÷ ${N})`,Math.round(T/N*1000)/1000,"sym")+d.map((r,i)=>qRow(`Squares for <b>${esc(r.l)}</b> (frequency ${fmt(r.v)})`,Math.round(r.v/u*100)/100,"sym")).join("")}
   else if(t==="picto"){const d=single(),k=pictoKey(d);intro=`Key: one symbol = ${fmt(k)}. How many symbols for each row?`;
     qs=d.map(r=>qRow(`Symbols for <b>${esc(r.l)}</b> (${fmt(r.v)})`,Math.round(r.v/k*100)/100,"sym")).join("")}
   else if(t==="twoway"){intro="Fill in every total in the table, then check.";return {intro,html:renderTwoway(true)}}
@@ -474,6 +486,9 @@ function buildEditor(){
   const head=`<tr><th></th>${showL?`<th>${hL}</th>`:""}<th>${hA?hA:`<input type="text" id="s1" value="${esc(S.s1)}" aria-label="First series name">`}</th>${showB?`<th>${hB?hB:`<input type="text" id="s2" value="${esc(S.s2)}" placeholder="${mode==="line"?"2nd line (optional)":"Group 2"}" aria-label="Second series name">`}</th>`:""}<th></th></tr>`;
   const body=S.rows.map((r,i)=>`<tr><td class="cb-n">${i+1}</td>${showL?`<td><input type="text" data-i="${i}" data-f="l" value="${esc(r.l)}" aria-label="Label row ${i+1}"></td>`:""}<td><input type="number" step="any" data-i="${i}" data-f="a" value="${esc(r.a)}" aria-label="Value row ${i+1}"></td>${showB?`<td><input type="number" step="any" data-i="${i}" data-f="b" value="${esc(r.b)}" aria-label="Second value row ${i+1}"></td>`:""}<td class="x"><button class="icon-btn" data-del="${i}" aria-label="Delete row ${i+1}"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.8"/></svg></button></td></tr>`).join("");
   let extra="";
+  if(S.type==="waffle"){const {c:C,r:R}=wf(),T=single().reduce((a,r)=>a+r.v,0);
+    extra=`<div class="row2" style="margin-top:10px"><div class="cb-field"><label for="wCols">Squares across</label><input type="number" id="wCols" min="1" max="20" value="${C}"></div><div class="cb-field"><label for="wRows">Rows of squares</label><input type="number" id="wRows" min="1" max="20" value="${R}"></div></div>
+    <div id="wfFits">${wfFitsHtml(T)}</div>`;}
   if(S.type==="picto")extra=`<div class="row2"><div class="cb-field"><label for="pSym">Symbol</label><select id="pSym">${["circle","square","star","person","book"].map(s=>`<option ${S.picto.sym===s?"selected":""}>${s}</option>`).join("")}</select></div><div class="cb-field"><label for="pKey">1 symbol = (0 = auto)</label><input type="number" id="pKey" min="0" value="${S.picto.key}"></div></div>`;
   const raw=mode==="single"?`<details class="raw"><summary>Build the table from raw results</summary><div class="body"><textarea id="rawText" placeholder="e.g. 36, 35, 36, 38, 34, 36, 37 … or red blue red green"></textarea><div class="row2"><div class="cb-field"><label for="rawW">Group width (optional)</label><input type="number" id="rawW" step="any" placeholder="e.g. 10"></div><div class="cb-field"><label for="rawS">First class starts at</label><input type="number" id="rawS" step="any" placeholder="auto"></div></div><div class="btns"><button class="cb-btn cb-primary" id="rawGo">Make frequency table</button></div><p class="cb-hint">Leave the width empty to count each value. Give a width to group continuous data into classes like 10 ≤ x &lt; 20.</p></div></details>`:"";
   ed.innerHTML=`<div class="tbl-wrap"><table class="dt"><thead>${head}</thead><tbody>${body}</tbody></table></div><div class="btns" style="margin-top:6px"><button class="cb-btn" id="addRow">+ Add row</button><button class="cb-btn" id="clearRows">Clear values</button></div>${extra}${raw}`;
@@ -527,17 +542,19 @@ $("#types").addEventListener("click",e=>{const b=e.target.closest("[data-t]");if
 $("#preset").addEventListener("change",e=>{const p=PRESETS.find(x=>x.id===e.target.value);if(!p)return;const keep={showWork:S.showWork};S=fromPreset(p);S.showWork=keep.showWork;full()});
 ["title","xLabel","yLabel"].forEach(id=>$("#"+id).addEventListener("input",e=>{S[id]=e.target.value;soft()}));
 $("#editor").addEventListener("input",e=>{const el=e.target;
-  if(el.dataset.i!=null){S.rows[+el.dataset.i][el.dataset.f]=el.value;soft();return}
+  if(el.dataset.i!=null){S.rows[+el.dataset.i][el.dataset.f]=el.value;soft();const wfd=$("#wfFits");if(wfd)wfd.innerHTML=wfFitsHtml(single().reduce((a,r)=>a+r.v,0));return}
   if(el.id==="s1"||el.id==="s2"){S[el.id]=el.value;soft();return}
   if(el.id==="setList"){S.sets.list=el.value;soft();return}
   if(el.id==="sn_a"||el.id==="sn_b"){S.sets[el.id.slice(-1)].n=num(el.value);soft();return}
   if(el.id==="pKey"){S.picto.key=Math.max(0,num(el.value));soft();return}
+  if(el.id==="wCols"||el.id==="wRows"){S.waffle[el.id==="wCols"?"cols":"rows"]=el.value;soft();return}
 });
 $("#editor").addEventListener("change",e=>{const el=e.target;
   if(el.id==="sk_a"||el.id==="sk_b"){const w=el.id.slice(-1);S.sets[w].k=el.value;buildEditor();soft()}
   if(el.id==="pSym"){S.picto.sym=el.value;soft()}
 });
 $("#editor").addEventListener("click",e=>{
+  const wfb=e.target.closest("[data-wf]");if(wfb){const [c,r]=wfb.dataset.wf.split("x");S.waffle={cols:+c,rows:+r};buildEditor();soft();return}
   const del=e.target.closest("[data-del]");if(del){S.rows.splice(+del.dataset.del,1);buildEditor();soft();return}
   if(e.target.id==="addRow"){S.rows.push({l:"",a:"",b:""});buildEditor();soft();const ins=$("#editor").querySelectorAll('input[data-f]');const last=[...ins].filter(x=>x.dataset.i==S.rows.length-1)[0];last&&last.focus();return}
   if(e.target.id==="clearRows"){S.rows.forEach(r=>{r.a="";r.b=""});buildEditor();soft();return}
