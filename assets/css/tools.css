@@ -17,6 +17,8 @@
      st-*   the Study Timer
      ag-*   Age & Khmer Zodiac
      nw-*   Number to Khmer Words
+     iq-*   the Inequality Solver (borrows the dc-* cards and notes, the es-*
+            switch, stacked fraction and steps list)
 
    Namespaced rather than reusing .res / .card / .field, because the shared
    stylesheet already owns those and a tool is not a lesson. The one thing
@@ -1268,3 +1270,118 @@ a.tl-card:hover{transform:translateY(-3px);border-color:var(--brand-300);box-sha
 .tl-author .org { font-size: .9rem; font-weight: 700; color: var(--brand-600); }
 /* Khmer cannot take letter-spacing — it pulls the subscripts apart */
 :root[lang="km"] .tl-author .role { letter-spacing: 0; text-transform: none; font-size: .85rem; }
+
+/* ============================================== 15. the inequality solver
+   iq-*. The form and result are the dc-* cards; the working sits under the
+   result, and a wide table of signs scrolls sideways inside it. */
+#iqRoot{--iq-neg:#dc2626;--iq-c0:#0b57d0;--iq-c1:#d97706;--iq-c2:#16a34a;--iq-c3:#9333ea;--iq-c4:#dc2626;--iq-c5:#0891b2}
+:root[data-theme="dark"] #iqRoot{--iq-neg:#f87171;--iq-c0:#57a9ff;--iq-c1:#fbbf24;--iq-c2:#4ade80;--iq-c3:#c084fc;--iq-c4:#f87171;--iq-c5:#22d3ee}
+.iq-in,.iq-obj{
+  width:100%;font:inherit;font-family:"Times New Roman",Georgia,serif;color:var(--ink-900);
+  background:var(--surface);border:1.5px solid var(--ink-200);border-radius:var(--r-sm);
+}
+.iq-in{font-size:1.22rem;line-height:1.6;padding:.65rem .85rem;resize:vertical;min-height:4.6rem}
+.iq-obj{font-size:1.08rem;padding:.55rem .8rem}
+.iq-in:focus,.iq-obj:focus{outline:none;border-color:var(--brand-500);box-shadow:0 0 0 3px rgba(18,115,230,.15)}
+.iq-keys{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.2rem}
+.iq-keys button{
+  font:inherit;font-family:"Times New Roman",Georgia,serif;font-size:1.02rem;line-height:1.2;
+  min-width:2.45rem;padding:.38rem .5rem;border:1px solid var(--ink-200);border-radius:9px;
+  background:var(--surface-2);color:var(--ink-800);cursor:pointer;
+}
+.iq-keys button:hover{border-color:var(--brand-400);color:var(--brand-700);background:var(--brand-50)}
+.iq-preview{font-family:"Times New Roman",Georgia,serif;font-size:1.08rem;color:var(--ink-800);line-height:2.1;min-height:1.2em;overflow-wrap:anywhere}
+.iq-preview:empty{display:none}
+.iq-prevL{font-family:var(--font-sans);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-400);margin-right:.35rem}
+.iq-prevS{margin:0 .55rem;color:var(--ink-400)}
+.iq-cats{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.35rem}
+.iq-cats[hidden]{display:none}
+.iq-cats button{
+  font:inherit;font-size:.8rem;font-weight:700;padding:.3rem .7rem;border-radius:var(--r-pill);
+  border:1px solid var(--ink-200);background:transparent;color:var(--ink-500);cursor:pointer;
+}
+.iq-cats button:hover{color:var(--ink-900);border-color:var(--ink-400)}
+.iq-cats button[aria-selected="true"]{background:var(--brand-600);border-color:var(--brand-600);color:#fff}
+.iq-ex button{font-family:"Times New Roman",Georgia,serif;font-size:1rem}
+.iq-ex small{font-family:var(--font-sans);font-size:.76rem;color:var(--ink-400)}
+.iq-acts{align-items:center;justify-content:space-between;flex-wrap:wrap}
+.iq-note{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:700;color:var(--ink-500)}
+.iq-note button{
+  font:inherit;font-family:"Times New Roman",Georgia,serif;font-size:.95rem;font-weight:700;
+  padding:.28rem .6rem;border:1px solid var(--ink-200);border-radius:8px;background:transparent;color:var(--ink-500);cursor:pointer;
+}
+.iq-note button[aria-pressed="true"]{border-color:var(--brand-500);color:var(--brand-700);background:var(--brand-50)}
+.iq-big{font-size:clamp(1.3rem,3.6vw,1.8rem);line-height:1.55}
+.iq-alt{font-family:"Times New Roman",Georgia,serif;font-size:1.1rem;font-weight:600;color:var(--ink-700)}
+.iq-approx{display:block;font-family:var(--font-sans);font-size:.8rem;font-weight:700;color:var(--accent-500);margin-top:.15rem}
+.iq-line{margin-top:1rem}
+.iq-line:empty{display:none}
+.iq-nl,.iq-graph{display:block;width:100%;height:auto;max-width:640px}
+.iq-graph{border:1px solid var(--ink-100);border-radius:var(--r-sm);background:var(--surface)}
+.iq-nl-axis{stroke:var(--ink-400);stroke-width:1.6}
+.iq-nl-arrow{fill:var(--ink-400)}
+.iq-nl-guide{stroke:var(--ink-200);stroke-width:1;stroke-dasharray:3 4}
+.iq-nl-seg{stroke:var(--brand-500);stroke-width:6;opacity:.7}
+.iq-nl-dot{fill:var(--brand-600)}
+.iq-nl-open{fill:var(--surface);stroke:var(--brand-600);stroke-width:2.2}
+.iq-nl-seg.is-final{stroke:var(--success-500);opacity:1}
+.iq-nl-dot.is-final{fill:var(--success-500)}
+.iq-nl-open.is-final{stroke:var(--success-500)}
+.iq-nl-lab{fill:var(--ink-800);font-size:15px;font-family:"Times New Roman",Georgia,serif}
+.iq-nl-tag{fill:var(--ink-500);font-size:13px;font-weight:700;font-family:var(--font-sans)}
+.iq-nl-tag.is-final{fill:var(--success-500)}
+.iq-bad .iq-line,.es-bad .iq-line{display:none}
+
+.iq-stepscard{min-width:0}
+.iq-stepscard[hidden]{display:none}
+.iq-steps > li{font-size:1rem}
+.iq-steps .es-fr{font-size:.86em}
+.iq-rad{border-top:1.5px solid currentColor;padding:0 .12em 0 .05em;margin-left:.02em}
+.iq-flip{color:var(--accent-500)}
+.iq-ans{color:var(--brand-700);font-weight:800;font-family:"Times New Roman",Georgia,serif;font-size:1.04em}
+.iq-arrow{color:var(--ink-400);margin:0 .15rem}
+.iq-sub{margin:.45rem 0;border:1px solid var(--ink-100);border-radius:var(--r-sm);background:var(--surface-2);padding:.1rem .85rem}
+.iq-sub > summary{cursor:pointer;padding:.4rem 0;font-family:"Times New Roman",Georgia,serif;font-size:1.02rem;color:var(--ink-800)}
+.iq-sub > summary::marker{color:var(--brand-600)}
+.iq-sub[open] > summary{border-bottom:1px dashed var(--ink-200);margin-bottom:.35rem}
+.iq-sub .es-steps{padding-left:1.25rem;gap:.45rem;margin:.35rem 0 .55rem}
+.iq-sub .es-steps li{font-size:.95rem}
+
+.iq-tabwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.55rem 0 .2rem;max-width:100%}
+.iq-tab,.iq-ztab{border-collapse:collapse;font-family:"Times New Roman",Georgia,serif;font-size:1.02rem}
+.iq-tab th{padding:.35rem .75rem .35rem .3rem;text-align:left;font-weight:700;color:var(--ink-800);border-right:2px solid var(--ink-400);white-space:nowrap}
+.iq-tab td{padding:.3rem .2rem;text-align:center;min-width:1.5rem;white-space:nowrap;color:var(--ink-700)}
+.iq-tab td.pt{min-width:1.9rem}
+.iq-tab tr + tr > *{border-top:1px solid var(--ink-200)}
+.iq-tab tr.xr > *{border-bottom:2px solid var(--ink-400);font-weight:700;color:var(--ink-900)}
+.iq-tab tr.fr > *{border-top:2px solid var(--ink-400);background:var(--brand-50)}
+.iq-tab .pl{color:var(--success-500)}
+.iq-tab .mi,.iq-tab .nd{color:var(--iq-neg)}
+.iq-tab .nd{font-weight:800}
+.iq-tab .inf{color:var(--ink-500);font-weight:600}
+.iq-tab .bar{display:inline-block;width:1px;height:1.05em;background:var(--ink-200);vertical-align:middle}
+.iq-ztab th,.iq-ztab td{padding:.3rem .9rem;border-bottom:1px solid var(--ink-200);text-align:center}
+.iq-ztab th{font-family:var(--font-sans);font-size:.8rem;color:var(--ink-500)}
+
+.iq-g-grid{stroke:var(--ink-100);stroke-width:1}
+.iq-g-axis{stroke:var(--ink-500);stroke-width:1.4}
+.iq-g-tick{fill:var(--ink-400);font-size:11px;font-family:var(--font-sans)}
+.iq-g-lab{fill:var(--ink-700);font-size:15px;font-style:italic;font-family:"Times New Roman",Georgia,serif}
+.iq-g-region{fill:var(--brand-500);fill-opacity:.2}
+.iq-g-line{stroke-width:2.2;fill:none}
+.iq-g-line.is-strict{stroke-dasharray:8 6}
+.iq-g-num{font-size:12px;font-weight:800;font-family:var(--font-sans)}
+.iq-g-line.c0{stroke:var(--iq-c0)} .iq-g-num.c0{fill:var(--iq-c0)}
+.iq-g-line.c1{stroke:var(--iq-c1)} .iq-g-num.c1{fill:var(--iq-c1)}
+.iq-g-line.c2{stroke:var(--iq-c2)} .iq-g-num.c2{fill:var(--iq-c2)}
+.iq-g-line.c3{stroke:var(--iq-c3)} .iq-g-num.c3{fill:var(--iq-c3)}
+.iq-g-line.c4{stroke:var(--iq-c4)} .iq-g-num.c4{fill:var(--iq-c4)}
+.iq-g-line.c5{stroke:var(--iq-c5)} .iq-g-num.c5{fill:var(--iq-c5)}
+.iq-g-vtx{fill:var(--ink-900)}
+.iq-g-vtx.is-open{fill:var(--surface);stroke:var(--ink-900);stroke-width:2}
+.iq-g-vl{fill:var(--ink-800);font-size:12.5px;font-family:"Times New Roman",Georgia,serif;paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
+@media (max-width:520px){
+  .iq-keys button{min-width:2.15rem;padding:.34rem .4rem;font-size:.98rem}
+  .iq-in{font-size:1.12rem}
+}
+#iqObjF[hidden]{display:none}
