@@ -94,6 +94,10 @@ chart-builder.html
                   Chart Builder — Cambridge Stage 7 Unit 7: tally, bar,
                   dual bar, pie, waffle, pictogram, frequency diagram, line,
                   scatter, two-way, Venn and Carroll, with working + practice
+shape-builder.html
+                  Shape Builder — any 2D shape on a grid (properties,
+                  symmetry, perimeter, area, transformations, circle parts)
+                  and 3D solids (rotate, nets, elevations, volume, SA)
 fraction-calculator.html
                   Fractions & Percent — fraction arithmetic with steps and
                   recurring decimals; X% of Y, what percent, % change, ± %
@@ -172,6 +176,10 @@ assets/js/chart-builder.js
                        Chart Builder — SVG charts, working, practice mode
 assets/css/chart-builder.css
                        Chart Builder styles, all scoped under .cb
+assets/js/shape-builder.js
+                       Shape Builder — 2D geometry, 3D meshes, nets, views
+assets/css/shape-builder.css
+                       Shape Builder styles (extends chart-builder.css)
 assets/js/fraction-calculator.js
                        Fractions (BigInt, recurring decimals) and the four
                        percentage panels
@@ -849,6 +857,36 @@ symbols or totals. Eleven example data sets, including the 180-teenagers fruit
 and vegetable exercise. The data is kept in localStorage (`u7cb`). Tool UI is
 English; the page chrome is translated through `i18n.js` (`cb.*`, `nav.cb*`,
 `tools.cb*`).
+
+
+### Shape Builder
+
+`shape-builder.html` + `assets/js/shape-builder.js` + `assets/css/shape-builder.css`
+(it also loads `chart-builder.css` and reuses its `.cb` classes). Covers Cambridge
+Lower Secondary Stage 7 Units 2, 4, 8, 13, 23 and 25, and is linked from those units.
+
+**2D.** 17 starting shapes (quadrilaterals, triangles, regular polygons 3–12, an
+L-shape, an arrowhead, your own polygon, a circle) on a −10…10 coordinate grid.
+Corners are dragged (or moved with the arrow keys) and snap to whole squares, half
+squares or anywhere. The shape is named automatically; side lengths, angles
+(reflex too), equal and parallel sides, diagonals, lines of symmetry and order of
+rotational symmetry are found by testing the vertices; perimeter and area come
+with the working (rectangle, ½bh with the perpendicular height drawn, base ×
+height, trapezium, or ear-clipping into triangles). Reflection, rotation,
+translation and enlargement draw the image with a coordinate table. The circle
+mode labels centre, radius, diameter, chord, arc, sector, segment, tangent.
+
+**3D.** Cube, cuboid, prism and pyramid (3–8 sides), tetrahedron, cylinder,
+cone, sphere. Each is a mesh drawn with back-face culling, shaded faces, hidden
+edges dashed and silhouettes for curved surfaces; drag to turn. Views: the 3D
+model (with unit cubes for whole-number cuboids), the net, and front/side/plan
+elevations. Faces/edges/vertices with Euler's check, volume and surface area
+with working (cube and cuboid are Stage 7; the rest are marked "later stages").
+
+Practice mode asks for the name, symmetry, angle sum, perimeter, area, image
+coordinates, or faces/edges/vertices/volume/surface area. State is kept in
+localStorage (`aa-shape-builder`). Page chrome is translated through `i18n.js`
+(`sb.*`, `nav.sb*`, `tools.sb*`).
 
 ### Fraction & Percentage Calculator
 
