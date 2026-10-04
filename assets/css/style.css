@@ -1034,3 +1034,22 @@ body, .site-header, .card, .service-card, .subject, .quote, .faq details,
   .theme-btn { width: 36px; height: 36px; }
   .nav-toggle { width: 40px; height: 40px; }
 }
+
+/* Category flyouts (Learning, Tools) on desktop.
+   Every flyout opens from the top of the dropdown, so the per-row hover
+   bridges would all sit in the same strip and the last one would win —
+   crossing the gap then jumped to the last category. Instead the dropdown
+   carries ONE bridge on the side the flyouts open, and nav-menu.js keeps the
+   open category open while the pointer is heading towards its list. */
+@media (min-width: 901px) {
+  .sub:has(> .sub-item) > .sub-item::after { display: none; }
+  .sub:has(> .sub-item)::after { content: ""; position: absolute; top: 0; bottom: 0; left: 100%; width: .55rem; }
+  .has-sub:has(> a[href="tools"]) .sub:has(> .sub-item)::after { left: auto; right: 100%; }
+  .nav-links.aim .sub-item:hover > .sub2 { opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-6px); }
+  .nav-links.aim .sub-item.is-open > .sub2 { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); }
+  .nav-links.aim .sub-item:hover > a { background: none; color: var(--ink-700); }
+  .nav-links.aim .sub-item.is-open > a { background: var(--brand-50); color: var(--brand-700); }
+}
+@media (min-width: 901px) and (max-width: 1500px) {
+  .sub:has(> .sub-item)::after { left: auto; right: 100%; }
+}
