@@ -836,6 +836,9 @@ p:last-child { margin-bottom: 0; }
 .sub-item { position: relative; }
 .sub-item > a { justify-content: space-between; }
 .sub-item > a .chev { width: 13px; height: 13px; flex: none; margin-left: auto; }
+.sub2 .sub2-h { font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-400); padding: .55rem .7rem .2rem; list-style: none; }
+.sub2 .sub2-h:first-child { padding-top: .2rem; }
+:root[lang="km"] .sub2 .sub2-h { letter-spacing: 0; text-transform: none; font-size: .8rem; }
 
 @media (min-width: 901px) {
   .sub, .sub2 {
@@ -864,12 +867,27 @@ p:last-child { margin-bottom: 0; }
      scroll: overflow on it would clip the .sub2 flyouts that open beside it.
      Those panels are short; the long lists live in the .sub2, which scrolls. */
   .sub:has(> .sub-item) { overflow: visible; max-height: none; min-width: 270px; }
+  /* Every flyout opens from the top of the dropdown, not from its own row,
+     so a long list (Language Centre, Mathematics) never runs off the bottom. */
+  .sub:has(> .sub-item) > .sub-item { position: static; }
+  .sub:has(> .sub-item) > .sub-item > .sub2 { top: 0; min-height: 100%; }
+  .sub:has(> .sub-item) > .sub-item::after { top: 0; height: 100%; }
+  /* Long flyouts (Mathematics, Language Centre) lay out in two columns so the
+     whole list is visible at once; group headings span both columns. */
+  .sub2:has(> li:nth-child(7)) {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: .25rem; align-content: start; width: 540px;
+  }
+  .sub2:has(> li:nth-child(7)) > .sub2-h { grid-column: 1 / -1; }
 }
 /* On a narrow desktop the second level would run off the right edge, because
    the nav sits hard against it. Flip it to open inward instead. */
 @media (min-width: 901px) and (max-width: 1180px) {
   .sub2 { left: auto; right: calc(100% + .35rem); }
   .sub-item::after { left: auto; right: 100%; }
+  /* less room here: keep the two columns but drop the one-line descriptions */
+  .sub2:has(> li:nth-child(7)) { width: 430px; }
+  .sub2:has(> li:nth-child(7)) a small { display: none; }
 }
 
 @media (max-width: 900px) {
