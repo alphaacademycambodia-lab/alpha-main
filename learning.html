@@ -36,6 +36,11 @@
 .subject-nav a i{width:9px;height:9px;border-radius:3px;background:var(--sc,var(--brand-500));flex:none}
 
 .subject{margin-bottom:3.4rem;scroll-margin-top:100px}
+/* style.css also has a .subject (the small subject chip on the home page,
+   display:flex). Here a .subject is a whole section: heading, blurb, then
+   the card grid underneath, so undo the chip layout. */
+section.subject{display:block;padding:clamp(1.25rem,3vw,2rem);border-radius:var(--r-lg)}
+section.subject:hover{transform:none;border-color:var(--ink-100);box-shadow:var(--shadow-xs)}
 .subject-head{
   display:flex;align-items:center;gap:.95rem;flex-wrap:wrap;
   padding-bottom:.9rem;margin-bottom:1.4rem;
