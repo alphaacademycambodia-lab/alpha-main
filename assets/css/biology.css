@@ -148,3 +148,42 @@
 .bio-author hr{margin:1.1rem auto;width:70px;border:0;border-top:1px solid var(--ink-200)}
 .bio-author .org{font-size:.9rem;font-weight:700;color:var(--brand-600)}
 @media print{ .bio-jump,.site-header,.site-footer,.float-actions,.cta-band{display:none !important} .bio-sec{break-inside:avoid;box-shadow:none} }
+
+/* ---------------------------------------------------------------------------
+   Section links. Desktop: a numbered contents list in a sticky column on the
+   left, with the section you are reading highlighted (biology.js). Narrow
+   screens: the same links as a row of chips across the top.               */
+.bio-jump{counter-reset:bj}
+.bio-jump a{counter-increment:bj}
+.bio-jump a.is-on{background:var(--bio);border-color:var(--bio);color:#fff}
+@media (max-width:1023px){
+  .bio-jump{scrollbar-width:none}
+  .bio-jump::-webkit-scrollbar{display:none}
+}
+@media (min-width:1024px){
+  .bio{max-width:1260px;display:grid;grid-template-columns:240px minmax(0,1fr);column-gap:1.75rem;align-items:start}
+  .bio > *{grid-column:2}
+  .bio > .bio-jump{
+    grid-column:1;grid-row:1 / span 40;align-self:start;
+    position:sticky;top:6rem;flex-direction:column;gap:.15rem;overflow:visible;
+    padding:1rem .7rem;margin:0;max-height:calc(100vh - 7.5rem);overflow-y:auto;
+  }
+  .bio-jump::before{
+    content:"On this page";display:block;padding:0 .6rem .6rem;margin-bottom:.35rem;
+    border-bottom:1px solid var(--ink-100);font-size:.72rem;font-weight:800;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-400);
+  }
+  :root[lang="km"] .bio-jump::before{content:"ក្នុងទំព័រនេះ";letter-spacing:0;text-transform:none;font-size:.85rem}
+  .bio-jump a{
+    display:flex;align-items:center;gap:.6rem;white-space:normal;line-height:1.35;
+    padding:.5rem .6rem;border-radius:10px;background:none;border:0;font-size:.92rem;font-weight:600;color:var(--ink-600);
+  }
+  .bio-jump a::before{
+    content:counter(bj);flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:7px;
+    font-size:.75rem;font-weight:800;background:var(--ink-50);color:var(--ink-500);border:1px solid var(--ink-100);
+  }
+  .bio-jump a:hover{background:color-mix(in srgb,var(--bio) 8%,transparent);color:var(--bio);border-color:transparent}
+  .bio-jump a.is-on{background:color-mix(in srgb,var(--bio) 12%,transparent);color:var(--bio);font-weight:800}
+  .bio-jump a.is-on::before{background:var(--bio);border-color:var(--bio);color:#fff}
+  .bio-sec{scroll-margin-top:6rem}
+}
