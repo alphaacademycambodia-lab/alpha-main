@@ -539,14 +539,14 @@ reason Learning is one: the tab has to lead somewhere when there is more than
 one thing behind it. Its dropdown lists the tools directly, so the hub is
 never in the way of someone who knows what they came for.
 
-**Categories.** With 17 tools the list became too long, so both the hub and the
+**Categories.** With over 20 tools the list became too long, so both the hub and the
 header dropdown are grouped the same way:
 
 | id (`tools#id`) | category | tools |
 |---|---|---|
 | `kids` | Kids Maths | Times Tables, Place Value & Number Line, Clock & Time |
-| `calc` | Calculators & Solvers | Scientific Calculator, Fractions & Percent, Equation Solver, Inequality Solver |
-| `graphs` | Graphs, Shapes & Data | Graph Plotter, Shape Builder, Chart Builder |
+| `calc` | Calculators & Solvers | Scientific Calculator, Fractions & Percent, Equation Solver, Inequality Solver, Factors/HCF/LCM, Percentages & Ratio, Sequences |
+| `graphs` | Graphs, Shapes & Data | Graph Plotter, Shape Builder, Chart Builder, Angles Lab, Statistics Explorer, Coordinates & Lines, Probability Simulator |
 | `time` | Dates & Time | Calendar, Date Calculator, Countdown, Age & Zodiac, Study Timer |
 | `everyday` | Everyday | Unit Converter, Number to Khmer Words |
 
@@ -994,6 +994,22 @@ add or take away time, or time between two times (past midnight handled),
 written as counting on — to the next hour, whole hours, the rest. **Practise**:
 ten questions alternating "read the clock" (four choices, one of them the
 hands read the wrong way round) and "set the clock", at four levels.
+
+### Seven Stage 7–9 maths tools
+
+All seven use `tools-core.js`, keep their state in the address bar only, and
+have their styles in `tools.css` sections 20–26 and their page text under the
+prefix shown (`fp.*` … in `i18n.js`); what a script writes carries `{en, km}`.
+
+| page | script | prefix | what it does |
+|---|---|---|---|
+| `factors.html` | `factors.js` | `fp-` | factor tree (smallest prime split off each time), index form, factor pairs; HCF and LCM by listing and by prime factors, Venn diagram for two numbers |
+| `percent-ratio.html` | `percent-ratio.js` | `pr-` | % change, multiplier, reverse %, sharing in a ratio (with a bar), simplifying ratios (decimals cleared first, 1 : n form), best buy for up to three packs |
+| `angles.html` | `angles.js` | `an-` | draggable angle with a protractor overlay (semicircle, full circle for reflex), estimate and draw challenges; rule diagrams for line, point, triangle, vertically opposite and the three parallel-line pairs; find-x practice with the reason |
+| `statistics.html` | `statistics.js` | `sx-` | mean/median/mode/range with working, quartiles by median-of-halves, tally table (grouped when more than 12 values), stem and leaf, frequency chart, box plot |
+| `coordinates.html` | `coordinates.js` | `co-` | y = mx + c with gradient triangle and intercepts; two draggable points for gradient (as a fraction), midpoint, length, equation; coordinate battleships on −5…5 |
+| `probability-simulator.html` | `probability-sim.js` | `pb-` | coin, die, two-dice total, spinner (2–8 sectors), bag of counters; 1–1,000 trials at a time, relative frequency against theory, a log-scale convergence line for one outcome |
+| `sequences.html` | `sequences.js` | `sq-` | nth term of linear, quadratic and geometric sequences from the differences; terms from a typed rule (a small parser, no eval); matchstick squares, triangles and hexagons for 3n+1, 2n+1, 5n+1, dot patterns otherwise |
 
 ## The four kindergarten pages
 

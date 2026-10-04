@@ -160,6 +160,41 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.alphaacademycambodia.com/sequences.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/probability-simulator.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/coordinates.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/statistics.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/angles.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/percent-ratio.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/factors.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.alphaacademycambodia.com/clock.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
