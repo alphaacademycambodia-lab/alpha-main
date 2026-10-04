@@ -860,6 +860,10 @@ p:last-child { margin-bottom: 0; }
     opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0);
   }
   .sub-item::after { content: ""; position: absolute; top: 0; left: 100%; width: .5rem; height: 100%; }
+  /* A first-level panel that holds category flyouts (Learning, Tools) must not
+     scroll: overflow on it would clip the .sub2 flyouts that open beside it.
+     Those panels are short; the long lists live in the .sub2, which scrolls. */
+  .sub:has(> .sub-item) { overflow: visible; max-height: none; min-width: 270px; }
 }
 /* On a narrow desktop the second level would run off the right edge, because
    the nav sits hard against it. Flip it to open inward instead. */
