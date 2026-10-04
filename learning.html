@@ -37,10 +37,38 @@
 
 .subject{margin-bottom:3.4rem;scroll-margin-top:100px}
 /* style.css also has a .subject (the small subject chip on the home page,
-   display:flex). Here a .subject is a whole section: heading, blurb, then
-   the card grid underneath, so undo the chip layout. */
-section.subject{display:block;padding:clamp(1.25rem,3vw,2rem);border-radius:var(--r-lg)}
-section.subject:hover{transform:none;border-color:var(--ink-100);box-shadow:var(--shadow-xs)}
+   display:flex). Here a .subject is a whole section laid out like a category
+   on the Tools page: small icon + title, one-line blurb, then the card grid. */
+section.subject{display:block;padding:0;background:none;border:0;box-shadow:none;border-radius:0}
+section.subject:hover{transform:none;box-shadow:none}
+section.subject .subject-head{border-bottom:0;padding-bottom:0;margin-bottom:.35rem;gap:.65rem}
+section.subject .subject-head .ico{width:40px;height:40px;border-radius:12px}
+section.subject .subject-head .ico svg{width:22px;height:22px}
+section.subject .subject-head h2{font-size:1.3rem}
+section.subject .subject-head > div{display:flex;align-items:baseline;gap:.55rem;flex-wrap:wrap}
+section.subject .subject-head .kh{margin:0}
+section.subject > p.blurb{margin:0 0 1.15rem;font-size:.95rem}
+.res-grid{gap:1.1rem}
+.res{border-radius:var(--r-lg);padding:1.35rem 1.4rem 1.2rem;border-color:var(--ink-100);box-shadow:var(--shadow-sm)}
+.res h3{font-size:1.1rem}
+.res p{font-size:.92rem;line-height:1.65}
+/* search + subject chips, the same bar as the Tools page */
+.lr-bar{position:sticky;top:5rem;z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;
+  background:var(--surface);border:1px solid var(--ink-100);border-radius:var(--r-lg);padding:.7rem;box-shadow:var(--shadow-sm);margin:0 0 2.4rem}
+.lr-search{position:relative;flex:1 1 230px;min-width:0}
+.lr-search svg{position:absolute;left:.8rem;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--ink-400);pointer-events:none}
+.lr-search input{width:100%;font:inherit;font-size:.98rem;padding:.65rem .9rem .65rem 2.4rem;border:1.5px solid var(--ink-200);border-radius:var(--r-pill);background:var(--surface-2);color:var(--ink-900)}
+.lr-search input:focus{outline:none;border-color:var(--brand-400);box-shadow:var(--ring)}
+.lr-bar .subject-nav{margin:0;justify-content:flex-start;min-width:0}
+.lr-bar .subject-nav a{box-shadow:none;background:var(--ink-50);border-color:var(--ink-100);padding:.45rem .8rem}
+.lr-bar .subject-nav a b{font-size:.75rem;font-weight:800;min-width:1.4em;text-align:center;padding:.05rem .35rem;border-radius:var(--r-pill);background:var(--surface);color:var(--ink-500)}
+.lr-bar .subject-nav a.is-empty{opacity:.45}
+.lr-none{padding:2rem 1rem;text-align:center;color:var(--ink-500)}
+@media (max-width:640px){
+  .lr-bar{position:static}
+  .lr-bar .subject-nav{flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;padding-bottom:.2rem}
+  .lr-bar .subject-nav a{flex:none}
+}
 .subject-head{
   display:flex;align-items:center;gap:.95rem;flex-wrap:wrap;
   padding-bottom:.9rem;margin-bottom:1.4rem;
@@ -343,14 +371,22 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
       <p data-i18n="learn.p">The same revision material we use in real lessons. Open it for free — no sign-up.</p>
     </div>
 
-    <nav class="subject-nav reveal hub-part" aria-label="Subjects">
-      <a href="#math"      style="--sc:#4f7cff"><i></i><span data-i18n="learn.mathH">Mathematics</span></a>
-      <a href="#cambridge" style="--sc:#c2255c"><i></i><span data-i18n="learn.camH">Cambridge Curriculum</span></a>
-      <a href="#physics"   style="--sc:#8b5cf6"><i></i><span data-i18n="learn.phyH">Physics</span></a>
-      <a href="#chemistry" style="--sc:#12b886"><i></i><span data-i18n="learn.chemH">Chemistry</span></a>
-      <a href="#biology"   style="--sc:#e8590c"><i></i><span data-i18n="learn.bioH">Biology</span></a>
-      <a href="#language"  style="--sc:#f0761a"><i></i><span data-i18n="learn.langH">Language Centre</span></a>
-    </nav>
+    <div class="lr-bar reveal hub-part" role="search">
+      <label class="lr-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" id="lrQ" placeholder="Search subjects and courses…" aria-label="Search the learning hub" data-i18n-placeholder="learn.searchPh" data-i18n-aria="learn.searchA" autocomplete="off">
+      </label>
+      <nav class="subject-nav" id="lrCats" aria-label="Subjects">
+        <a href="#math" style="--sc:#4f7cff"><i></i><span data-i18n="learn.mathH">Mathematics</span> <b>3</b></a>
+        <a href="#cambridge" style="--sc:#c2255c"><i></i><span data-i18n="learn.camH">Cambridge Curriculum</span> <b>3</b></a>
+        <a href="#oxford-pyp" style="--sc:#7048e8"><i></i><span data-i18n="nav.pyp">Oxford PYP</span> <b>4</b></a>
+        <a href="#physics" style="--sc:#8b5cf6"><i></i><span data-i18n="learn.phyH">Physics</span> <b>2</b></a>
+        <a href="#chemistry" style="--sc:#12b886"><i></i><span data-i18n="learn.chemH">Chemistry</span> <b>3</b></a>
+        <a href="#biology" style="--sc:#e8590c"><i></i><span data-i18n="learn.bioH">Biology</span> <b>2</b></a>
+        <a href="#language" style="--sc:#f0761a"><i></i><span data-i18n="learn.langH">Language Centre</span> <b>3</b></a>
+      </nav>
+    </div>
+    <p class="lr-none" id="lrNone" hidden data-i18n="learn.noneP">Nothing matches that. Try another word, or ask us below.</p>
 
     <!-- ---------------------------------------------------- MATHEMATICS -->
     <section class="subject reveal hub-part" id="math" style="--sc:#4f7cff" aria-labelledby="math-h">
@@ -362,13 +398,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail11">11 resources</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.mathPick">Choose a grade — every lesson, formula sheet and exercise set for that year sits inside.</p>
+      <p class="blurb" data-i18n="learn.mathPick">Choose a grade to see its lessons and exercises.</p>
 
       <div class="res-grid">
         <a class="res res--group" href="#math-grade-12">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.g12Card">Mathematics Grade 12</h3>
-          <p data-i18n="learn.g12CardP">The whole Grade 12 syllabus — complex numbers, limits, derivatives, integrals, differential equations and probability, plus the formula book.</p>
+          <p data-i18n="learn.g12CardP">Every Grade 12 chapter, plus the formula book.</p>
           <span class="mini">
             <span data-i18n="nav.g12">Grade 12 Formula</span>
             <span data-i18n="nav.cx">Complex Numbers</span>
@@ -390,14 +426,14 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.g9Card">Mathematics Grade 9</h3>
-          <p data-i18n="learn.mathT2p">Algebra, geometry and trigonometry for the lower-secondary examination.</p>
+          <p data-i18n="learn.mathT2p">Algebra, geometry and trigonometry for the Grade 9 exam.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
 
         <a class="res" href="math-kindergarten">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT13">Maths for Kindergarten</h3>
-          <p data-i18n="learn.mathT13p">A first course for children aged four to six. Numbers 0 to 20 as digits, Khmer numerals and dots, shapes and patterns, comparing and measuring with cubes, adding and taking away within ten, and the clock, the riel and position words — then eight picture games. Every card reads itself aloud and carries the Khmer, so a child can use it before they can read.</p>
+          <p data-i18n="learn.mathT13p">Numbers, shapes and the clock for ages 4–6, read aloud.</p>
           <span class="meta">
             <span data-i18n="learn.mathT13s">6 modules · 8 games · reads aloud</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -421,13 +457,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail10">10 resources</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.g12P">Every Grade 12 chapter we have so far, in syllabus order. Each one is a lesson with worked examples followed by exercises — readable in Khmer or English.</p>
+      <p class="blurb" data-i18n="learn.g12P">Every Grade 12 chapter: a lesson, worked examples and exercises.</p>
 
       <div class="res-grid">
         <a class="res" href="grade-12-math-formula">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT1">Grade 12 Maths Formulas</h3>
-          <p data-i18n="learn.mathT1p">Complex numbers, limits, derivatives, integrals, differential equations, conics, solid geometry and probability.</p>
+          <p data-i18n="learn.mathT1p">Every Grade 12 formula in one Khmer reference book.</p>
           <span class="meta">
             <span data-i18n="learn.mathT1s">12 chapters · 57 sections · 300+ formulas</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -437,7 +473,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="grade-12-complex-number">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT4">Complex Numbers — lesson &amp; exercises</h3>
-          <p data-i18n="learn.mathT4p">The whole Grade 12 chapter: a lesson with worked examples, then 40 exercises including past national examination questions. Readable in Khmer or English.</p>
+          <p data-i18n="learn.mathT4p">The full chapter, then 40 exercises with past exam questions.</p>
           <span class="meta">
             <span data-i18n="learn.mathT4s">Lesson &#183; 40 exercises &#183; ខ្មែរ / EN</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -447,7 +483,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="grade-12-limit">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT5">Limits of Functions — lesson &amp; exercises</h3>
-          <p data-i18n="learn.mathT5p">Limit laws, the 0/0 and infinity forms, trigonometric, exponential and logarithmic limits, and continuity — then 36 multiple-choice questions and 15 written exercises. Khmer or English.</p>
+          <p data-i18n="learn.mathT5p">Limit laws and continuity, then 51 questions and exercises.</p>
           <span class="meta">
             <span data-i18n="learn.mathT5s">Lesson &#183; 51 exercises &#183; ខ្មែរ / EN</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -457,7 +493,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="grade-12-vector">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT12">Vectors in Space — lesson &amp; questions</h3>
-          <p data-i18n="learn.mathT12p">Coordinates and distance, the dot and cross product, equations of lines and planes, areas and volumes, the distance formulas and the sphere — then 43 multiple-choice questions.</p>
+          <p data-i18n="learn.mathT12p">Lines, planes, dot and cross product, then 43 questions.</p>
           <span class="meta">
             <span data-i18n="learn.mathT12s">Lesson &#183; 43 multiple choice &#183; ខ្មែរ / EN</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -467,7 +503,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="grade-12-conic">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT11">Conics — lesson &amp; exercises</h3>
-          <p data-i18n="learn.mathT11p">The parabola, the ellipse and the hyperbola as reference tables — standard equation, vertex, focus, directrix, asymptotes and eccentricity, both centred at the origin and at I(h,k) — then 55 exercises in three sets.</p>
+          <p data-i18n="learn.mathT11p">Parabola, ellipse and hyperbola, then 55 exercises.</p>
           <span class="meta">
             <span data-i18n="learn.mathT11s">Lesson &#183; 55 exercises &#183; ខ្មែរ / EN</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -477,7 +513,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="grade-12-function">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT10">Functions — lesson &amp; exercises</h3>
-          <p data-i18n="learn.mathT10p">Asymptotes, the plan for studying a function, variation, relative extrema, inflection points, symmetry, tangent lines and the position of two curves — then 33 exercises on rational, exponential and logarithm functions, curve sketching included.</p>
+          <p data-i18n="learn.mathT10p">Studying and sketching a function, then 33 exercises.</p>
           <span class="meta">
             <span data-i18n="learn.mathT10s">Lesson &#183; 33 exercises &#183; ខ្មែរ / EN</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -487,7 +523,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="grade-12-derivative">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT6">Derivatives — lesson &amp; exercises</h3>
-          <p data-i18n="learn.mathT6p">The definition, the chain rule, every standard derivative, higher derivatives and the differential — then 13 written exercises on tangents, variation and optimisation. Khmer or English.</p>
+          <p data-i18n="learn.mathT6p">Rules and standard derivatives, then 13 exercises.</p>
           <span class="meta">
             <span data-i18n="learn.mathT6s">Lesson &#183; 13 exercises &#183; ខ្មែរ / EN</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -497,7 +533,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="grade-12-integral">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT7">Integrals — lesson &amp; exercises</h3>
-          <p data-i18n="learn.mathT7p">Antiderivatives, substitution, integration by parts, partial fractions, definite integrals and area under a curve — then 18 multiple-choice and 10 written exercises. Khmer or English.</p>
+          <p data-i18n="learn.mathT7p">Integration methods and area, then 28 exercises.</p>
           <span class="meta">
             <span data-i18n="learn.mathT7s">Lesson &#183; 28 exercises &#183; ខ្មែរ / EN</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -507,7 +543,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="grade-12-differential-equation">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT9">Differential Equations — lesson &amp; exercises</h3>
-          <p data-i18n="learn.mathT9p">First and second order in one page: separable equations, integrating factors, variation of constants, the characteristic equation and undetermined coefficients — then 36 multiple-choice and 62 written exercises, plus the BaccII question from every year since 2002.</p>
+          <p data-i18n="learn.mathT9p">First and second order, then 98 exercises and every BaccII question.</p>
           <span class="meta">
             <span data-i18n="learn.mathT9s">Lesson &#183; 98 exercises &#183; 23 BaccII years</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -517,7 +553,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="grade-12-probability-exercise">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.mathT8">Grade 12 Probability — lesson &amp; exercises</h3>
-          <p data-i18n="learn.mathT8p">The full lesson (sets, permutations, combinations, conditional probability and Bayes), then 108 exercises — dice, cards, draws and past national examination questions. Fixed practice order, searchable, with a progress tracker.</p>
+          <p data-i18n="learn.mathT8p">Counting and probability, then 108 exercises.</p>
           <span class="meta">
             <span data-i18n="learn.mathT8s">Lesson &#183; 108 exercises &#183; ខ្មែរ / EN</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -527,7 +563,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.mathT3">Past exam papers</h3>
-          <p data-i18n="learn.mathT3p">Worked solutions to recent national examination papers.</p>
+          <p data-i18n="learn.mathT3p">Worked solutions to recent national exam papers.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -543,13 +579,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail1">1 resource</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.camP">The Cambridge international programme, stage by stage. Written to the published curriculum framework and taught in English, for students following Cambridge at school or preparing for the Checkpoint tests.</p>
+      <p class="blurb" data-i18n="learn.camP">The Cambridge programme stage by stage, taught in English.</p>
 
       <div class="res-grid">
         <a class="res res--group" href="#cambridge-lower-secondary">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.camCard">Lower Secondary — Stage 7</h3>
-          <p data-i18n="learn.camCardP">The first year of Cambridge Lower Secondary. Mathematics is complete: all 30 units and the three section reviews, with summaries, worked examples, diagrams and graded exercises.</p>
+          <p data-i18n="learn.camCardP">All 30 maths units with summaries and graded exercises.</p>
           <span class="mini">
             <span data-i18n="nav.cam7">Mathematics Stage 7</span>
           </span>
@@ -562,14 +598,14 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.cam8">Lower Secondary — Stage 8</h3>
-          <p data-i18n="learn.cam8p">The second year of Cambridge Lower Secondary mathematics.</p>
+          <p data-i18n="learn.cam8p">The second year of Cambridge Lower Secondary maths.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
 
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.cam9">Lower Secondary — Stage 9</h3>
-          <p data-i18n="learn.cam9p">The final Lower Secondary year, leading to the Checkpoint tests.</p>
+          <p data-i18n="learn.cam9p">The final year, leading to the Checkpoint tests.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -584,13 +620,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail2">2 resources</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.pypP">The Oxford Mathematics series for the International Baccalaureate Primary Years Programme, year by year. Each topic teaches the idea first, then moves from guided practice to independent and extended work.</p>
+      <p class="blurb" data-i18n="learn.pypP">Oxford Mathematics for the IB Primary Years, year by year.</p>
 
       <div class="res-grid">
         <a class="res res--group" href="oxford-primary-maths-1">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.opm1Card">International Primary Maths 1</h3>
-          <p data-i18n="learn.opm1CardP">The first-year workbook in full: all 12 units and 38 topics, from counting objects to block graphs. Every topic has a Discover panel, three levels of practice, a picture glossary and answers.</p>
+          <p data-i18n="learn.opm1CardP">All 12 units, from counting to block graphs, with answers.</p>
           <span class="mini">
             <span data-i18n="nav.opm1">Primary Maths 1</span>
           </span>
@@ -603,7 +639,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res res--group" href="#oxford-pyp-4">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.pypCard">Primary Years Programme 4</h3>
-          <p data-i18n="learn.pypCardP">The Year 4 student book in full. Mathematics is complete: all 10 units and 31 topics, with a worked concept panel, four stages of practice, a glossary and answers for every topic.</p>
+          <p data-i18n="learn.pypCardP">All 10 maths units with practice and answers.</p>
           <span class="mini">
             <span data-i18n="nav.pyp4">Mathematics 4</span>
           </span>
@@ -616,14 +652,14 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.pyp5">Primary Years Programme 5</h3>
-          <p data-i18n="learn.pyp5p">The Year 5 student book, following the same unit sequence.</p>
+          <p data-i18n="learn.pyp5p">The Year 5 student book.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
 
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.pyp6">Primary Years Programme 6</h3>
-          <p data-i18n="learn.pyp6p">The final primary year, leading into Lower Secondary.</p>
+          <p data-i18n="learn.pyp6p">The final primary year.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -644,13 +680,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail1">1 resource</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.cam7P">Stage 7 is the first year of Cambridge Lower Secondary, taken at about age eleven to twelve. Each resource follows the curriculum framework unit by unit, with the lesson first and the practice after it.</p>
+      <p class="blurb" data-i18n="learn.cam7P">The first year of Cambridge Lower Secondary, age 11–12.</p>
 
       <div class="res-grid">
         <a class="res" href="cambridge-lower-secondary-maths-7">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.cam7T1">Mathematics Stage 7 — summaries &amp; exercises</h3>
-          <p data-i18n="learn.cam7T1p">All 30 units and the three section reviews, in syllabus order. Every unit has the learning objectives, a summary, key terms, worked examples, the mistakes to avoid, and exercises graded Warm-up, Core and Challenge — each with an answer. 171 diagrams, 85 of them drawn onto the questions themselves. Tick off what you finish, keep your own notes, and save your progress.</p>
+          <p data-i18n="learn.cam7T1p">All 30 units: summaries, worked examples and graded exercises.</p>
           <span class="meta">
             <span data-i18n="learn.cam7T1s">33 units · 1570 exercises · 171 diagrams</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -660,14 +696,14 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.cam7Sci">Science Stage 7</h3>
-          <p data-i18n="learn.cam7SciP">Biology, chemistry and physics for the Cambridge Lower Secondary science framework.</p>
+          <p data-i18n="learn.cam7SciP">Biology, chemistry and physics for Stage 7.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
 
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.cam7Eng">English Stage 7</h3>
-          <p data-i18n="learn.cam7EngP">Reading, writing, speaking and listening for the Cambridge Lower Secondary English framework.</p>
+          <p data-i18n="learn.cam7EngP">Reading, writing, speaking and listening for Stage 7.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -687,13 +723,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail1">1 resource</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.pyp4P">Year 4 of the Primary Years Programme, taken at about age nine to ten. Every topic follows the same shape: the idea is explained with a worked example, then practised four times over with the support gradually taken away.</p>
+      <p class="blurb" data-i18n="learn.pyp4P">Year 4 of the Primary Years Programme, age 9–10.</p>
 
       <div class="res-grid">
         <a class="res" href="oxford-maths-pyp-4">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.pyp4T1">Mathematics 4 — lessons &amp; practice</h3>
-          <p data-i18n="learn.pyp4T1p">All 10 units and 31 topics, in book order — place value, the four operations, fractions and decimals, money, patterns, measurement, shape, angles, symmetry and maps, data and chance. Each topic opens with a Learn it panel, then Guided, Independent, Extended and Extra practice. Type your answers into the page, click the hundred charts and shading grids, reveal the answer key when you are ready, and print any unit as a clean worksheet.</p>
+          <p data-i18n="learn.pyp4T1p">All 31 topics with practice you can type into and print.</p>
           <span class="meta">
             <span data-i18n="learn.pyp4T1s">10 units · 31 topics · 1941 exercises · glossary &amp; answers</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -703,7 +739,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.pyp4Mastery">Practice &amp; Mastery 4</h3>
-          <p data-i18n="learn.pyp4MasteryP">The companion book of reinforcement activities and real-world problems.</p>
+          <p data-i18n="learn.pyp4MasteryP">Extra activities and real-world problems.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -719,19 +755,19 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.soon">Soon</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.phyP">Formula sheets and constant tables for mechanics, waves, electricity and modern physics. In preparation.</p>
+      <p class="blurb" data-i18n="learn.phyP">Formula sheets and constant tables. In preparation.</p>
 
       <div class="res-grid">
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.phyT1">Grade 12 Physics formulas</h3>
-          <p data-i18n="learn.phyT1p">Kinematics, dynamics, energy, waves, optics, electricity and magnetism.</p>
+          <p data-i18n="learn.phyT1p">Mechanics, waves, optics and electricity.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.phyT2">Constants &amp; units</h3>
-          <p data-i18n="learn.phyT2p">SI units, prefixes and the physical constants used in the examination.</p>
+          <p data-i18n="learn.phyT2p">SI units, prefixes and exam constants.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -747,13 +783,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail1">1 resource</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.chemP">The complete reference sheet: the interactive periodic table, ion and radical tables, solubility rules, formulas, redox potentials and organic naming.</p>
+      <p class="blurb" data-i18n="learn.chemP">The periodic table and the full chemistry reference sheet.</p>
 
       <div class="res-grid">
         <a class="res" href="periodic-table-of-elements">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.chemT1">Periodic Table of the Elements</h3>
-          <p data-i18n="learn.chemT1p">All 118 elements, colour-coded by family and searchable by touch — with the full chemistry reference underneath.</p>
+          <p data-i18n="learn.chemT1p">All 118 elements, colour-coded, with the chemistry reference.</p>
           <span class="meta">
             <span data-i18n="learn.chemT1s">118 elements · 7 reference sections</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -763,14 +799,14 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.chemT2">Grade 9 Chemistry basics</h3>
-          <p data-i18n="learn.chemT2p">Atoms, bonding, equations and the mole, written for the lower-secondary syllabus.</p>
+          <p data-i18n="learn.chemT2p">Atoms, bonding, equations and the mole.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
 
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.chemT3">Reaction practice</h3>
-          <p data-i18n="learn.chemT3p">Balancing, stoichiometry and redox drills with instant answers.</p>
+          <p data-i18n="learn.chemT3p">Balancing and stoichiometry drills with answers.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -786,19 +822,19 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.soon">Soon</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.bioP">Diagrams, definitions and summary tables for cells, genetics, human systems and ecology. In preparation.</p>
+      <p class="blurb" data-i18n="learn.bioP">Diagrams and summary tables. In preparation.</p>
 
       <div class="res-grid">
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.bioT1">Cells &amp; genetics summary</h3>
-          <p data-i18n="learn.bioT1p">Cell structure, mitosis and meiosis, DNA and inheritance.</p>
+          <p data-i18n="learn.bioT1p">Cells, cell division, DNA and inheritance.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.bioT2">Human body systems</h3>
-          <p data-i18n="learn.bioT2p">Digestive, circulatory, respiratory and nervous systems at a glance.</p>
+          <p data-i18n="learn.bioT2p">The main body systems at a glance.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -814,13 +850,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail4">4 resources</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.langPick">Choose a language — the lessons, vocabulary and practice tests for it all sit inside.</p>
+      <p class="blurb" data-i18n="learn.langPick">Choose a language to see its lessons and tests.</p>
 
       <div class="res-grid">
         <a class="res res--group" href="#lang-english" style="--sc:#f0761a">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.english">English</h3>
-          <p data-i18n="learn.engCardP">From the first letter of the alphabet to the national examination — kindergarten English, tenses, grammar notes and examination vocabulary.</p>
+          <p data-i18n="learn.engCardP">From the alphabet to tenses, grammar and exam vocabulary.</p>
           <span class="mini">
             <span data-i18n="nav.kg">English for Kindergarten</span>
             <span data-i18n="nav.tense">English Tenses</span>
@@ -835,7 +871,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res res--group" href="#lang-chinese" style="--sc:#e03131">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.chinese">Chinese</h3>
-          <p data-i18n="learn.zhCardP">From a four-year-old's first character to pinyin, the four tones, character writing, everyday conversation and the HSK test papers.</p>
+          <p data-i18n="learn.zhCardP">From first characters to pinyin, conversation and HSK tests.</p>
           <span class="mini">
             <span data-i18n="nav.zkg">Chinese for Kindergarten</span>
             <span data-i18n="nav.zh">Chinese for Beginners</span>
@@ -850,7 +886,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res res--group" href="#lang-khmer" style="--sc:#1c7ed6">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.khmer">Khmer</h3>
-          <p data-i18n="learn.khCardP">From a four-year-old's first letter to literature and essay structure for the national examination.</p>
+          <p data-i18n="learn.khCardP">From the first letter to speaking and the national exam.</p>
           <span class="mini">
             <span data-i18n="nav.kkg">Khmer for Kindergarten</span>
             <span data-i18n="learn.khT1">Khmer literature notes</span>
@@ -878,13 +914,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail3">3 resources</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.engP">Grammar, tenses and vocabulary — the same lessons and tests we use in real classes, free to open.</p>
+      <p class="blurb" data-i18n="learn.engP">Grammar, tenses and vocabulary, with tests.</p>
 
       <div class="res-grid">
         <a class="res" href="english-kindergarten">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.engT4">English for Kindergarten</h3>
-          <p data-i18n="learn.engT4p">A first course for children aged four to six. The alphabet with the sound each letter makes, numbers to twenty, colours, shapes, eighty first words, sounding out little words and everyday phrases — then seven picture games. Every card reads itself aloud and carries the Khmer meaning, so a child can use it before they can read.</p>
+          <p data-i18n="learn.engT4p">Letters, numbers and first words for ages 4–6, read aloud.</p>
           <span class="meta">
             <span data-i18n="learn.engT4s">7 modules · 7 games · reads aloud</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -894,7 +930,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="english-tenses">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.engT1">English Tenses — full practice course</h3>
-          <p data-i18n="learn.engT1p">All twelve tenses plus a mixed review. Every chapter has an Easy, Intermediate and Advanced test of thirty questions, each with a grammar explanation.</p>
+          <p data-i18n="learn.engT1p">All 12 tenses, with three levels of tests for each.</p>
           <span class="meta">
             <span data-i18n="learn.engT1s">13 chapters · 3 levels · 1,170 questions</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -904,7 +940,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="english-grammar">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.engT2">Grammar notes</h3>
-          <p data-i18n="learn.engT2p">Articles, prepositions, conditionals, reported speech and the passive — rules, worked examples and a timed test for every chapter.</p>
+          <p data-i18n="learn.engT2p">Rules, examples and a timed test for every chapter.</p>
           <span class="meta">
             <span data-i18n="learn.engT2s">5 chapters · examples · 100 questions</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -914,7 +950,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.engT3">IELTS vocabulary builder</h3>
-          <p data-i18n="learn.engT3p">Academic word lists with example sentences and self-tests.</p>
+          <p data-i18n="learn.engT3p">Academic word lists with example sentences.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -936,13 +972,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail3">3 resources</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.zhP">Mandarin from the very first character — pronunciation, writing and everyday speech with audio on every line, then the HSK papers when it is time to sit the test.</p>
+      <p class="blurb" data-i18n="learn.zhP">Mandarin from the first character, with audio and HSK tests.</p>
 
       <div class="res-grid">
         <a class="res" href="chinese-kindergarten">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.zhT3">Chinese for Kindergarten</h3>
-          <p data-i18n="learn.zhT3p">A first course for children aged four to six. Twenty-six starting characters as flip cards, the four tones, numbers to twenty, colours, shapes, eighty first words and everyday phrases — then seven picture games. A Chinese voice reads every card and the Khmer meaning sits underneath.</p>
+          <p data-i18n="learn.zhT3p">First characters, tones and words for ages 4–6, read aloud.</p>
           <span class="meta">
             <span data-i18n="learn.zhT3s">7 modules · 7 games · reads aloud</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -952,7 +988,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="chinese-beginner">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.zhT2">Chinese for Beginners</h3>
-          <p data-i18n="learn.zhT2p">Pinyin and the four tones, sound practice, character writing, numbers, basic words and everyday conversations — pinyin above every sentence and audio on every line.</p>
+          <p data-i18n="learn.zhT2p">Pinyin, tones, writing and everyday conversation, with audio.</p>
           <span class="meta">
             <span data-i18n="learn.zhT2s">6 modules &#183; 200 words &#183; 8 conversations</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -962,7 +998,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <a class="res" href="hsk1-test">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.hsk1T">HSK 1 — chapter tests</h3>
-          <p data-i18n="learn.hsk1P">Fifteen tests, one for each lesson of <i>HSK Standard Course 1</i>, plus a final paper over the whole book. Every question uses only the words taught up to that lesson, and every answer comes with the reason. Free — students register with an email before starting.</p>
+          <p data-i18n="learn.hsk1P">15 chapter tests and a final paper, with every answer explained.</p>
           <span class="meta">
             <span data-i18n="learn.hsk1S">15 chapters · 190 questions</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -972,21 +1008,21 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.hsk2T">HSK 2 — chapter tests</h3>
-          <p data-i18n="learn.hsk2P">The same chapter-by-chapter papers over <i>HSK Standard Course 2</i>, taking the vocabulary to 300 words.</p>
+          <p data-i18n="learn.hsk2P">Chapter tests for HSK 2, up to 300 words.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
 
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.hsk3T">HSK 3 to 6</h3>
-          <p data-i18n="learn.hsk3P">Practice papers for the higher levels, up to 5,000 words.</p>
+          <p data-i18n="learn.hsk3P">Practice papers for the higher levels.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
 
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.zhT1">HSK vocabulary lists</h3>
-          <p data-i18n="learn.zhT1p">HSK 1 to 4 word lists with pinyin, Khmer glosses and audio.</p>
+          <p data-i18n="learn.zhT1p">HSK 1–4 word lists with pinyin, Khmer and audio.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -1007,13 +1043,13 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         </div>
         <span class="count"><span data-i18n="learn.avail2">2 resources</span></span>
       </div>
-      <p class="blurb" data-i18n="learn.khP2">Khmer from the very first letter. The kindergarten course is open; the national examination material is being written now.</p>
+      <p class="blurb" data-i18n="learn.khP2">Khmer from the first letter to the national exam.</p>
 
       <div class="res-grid">
                 <a class="res" href="khmer-conversational-mastery">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.khT3">Khmer Conversational Mastery</h3>
-          <p data-i18n="learn.khT3p">Speak Cambodia’s language from day one. One hundred real-life situations for foreigners and children — greetings, tuk-tuks, food, the market, renting a room, the doctor, work and friends. Every lesson has an illustrated conversation, the Khmer script, an easy romanization and the English meaning, then flashcards, a quiz and role-play to practise. Written by Ngorn Kakteka.</p>
+          <p data-i18n="learn.khT3p">100 real-life conversations for foreigners and children.</p>
           <span class="meta">
             <span data-i18n="learn.khT3s">100 lessons · flashcards · quiz · role-play</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -1023,7 +1059,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
 <a class="res" href="khmer-kindergarten">
           <span class="tag open" data-i18n="learn.open">Open</span>
           <h3 data-i18n="learn.khT2">Khmer for Kindergarten</h3>
-          <p data-i18n="learn.khT2p">A first reading course for children aged four to six. All 33 consonants with the series each belongs to, the 23 vowel signs shown on both series, building syllables, ជើងអក្សរ, first words, the Khmer numerals and everyday phrases — then seven picture games, all answered by looking, so they work even on a phone with no Khmer voice.</p>
+          <p data-i18n="learn.khT2p">Consonants, vowels and first words for ages 4–6.</p>
           <span class="meta">
             <span data-i18n="learn.khT2s">6 modules · 7 games · ages 4 to 6</span>
             <span class="arrow"><span data-i18n="learn.openIt">Open</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -1033,7 +1069,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
         <div class="res res--soon">
           <span class="tag soon" data-i18n="learn.soon">Soon</span>
           <h3 data-i18n="learn.khT1">Khmer literature notes</h3>
-          <p data-i18n="learn.khT1p">Set texts, essay structure and grammar for the national examination.</p>
+          <p data-i18n="learn.khT1p">Set texts, essays and grammar for the national exam.</p>
           <span class="meta"><span data-i18n="learn.prep">In preparation</span></span>
         </div>
       </div>
@@ -1138,6 +1174,49 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
 <script src="assets/js/main.js"></script>
 
 <script>
+/* Search on the subject hub — matches each card's visible text (either
+   language) and hides subjects with nothing left; chip counts follow.   */
+(function () {
+  'use strict';
+  var q = document.getElementById('lrQ');
+  if (!q) return;
+  var KH = '០១២៣៤៥៦៧៨៩';
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section.subject.hub-part'));
+  var none = document.getElementById('lrNone');
+  function norm(s) { return String(s || '').toLowerCase().replace(/[០-៩]/g, function (d) { return KH.indexOf(d); }).replace(/\s+/g, ' ').trim(); }
+  function run() {
+    var words = norm(q.value).split(' ').filter(Boolean), total = 0;
+    var km = window.AAi18n && window.AAi18n.get() === 'km';
+    secs.forEach(function (sec) {
+      var head = norm(sec.querySelector('.subject-head').textContent), n = 0;
+      sec.querySelectorAll('.res').forEach(function (c) {
+        var hay = head + ' ' + norm(c.textContent);
+        var ok = words.every(function (w) { return hay.indexOf(w) >= 0; });
+        c.hidden = !ok; if (ok) n++;
+      });
+      sec.hidden = n === 0 && words.length > 0;
+      if (!words.length) { sec.hidden = false; }
+      total += n;
+      var chip = document.querySelector('#lrCats a[href="#' + sec.id + '"]');
+      if (chip) {
+        chip.querySelector('b').textContent = km ? String(n).replace(/\d/g, function (d) { return KH[+d]; }) : n;
+        chip.classList.toggle('is-empty', n === 0);
+      }
+    });
+    none.hidden = total !== 0;
+  }
+  q.addEventListener('input', run);
+  q.addEventListener('keydown', function (e) { if (e.key === 'Escape') { q.value = ''; run(); } });
+  document.getElementById('lrCats').addEventListener('click', function (e) {
+    var a = e.target.closest('a'); if (!a) return;
+    var sec = document.querySelector(a.getAttribute('href'));
+    if (sec && sec.hidden) { q.value = ''; run(); }
+  });
+  document.addEventListener('aa:langchange', run);
+  run();
+})();
+</script>
+<script>
 /* ---------------------------------------------------------- Hub ⇄ drill-down
    The hub (.hub-part) and the detail views (.view) all live in the markup, so
    the page is complete and indexable with JavaScript off — it simply reads as
@@ -1164,6 +1243,7 @@ a.res--group:hover .mini span{background:color-mix(in srgb, var(--sc) 13%, trans
       if (on) view = v;
     });
     hub.forEach(function (el) { el.hidden = !!view; });
+    var nm = document.getElementById('lrNone'); if (nm && view) nm.hidden = true;
 
     var target = view || (id ? document.getElementById(id) : null);
     if (!target || (firstRun && !id)) return;
