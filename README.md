@@ -539,6 +539,30 @@ reason Learning is one: the tab has to lead somewhere when there is more than
 one thing behind it. Its dropdown lists the tools directly, so the hub is
 never in the way of someone who knows what they came for.
 
+**Categories.** With 17 tools the list became too long, so both the hub and the
+header dropdown are grouped the same way:
+
+| id (`tools#id`) | category | tools |
+|---|---|---|
+| `kids` | Kids Maths | Times Tables, Place Value & Number Line, Clock & Time |
+| `calc` | Calculators & Solvers | Scientific Calculator, Fractions & Percent, Equation Solver, Inequality Solver |
+| `graphs` | Graphs, Shapes & Data | Graph Plotter, Shape Builder, Chart Builder |
+| `time` | Dates & Time | Calendar, Date Calculator, Countdown, Age & Zodiac, Study Timer |
+| `everyday` | Everyday | Unit Converter, Number to Khmer Words |
+
+In the dropdown each category is a `.sub-item` with a `.sub2` flyout, the same
+pattern as Learning, and "All tools" goes to the hub. The menu block is
+identical on every page except `aria-current="page"` on the page's own link,
+so **to add a tool**: add its card to the right `.tl-sec` in `tools.html`
+(with search words in `data-k`), add its `<li>` to the category's `.sub2` in
+every page's menu, and add the `nav.*` / `tools.*` keys to `i18n.js`.
+
+The hub has a search box and a chip per category (`assets/js/tools-hub.js`).
+Search matches the card's visible text in either language plus `data-k`, so
+"multiplication", "គុណ" and "times" all find the times tables; categories with
+no match are hidden and the chip counts follow. The query is kept in the
+address bar as `#q=`.
+
 A tool here is held to three rules. It does **one** job. It needs **no account
 and no network** — the calculation happens in the browser, nothing is uploaded
 and nothing is stored. And it is **bilingual like everything else**, which for
@@ -937,6 +961,39 @@ exposes the converters.
 **Have a Khmer teacher read the words over** before the page is used for
 anything official — the rules are standard, but this was written for the
 site, not taken from a reference book.
+
+### Times Tables
+
+`times-tables.html` + `assets/js/times-tables.js` (styles: section 17 of
+`tools.css`, `tt-`). **Learn**: the 12 × 12 square; tapping a cell (or arrow
+keys) shows the fact as an array of dots (every fifth column orange, so it can
+be counted in fives), the turn-around fact or "square number", and one trick
+per table. **Practise**: choose tables, 20 questions or a 60-second sprint,
+optional division; an on-screen keypad on touch screens. Missed facts are
+listed at the end and "Practise these again" runs a round of only those.
+Nothing is stored; `#t…&p=2,3&m=sprint&d=1` keeps the settings.
+
+### Place Value & Number Line
+
+`place-value.html` + `assets/js/place-value.js` (section 18, `pv-`); loads
+`number-words.js` for the English and Khmer words (thousands style).
+**Place value**: 0–9,999 as thousand cubes, hundred flats, ten rods and ones,
+each column with + and −; carrying and borrowing are explained when they
+happen. Chart, expanded form, rounding to 10/100/1000. **Number line**: a ± b
+(−10,000 to 10,000) drawn as a jump of the hundreds, then the tens, then the
+ones, with the working; crossing zero is pointed out.
+
+### Clock & Time
+
+`clock.html` + `assets/js/clock.js` (section 19, `ck-`). **The clock**: drag
+either hand (or arrow keys, Page Up/Down for an hour); the minute hand carries
+the hour past 12. 12- and 24-hour digital, English words ("twenty to five in
+the evening") and Khmer (ម៉ោង ៤ និង ៤០ នាទី ល្ងាច; គត់ for o'clock, កន្លះ for
+half past; ព្រឹក / ថ្ងៃត្រង់ / រសៀល / ល្ងាច / យប់ by the hour). **Time later**:
+add or take away time, or time between two times (past midnight handled),
+written as counting on — to the next hour, whole hours, the rest. **Practise**:
+ten questions alternating "read the clock" (four choices, one of them the
+hands read the wrong way round) and "set the clock", at four levels.
 
 ## The four kindergarten pages
 
