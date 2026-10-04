@@ -170,6 +170,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.alphaacademycambodia.com/unit-circle.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/matrix-calculator.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.alphaacademycambodia.com/sequences.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
