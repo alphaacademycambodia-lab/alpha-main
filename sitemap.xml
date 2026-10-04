@@ -50,6 +50,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.alphaacademycambodia.com/biology-body-systems.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.alphaacademycambodia.com/biology-cells-genetics.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.alphaacademycambodia.com/english-tenses.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
