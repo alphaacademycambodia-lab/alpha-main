@@ -13,8 +13,11 @@
    outfit:  shirt | apron | coat | uniform | suit | cap | helmet | chef | hat
    sex:     f | m      age: (blank) adult | e elder | c child
 
-   KCMScene.svg(n, opts) returns the markup. The two people carry the classes
-   .kp-you / .kp-them so kcm.js can make whoever is speaking "talk".      */
+   KCMScene.svg(n, opts) returns the markup; opts.spec, in the same format,
+   overrides the table, and opts.board the blackboard letters (the Chinese
+   conversation page draws its own scenes).
+   The two people carry the classes .kp-you / .kp-them so kcm.js can make
+   whoever is speaking "talk".      */
 (function (global) {
   'use strict';
 
@@ -421,10 +424,13 @@
   var uid = 0;
   function svg(n, opts) {
     opts = opts || {};
-    var sp = (SPEC[n] || 'street question shirt m').split(' ');
+    var sp = (opts.spec || SPEC[n] || 'street question shirt m').split(' ');
     var setting = sp[0], prop = sp[1], outfit = sp[2], sex = sp[3], age = sp[4] || '';
     var h = hash(n);
     var bg = (BG[setting] || BG.street)().replace(/SKYID/g, 'kcs' + (++uid));
+    // opts.board replaces the Khmer letters on the classroom blackboard
+    if (opts.board) bg = bg.replace(/font-family="Kantumruy Pro, Noto Sans Khmer, sans-serif"( font-size="44" fill="#ffffff">)ក ខ គ/,
+      'font-family="Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif"$1' + opts.board);
     var them = person(470, {
       cls: 'kp-them', skin: SKIN[h % SKIN.length], top: TOPS[(h >>> 3) % TOPS.length],
       outfit: outfit, sex: sex, age: age, hair: (h >>> 5) % 3 === 0 ? '#3b2a20' : '#1d1a18'
