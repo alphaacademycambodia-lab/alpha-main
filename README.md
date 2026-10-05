@@ -1365,7 +1365,7 @@ romanization carries the pronunciation instead.
 ## Chinese–English Daily Conversation
 
 `chinese-daily-conversation.html` is a self-study speaking course in Mandarin:
-100 everyday conversations in 10 chapters (greetings, time and weather, food,
+100 everyday conversations in 10 chapters, by **Ngorn Kakteka** (greetings, time and weather, food,
 shopping, getting around, home, work, school, health, friends and travel). It
 is built on the Khmer Conversational Mastery page and shares its stylesheet
 and its scene artist.
