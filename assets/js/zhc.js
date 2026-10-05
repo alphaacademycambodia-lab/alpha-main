@@ -3,7 +3,7 @@
    A self-study speaking course in Mandarin: 100 everyday situations, each
    with an illustrated scene, the conversation in characters + pinyin +
    English (+ Khmer when the site is switched to Khmer), key phrases and four
-   ways to practise. Built on the same pattern as Khmer Conversational
+   ways to practise, by Ngorn Kakteka. Built on the same pattern as Khmer Conversational
    Mastery (kcm.js) and reuses its stylesheet and scene artist.
 
    Views, chosen by the URL hash so every lesson can be linked to:
@@ -111,7 +111,7 @@
     tonesH:     { en: 'The four tones', km: 'សំនៀងទាំងបួន' },
     soundsH:    { en: 'Letters that do not sound like English', km: 'អក្សរដែលមិនបញ្ចេញសំឡេងដូចភាសាអង់គ្លេស' },
     keyGo:      { en: 'Start with lesson 1', km: 'ចាប់ផ្តើមជាមួយមេរៀនទី ១' },
-    by:         { en: 'A free course from Alpha Academy Cambodia', km: 'វគ្គសិក្សាឥតគិតថ្លៃពី Alpha Academy Cambodia' },
+    by:         { en: 'Lessons by Ngorn Kakteka', km: 'មេរៀនដោយ ងន កតិកា' },
     done:       { en: 'Complete', km: 'បានបញ្ចប់' }
   };
   function lang() { return (global.AAi18n && global.AAi18n.get && global.AAi18n.get() === 'km') ? 'km' : 'en'; }
