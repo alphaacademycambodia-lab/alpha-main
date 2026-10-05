@@ -56,6 +56,11 @@ hsk1-test.html    HSK 1 chapter tests — 15 tests following HSK Standard
 chinese-beginner.html
                   Chinese for Beginners — pinyin, sound, writing, numbers,
                   words and conversation, with audio on every line
+chinese-daily-conversation.html
+                  Chinese–English Daily Conversation — 100 everyday Mandarin
+                  conversations in 10 chapters. Each lesson: an illustrated
+                  scene, characters + pinyin + English (+ Khmer in Khmer
+                  mode), audio, key phrases, flashcards, a quiz and role-play
 khmer-conversational-mastery.html
                   Khmer Conversational Mastery by Ngorn Kakteka — 100 real-life
                   situations for foreigners and children learning to speak
@@ -211,6 +216,9 @@ assets/js/chinese-bank.js
                        Chinese course content — tones, syllables, characters, numbers, words, dialogues
 assets/js/chinese-beginner.js
                        Chinese page behaviour — speech, pinyin stacking, writing pad, drills
+assets/js/zhc-bank.js  Chinese–English Daily Conversation — the 100 lessons
+assets/js/zhc.js       Chinese–English Daily Conversation page (reuses kcm.css + kcm-scenes.js)
+assets/css/zhc.css     Chinese conversation additions on top of kcm.css
 assets/img/logo.png    Logo (copied from the supplied PNG)
 ```
 
@@ -1353,6 +1361,41 @@ lesson counts as complete at 70% in its quiz.
 **Audio** uses the browser's Khmer (`km`) speech voice when the device has one;
 when it does not, the speaker buttons hide and the toolbar says so — the
 romanization carries the pronunciation instead.
+
+## Chinese–English Daily Conversation
+
+`chinese-daily-conversation.html` is a self-study speaking course in Mandarin:
+100 everyday conversations in 10 chapters (greetings, time and weather, food,
+shopping, getting around, home, work, school, health, friends and travel). It
+is built on the Khmer Conversational Mastery page and shares its stylesheet
+and its scene artist.
+
+| file | what it holds |
+|---|---|
+| `assets/js/zhc-bank.js` | the 100 lessons, the tones chart and the pinyin key |
+| `assets/js/zhc.js` | the page: lesson list, rail, Learn / Flashcards / Quiz / Role-play |
+| `assets/css/zhc.css` | only what differs from `kcm.css`: `.zh`, `.py`, `.km`, the tones chart |
+| `assets/js/kcm-scenes.js` | shared with KCM — each Chinese lesson passes its own `art` spec |
+
+**Links.** `#s-12` opens lesson 12; `#s-12/cards`, `#s-12/quiz` and
+`#s-12/role` open its practice tabs; `#pinyin` opens the tones and pinyin key.
+
+**Editing a lesson.** Each entry in `zhc-bank.js` has `hz` (characters — what
+the voice reads), `py` (pinyin with tone marks), `en` and `km` on every
+dialogue line and phrase. Write the tone that is actually said for 不 and 一
+(`bú shì`, `yí ge`), as the HSK books do. A turn whose `who` is `"You"` is the
+learner's line; keep each dialogue to two speakers so the picture and
+role-play match. `art` is the scene spec — `"setting prop outfit sex [age]"`,
+see the top of `kcm-scenes.js`.
+
+**Audio** is the browser's Chinese voice (zh-CN first), the same as Chinese
+for Beginners — always speak characters, never pinyin. With no Chinese voice
+on the device the speaker buttons hide and the toolbar says so.
+
+**Khmer.** Page furniture uses `zhc.*` keys in `i18n.js` and a local `T` table
+in `zhc.js`; in Khmer mode every line also shows its `km` meaning under the
+English. **Progress** is saved under `aa-zhc-v1`; a lesson is complete at 70%
+in its quiz.
 
 ## The formula book
 
