@@ -1,0 +1,66 @@
+/* Alpha Academy Cambodia — Chinese–English Daily Conversation
+   ---------------------------------------------------------------------------
+   chinese-daily-conversation.html reuses kcm.css (the Khmer Conversational
+   Mastery layout, rail, cards, quiz and role-play) and adds only what is
+   different here: Chinese characters (.zh), pinyin (.py), the Khmer meaning
+   line (.km) and the tones chart. Load this file after kcm.css.           */
+
+:root {
+  --font-zh: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB",
+             "Microsoft YaHei", "Heiti SC", "SimHei", sans-serif;
+  --zhc-t1: #e03131; --zhc-t2: #f08c00; --zhc-t3: #2f9e44; --zhc-t4: #1c7ed6;
+}
+
+.zh { font-family: var(--font-zh); }
+.km { font-family: var(--kcm-kh); }
+.py { color: var(--brand-600); font-size: .92rem; letter-spacing: .01em; }
+
+/* toggles: "Pinyin" hides .py, "Translation" hides English and Khmer */
+.hide-rom .py { display: none !important; }
+.hide-en .kcm-dlg .km, .hide-en .kcm-chat .km, .hide-en .kcm-bubble .km, .hide-en .kcm-q-dlg .km { display: none !important; }
+
+/* the same sizes kcm.css gives Khmer script and romanization */
+.kcm-chap header .zh { color: var(--ink-500); font-size: 1rem; }
+.kcm-rg-head .nm small.zh { font-size: .8rem; }
+.kcm-ltitle-kh .zh { font-size: 1.2rem; }
+.kcm-bubble .zh { font-size: clamp(1rem, 2.6vw, 1.45rem); font-weight: 600; }
+.kcm-bubble .py { font-size: clamp(.72rem, 1.6vw, .9rem); color: #0b57d0; }
+.kcm-bubble .km { font-size: clamp(.7rem, 1.5vw, .85rem); color: #5b6b85; }
+@media (max-width: 560px) { .kcm-bubble .km { display: none; } }
+.kcm-line .zh { font-size: 1.35rem; color: var(--ink-900); line-height: 1.5; }
+.kcm-line .km { font-size: .9rem; color: var(--ink-500); }
+.kcm-phr .zh { font-size: 1.4rem; color: var(--ink-900); }
+.kcm-phr .km { font-size: .86rem; color: var(--ink-500); }
+.kcm-q-big .zh { font-size: 1.3em; font-weight: 500; }
+.kcm-q-big .py { width: 100%; font-size: .65em; font-weight: 500; }
+.kcm-q-big .en, .kcm-q-big .km { width: 100%; }
+.kcm-q-big .km { font-size: .75em; font-weight: 500; color: var(--ink-500); }
+.kcm-q-dlg .zh { font-size: 1.3rem; }
+.kcm-q-dlg .km { font-size: .88rem; color: var(--ink-500); }
+.kcm-opt .zh { font-size: 1.25rem; }
+.kcm-opt .km { font-size: .92rem; color: var(--ink-500); }
+.kcm-msg .zh { font-size: 1.25rem; color: var(--ink-900); }
+.kcm-msg .km { font-size: .86rem; color: var(--ink-500); }
+.kcm-card-k.zh { font-size: .95rem; }
+.kcm-fc-en .en, .kcm-fc-en .km { display: block; }
+.kcm-fc-en .km { font-size: .7em; font-weight: 500; color: var(--ink-500); margin-top: .3rem; }
+.kcm-fc-kh.zh { font-size: clamp(2.1rem, 6.4vw, 3rem); }
+
+/* no Chinese voice on this device: the speaker buttons have nothing to say */
+.zhc-novoice .kcm-say { display: none; }
+
+/* ------------------------------------------------------- pinyin & tones */
+.zhc-tones { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); margin: 1rem 0 1.6rem; }
+.zhc-tone { position: relative; display: flex; flex-direction: column; gap: .2rem; padding: 1rem 3.4rem 1rem 1rem; border: 1px solid var(--ink-200); border-radius: var(--r-md); background: var(--surface); border-top: 4px solid var(--zhc-t1); }
+.zhc-tone:nth-child(2) { border-top-color: var(--zhc-t2); }
+.zhc-tone:nth-child(3) { border-top-color: var(--zhc-t3); }
+.zhc-tone:nth-child(4) { border-top-color: var(--zhc-t4); }
+.zhc-tone:nth-child(5) { border-top-color: var(--ink-300); }
+.zhc-tone .mk { font-size: 1.6rem; font-weight: 800; color: var(--ink-900); line-height: 1.1; }
+.zhc-tone .zh { font-size: 1.2rem; color: var(--ink-700); }
+.zhc-tone .nm { font-weight: 700; font-size: .9rem; color: var(--ink-900); }
+.zhc-tone .ds { font-size: .86rem; color: var(--ink-500); line-height: 1.5; }
+.zhc-tone .kcm-say { position: absolute; right: .7rem; top: 1rem; }
+.kcm-key-row .exp { flex: 1; }
+.zhc-eg { display: inline-block; color: var(--ink-500); white-space: nowrap; }
+.zhc-eg .zh { color: var(--ink-900); }
