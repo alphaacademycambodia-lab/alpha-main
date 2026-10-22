@@ -323,6 +323,37 @@
 </section>
 
 <section class="section" style="padding-top:0">
+  <div class="wrap" id="cpRoot">
+    <h2 id="cpH2">Couple age gap 💞</h2>
+    <p class="cp-lede" id="cpLede">Enter two birthdays to see exactly how far apart the couple are in age, and both Khmer animal years.</p>
+    <div class="dc-quick cp-modes" id="cpModes" role="group" aria-label="Couple"></div>
+    <div class="cp-people">
+      <form class="dc-card cp-p is-a" novalidate autocomplete="off" onsubmit="return false">
+        <span class="dc-eyebrow cp-role" id="cpRoleA">Bride</span>
+        <div class="dc-field"><label for="cpNameA" id="cpNameAL">Name (optional)</label><input type="text" id="cpNameA" class="pv-in" maxlength="40"></div>
+        <div class="dc-field"><label for="cpDobA" id="cpDobAL">Date of birth</label><div class="dc-dateline"><input type="date" id="cpDobA" min="1900-01-01" max="2100-12-31"></div></div>
+      </form>
+      <form class="dc-card cp-p is-b" novalidate autocomplete="off" onsubmit="return false">
+        <span class="dc-eyebrow cp-role" id="cpRoleB">Groom</span>
+        <div class="dc-field"><label for="cpNameB" id="cpNameBL">Name (optional)</label><input type="text" id="cpNameB" class="pv-in" maxlength="40"></div>
+        <div class="dc-field"><label for="cpDobB" id="cpDobBL">Date of birth</label><div class="dc-dateline"><input type="date" id="cpDobB" min="1900-01-01" max="2100-12-31"></div></div>
+      </form>
+    </div>
+    <div class="dc-card dc-result cp-result" id="cpResult" role="status" aria-live="polite">
+      <span class="dc-eyebrow" id="cpGapL">Age gap</span>
+      <div class="dc-big" id="cpBig"></div>
+      <div class="dc-alt" id="cpAlt"></div>
+      <ul class="dc-facts" id="cpFacts"></ul>
+      <div class="cp-zod" id="cpZod"></div>
+      <button type="button" class="dc-copy" id="cpCopy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+        <span data-copy-label>Copy</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
   <div class="wrap">
     <h2 data-i18n="ag.hiwH">How it is counted</h2>
     <div class="dc-notes">
@@ -445,5 +476,6 @@
 <script src="assets/js/tools-core.js"></script>
 <script src="assets/js/kh-lunar.js"></script>
 <script src="assets/js/age-calculator.js"></script>
+<script src="assets/js/couple-age.js"></script>
 </body>
 </html>
