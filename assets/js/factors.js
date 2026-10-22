@@ -4,7 +4,8 @@
    the smallest prime each time, primes circled), the prime factorisation in
    index form, and every factor listed in pairs. Then the HCF and LCM two
    ways — by listing, and from the prime factors — with a Venn diagram of
-   the primes when there are two numbers.
+   the primes when there are two numbers. Each number also gets the
+   division ladder (successive division by the smallest prime).
 
    Uses tools-core.js. Nothing is sent or stored; the address bar keeps the
    numbers: #n=36,48                                                       */
@@ -38,7 +39,13 @@
     venn: { en: 'Venn diagram of the prime factors', km: 'ដ្យាក្រាមវ៉ែននៃកត្តាបឋម' },
     vennNote: { en: 'The middle is the HCF; everything in the circles multiplied together is the LCM.', km: 'ផ្នែកកណ្ដាលគឺ HCF ហើយផលគុណនៃអ្វីៗទាំងអស់ក្នុងរង្វង់គឺ LCM។' },
     range: { en: 'Use whole numbers from 1 to 1,000,000.', km: 'សូមប្រើចំនួនគត់ពី ១ ដល់ ១.០០០.០០០។' },
-    need: { en: 'Type at least one number.', km: 'សូមវាយយ៉ាងហោចណាស់ចំនួនមួយ។' }
+    need: { en: 'Type at least one number.', km: 'សូមវាយយ៉ាងហោចណាស់ចំនួនមួយ។' },
+    ladder: { en: 'Division ladder', km: 'ការចែកជាបន្តបន្ទាប់' },
+    ladderHint: { en: 'Divide by the smallest prime that fits, again and again, until you reach 1.', km: 'ចែកនឹងចំនួនបឋមតូចបំផុតដែលចែកដាច់ ម្ដងហើយម្ដងទៀត រហូតដល់បាន ១។' },
+    prime: { en: 'Prime', km: 'ចំនួនបឋម' },
+    composite: { en: 'Composite', km: 'ចំនួនសមាស' },
+    distinct: { en: 'Different primes', km: 'កត្តាបឋមខុសគ្នា' },
+    sumF: { en: 'Sum of factors', km: 'ផលបូកកត្តា' }
   };
   function f(o, v) { return t(o).replace(/\{(\w+)\}/g, function (_, k) { return v[k]; }); }
 
@@ -52,6 +59,17 @@
   function val(m) { var v = 1; Object.keys(m).forEach(function (p) { v *= Math.pow(+p, m[p]); }); return v; }
   function factors(n) { var lo = [], hi = []; for (var i = 1; i * i <= n; i++) { if (n % i === 0) { lo.push(i); if (i * i !== n) { hi.unshift(n / i); } } } return { list: lo.concat(hi), pairs: lo.map(function (a) { return [a, n / a]; }) }; }
   function gcd(a, b) { return A.gcd(a, b); }
+
+  /* -------------------------------------------------- division ladder */
+  function ladder(n) {
+    var rows = '', cur = n, m = pf(n);
+    Object.keys(m).map(Number).sort(function (a, b) { return a - b; }).forEach(function (p) {
+      for (var i = 0; i < m[p]; i++) { rows += '<tr><td class="fp-ld">' + kh(p) + '</td><td class="fp-lq">' + F(cur) + '</td></tr>'; cur /= p; }
+    });
+    rows += '<tr><td class="fp-ld"></td><td class="fp-lq fp-l1">' + kh(1) + '</td></tr>';
+    return '<h4 class="pv-h4">' + A.esc(t(T.ladder)) + '</h4><p class="fp-pairs">' + A.esc(t(T.ladderHint)) + '</p>' +
+      '<div class="fp-lbox"><table class="fp-ladder">' + rows + '</table></div>';
+  }
 
   /* ----------------------------------------------------- factor tree */
   function tree(n) {
@@ -117,6 +135,12 @@
         h += tree(n);
         h += '<p class="fp-pf"><span>' + A.esc(t(T.pf)) + '</span><b>' + F(n) + ' = ' + idx(m) + '</b></p>';
         if (fs.list.length === 2) { h += '<p class="fp-note">' + A.esc(f(T.isPrime, { n: F(n) })) + '</p>'; }
+        var sum = fs.list.reduce(function (a, b) { return a + b; }, 0);
+        h += '<div class="fp-stats">' +
+          '<span class="fp-tag' + (fs.list.length === 2 ? ' is-prime' : '') + '">' + A.esc(t(fs.list.length === 2 ? T.prime : T.composite)) + '</span>' +
+          '<span><b>' + kh(Object.keys(m).length) + '</b> ' + A.esc(t(T.distinct)) + '</span>' +
+          '<span><b>' + F(sum) + '</b> ' + A.esc(t(T.sumF)) + '</span></div>';
+        if (fs.list.length > 2) { h += ladder(n); }
       }
       h += '<h4 class="pv-h4">' + A.esc(f(T.factors, { c: kh(fs.list.length) })) + '</h4><p class="fp-fl">' + fs.list.map(F).join(', ') + '</p>';
       if (fs.pairs.length > 1) { h += '<p class="fp-pairs">' + fs.pairs.map(function (p) { return F(p[0]) + ' × ' + F(p[1]); }).join(' &nbsp;·&nbsp; ') + '</p>'; }
